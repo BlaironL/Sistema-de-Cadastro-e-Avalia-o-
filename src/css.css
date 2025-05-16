@@ -4,8 +4,7 @@
     box-sizing: border-box;
 }
 
-body,
-html {
+html, body {
     height: 100%;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7fa;
@@ -23,36 +22,58 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     padding: 40px;
     text-align: center;
     background-color: #f9f9f9;
 }
 
-header {
+main h1 {
+    margin-bottom: 16px;
+  }
+  
+  main p {
+    margin-bottom: 24px;
+  }  
+
+/* Header */
+.header {
     background-color: #005792;
-    color: white;
-    padding: 20px;
+    padding: 20px 20px 20px 0; 
+    width: 100%;
 }
 
 .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    color: white;
+    margin: 0;
+    padding-left: 20px; 
 }
 
 .header-title {
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
 .header-subtitle {
     font-size: 1rem;
 }
 
+.navbar {
+    background-color: #003B5C;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.navbar a {
+    color: white;
+    margin: 0 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Navigation */
 nav {
     background-color: #003f5c;
     padding: 10px 0;
@@ -82,15 +103,6 @@ nav ul li a:hover {
     border-radius: 5px;
 }
 
-.intro h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.intro p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
 
 .btn {
     padding: 10px 20px;
@@ -104,9 +116,10 @@ nav ul li a:hover {
 
 .btn:hover {
     background-color: #003f5c;
-    transform: scale(1.1);
+    transform: scale(1.4);
 }
 
+/* Footer */
 footer {
     background-color: #005792;
     text-align: center;
@@ -115,12 +128,14 @@ footer {
     margin-top: auto;
 }
 
+/* Container geral */
 .container {
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem;
 }
 
+/* Sessão sobre */
 .sobre {
     padding: 4rem 2rem;
     display: flex;
@@ -139,8 +154,8 @@ footer {
 }
 
 .logo-box img {
-    width: 350px;
-    animation: flutuar 4s ease-in-out infinite, brilhar 2s ease-in-out infinite alternate;
+    width: 450px;
+    animation: flutuar 2s ease-in-out infinite, brilhar 3s ease-in-out infinite alternate;
     filter: drop-shadow(0 0 10px #007bff);
     transition: transform 0.6s ease;
 }
@@ -155,7 +170,7 @@ footer {
     color: white;
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 4px 10px rgba(35, 25, 225, 0.8);
     text-align: justify;
     min-width: 300px;
 }
@@ -172,13 +187,11 @@ footer {
     color: white;
 }
 
+/* Animações */
 @keyframes flutuar {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateY(0);
     }
-
     50% {
         transform: translateY(-12px);
     }
@@ -188,7 +201,6 @@ footer {
     0% {
         filter: drop-shadow(0 0 5px #007bff);
     }
-
     100% {
         filter: drop-shadow(0 0 20px #007bff);
     }
@@ -196,11 +208,11 @@ footer {
 
 .login-container {
     background-color: #ffffff;
-    padding: 2rem;
+    padding: 2%;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     text-align: left;
 }
 
@@ -243,8 +255,17 @@ footer {
 
 .login-container button:hover {
     background-color: #003f5c;
-    transform: scale(1.03);
+    transform: scale(1.06);
 }
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* ou 100vh se quiser ocupar toda a tela */
+    background-color: #f9f9f9;
+  }
+  
 
 .form-container {
     background-color: #ffffff;
@@ -285,10 +306,12 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
-    background-color: #004070;
+    background-color: #003f5c;
+    transform: scale(1.06);
 }
 
 .layout {

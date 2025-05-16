@@ -44,10 +44,11 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: #003f5c;
+  transform: scale(1.06);
 }
 button:focus,
 button:focus-visible {

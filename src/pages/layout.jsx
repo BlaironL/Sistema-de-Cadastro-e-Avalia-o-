@@ -3,14 +3,13 @@ import { Outlet, Link } from 'react-router-dom';
 export default function Layout() {
     return (
         <div className="layout">
-            <header>
-                <div className="header-content">
-                    <div className="logo-box">
-                        <h1 className="logo">SCAP</h1>
-                        <p className="subtitle">Sistema de Cadastro e Avaliação de Projetos</p>
-                    </div>
+            <header class="header">
+                <div class="header-content">
+                    <h1 class="header-title">SCAP</h1>
+                    <p class="header-subtitle">Sistema de Cadastro e Avaliação de Projetos</p>
                 </div>
             </header>
+
 
             <nav>
                 <ul>
