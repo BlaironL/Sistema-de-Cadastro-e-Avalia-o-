@@ -1,62 +1,56 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../global.css';
-import './dashboard.css'
+import './dashboard.css';
 
 export default function Dashboard() {
     const [tipoUsuario, setTipoUsuario] = useState('');
+    const [usuarioAtual, setUsuarioAtual] = useState('');
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [projetos, setProjetos] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const tipo = localStorage.getItem('tipoUsuario');
-        if (!tipo) {
-            navigate('/'); // redireciona para login se não estiver logado
+        const usuario = localStorage.getItem('usuarioAtual'); // <- aqui
+        if (!tipo || !usuario) {
+            navigate('/');
         } else {
             setTipoUsuario(tipo);
-        }
+            setUsuarioAtual(usuario);
 
-        // Simulando projetos (pode ser substituído por fetch/axios)
-        const projetosMock = [
-            {
-                nome: "Sistema de Irrigação Automatizada",
-                descricao: "Um projeto para automatizar irrigação de hortas urbanas.",
-                evento: "Inova IFPI",
-                pdf: "#"
-            },
-            {
-                nome: "Aplicativo Educacional",
-                descricao: "App voltado ao ensino de matemática básica para crianças.",
-                evento: "Semana Nacional de Ciência e Tecnologia",
-                pdf: "#"
-            },
-            {
-                nome: "Arduino Movel",
-                descricao: "Hardware voltado para o auxilio de pessoas carentes.",
-                evento: "Semana Nacional de Ciência e Tecnologia",
-                pdf: "#"
-            },
-            {
-                nome: "Comduza",
-                descricao: "Software para realização de avaliações online.",
-                evento: "Cais Tech",
-                pdf: "#"
-            }
-        ];
-        setProjetos(projetosMock); // Comente essa linha se for buscar de backend
+            const todosProjetos = JSON.parse(localStorage.getItem('projetosPorUsuario')) || {};
+            const projetosDoUsuario = todosProjetos[usuario] || [];
+            setProjetos(projetosDoUsuario);
+        }
     }, [navigate]);
 
     const logout = () => {
         localStorage.removeItem('tipoUsuario');
+        localStorage.removeItem('usuarioAtual');
         navigate('/');
     };
 
     const handleCadastroProjeto = (e) => {
         e.preventDefault();
-        // Lógica para cadastrar projeto pode ser implementada aqui
-        alert("Projeto cadastrado!");
+
+        const nome = e.target.nomeProjeto.value;
+        const descricao = e.target.descricao.value;
+        const evento = e.target.evento.value;
+        const pdf = "#"; // Simulado
+
+        const novoProjeto = { nome, descricao, evento, pdf };
+
+        const todosProjetos = JSON.parse(localStorage.getItem('projetosPorUsuario')) || {};
+        const projetosAtualizados = [...(todosProjetos[usuarioAtual] || []), novoProjeto];
+        todosProjetos[usuarioAtual] = projetosAtualizados;
+
+        localStorage.setItem('projetosPorUsuario', JSON.stringify(todosProjetos));
+        setProjetos(projetosAtualizados);
+
+        alert("Projeto cadastrado com sucesso!");
         setMostrarFormulario(false);
+        e.target.reset();
     };
 
     const renderConteudo = () => {

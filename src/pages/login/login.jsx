@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../global.css';
-import './login.css'
+import './login.css';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -17,8 +17,11 @@ export default function Login() {
             return;
         }
 
+        // Salvando o usuário e tipo no localStorage
         localStorage.setItem('tipoUsuario', tipo);
-        navigate('/dashboard');  // navegação sem recarregar a página
+        localStorage.setItem('usuarioAtual', email.toLowerCase()); // Normalizando
+
+        navigate('/dashboard');
     };
 
     return (
@@ -66,5 +69,4 @@ export default function Login() {
             </main>
         </div>
     );
-
 }

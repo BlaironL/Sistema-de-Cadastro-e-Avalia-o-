@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Layout from './pages/Layout/Layout';
 import Home from './pages/index/index';
-import Sobre from './pages/Sobre/Sobre';
+import Sobre from './pages/sobre/sobre';
 import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Aluno from './pages/Aluno/Aluno';
@@ -10,7 +10,6 @@ import Avaliacoes from './pages/Avaliacoes/Avaliacoes';
 import Avaliador from './pages/Avaliador/Avaliador';
 import Organizador from './pages/Organizador/Organizador';
 import Resultados from './pages/Resultados/Resultados';
-
 import './global.css';
 
 export default function App() {
