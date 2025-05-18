@@ -1,5 +1,7 @@
-import '../css.css';
-export default function Avaliações() {
+import '../../global.css';
+import './resultados.css'
+
+export default function Resultados() {
     return (
         <>
 
@@ -11,7 +13,6 @@ export default function Avaliações() {
                     <li><a href="/sobre">Sobre</a></li>
                 </ul>
             </nav>
-
 
         </>
     );

@@ -1,4 +1,5 @@
-import '../css.css';
+import '../../global.css';
+import './aluno.css'
 
 export default function CadastroProjeto() {
     return (
@@ -6,7 +7,7 @@ export default function CadastroProjeto() {
 
             <nav>
                 <ul>
-                    <li><a href="/dashboard">Ino</a></li>
+                    <li><a href="/dashboard">Início</a></li>
                     <li><a href="/cadastro-projeto">Cadastro de Projetos</a></li>
                     <li><a href="/sobre">Sobre</a></li>
                 </ul>

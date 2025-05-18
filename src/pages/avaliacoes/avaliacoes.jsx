@@ -1,6 +1,7 @@
-import '../css.css';
+import '../../global.css';
+import './avaliacoes.css'
 
-export default function Organizador() {
+export default function Avaliações() {
     return (
         <>
 
@@ -12,6 +13,7 @@ export default function Organizador() {
                     <li><a href="/sobre">Sobre</a></li>
                 </ul>
             </nav>
+
 
         </>
     );

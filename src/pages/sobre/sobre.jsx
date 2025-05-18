@@ -1,4 +1,5 @@
-import '../css.css';
+import '../../global.css';
+import './sobre.css'
 
 export default function Sobre() {
     return (

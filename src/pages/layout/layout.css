@@ -1,0 +1,54 @@
+@import 'src/global.css';
+
+/* Estilo geral do header */
+header {
+    background-color: #00558c;
+    /* Azul escuro do SCAP */
+    padding: 20px 0;
+    color: white;
+    text-align: left;
+    padding-left: 40px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+header p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Estilo da barra de navegação */
+nav {
+    background-color: #003852;
+    /* Faixa mais escura abaixo do header */
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    margin: 0 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo do footer */
+footer {
+    background-color: #003852;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-size: 14px;
+}

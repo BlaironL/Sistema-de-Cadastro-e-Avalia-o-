@@ -1,6 +1,7 @@
-import '../css.css';
+import '../../global.css';
+import './avaliador.css'
 
-export default function Resultados() {
+export default function Avaliador() {
     return (
         <>
 

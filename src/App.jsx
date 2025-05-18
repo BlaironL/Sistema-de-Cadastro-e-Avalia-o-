@@ -1,16 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Layout from './pages/layout';
-import Home from './pages/index';
-import Sobre from './pages/sobre';
-import Login from './pages/login';
-import Dashboard from './pages/dashboard';
-import Aluno from './pages/aluno';
-import Avaliacoes from './pages/avaliacoes';
-import Avaliador from './pages/avaliador';
-import Organizador from './pages/organizador';
-import Resultados from './pages/resultados';
-import './css.css';
+import Layout from './pages/Layout/Layout';
+import Home from './pages/index/index';
+import Sobre from './pages/Sobre/Sobre';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Aluno from './pages/Aluno/Aluno';
+import Avaliacoes from './pages/Avaliacoes/Avaliacoes';
+import Avaliador from './pages/Avaliador/Avaliador';
+import Organizador from './pages/Organizador/Organizador';
+import Resultados from './pages/Resultados/Resultados';
+
+import './global.css';
 
 export default function App() {
   return (
