@@ -1,4 +1,5 @@
-@import 'src/global.css';
+@import '../../global.css';
+
 
 .container {
     max-width: 900px;
