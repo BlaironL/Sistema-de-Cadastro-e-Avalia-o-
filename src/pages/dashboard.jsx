@@ -18,30 +18,7 @@ export default function Dashboard() {
 
         // Simulando projetos (pode ser substituído por fetch/axios)
         const projetosMock = [
-            {
-                nome: "Sistema de Irrigação Automatizada",
-                descricao: "Um projeto para automatizar irrigação de hortas urbanas.",
-                evento: "Inova IFPI",
-                pdf: "#"
-            },
-            {
-                nome: "Aplicativo Educacional",
-                descricao: "App voltado ao ensino de matemática básica para crianças.",
-                evento: "Semana Nacional de Ciência e Tecnologia",
-                pdf: "#"
-            },
-            {
-                nome: "Arduino Movel",
-                descricao: "Hardware voltado para o auxilio de pessoas carentes.",
-                evento: "Semana Nacional de Ciência e Tecnologia",
-                pdf: "#"
-            },
-            {
-                nome: "Comduza",
-                descricao: "Software para realização de avaliações online.",
-                evento: "Cais Tech",
-                pdf: "#"
-            }
+
         ];
         setProjetos(projetosMock); // Comente essa linha se for buscar de backend
     }, [navigate]);
