@@ -16,6 +16,7 @@ export default function Dashboard() {
     const [projetosAvaliacao, setProjetosAvaliacao] = useState([]);
     const [infoProjetosVisiveis, setInfoProjetosVisiveis] = useState({});
     const [mostrarProjetosAvaliacao, setMostrarProjetosAvaliacao] = useState(false);
+    const [avaliadoresPorEvento, setAvaliadoresPorEvento] = useState({});
 
     const navigate = useNavigate();
 
@@ -37,6 +38,9 @@ export default function Dashboard() {
 
             const porEvento = JSON.parse(localStorage.getItem('projetosPorEvento')) || {};
             setProjetosPorEvento(porEvento);
+
+            const avaliadores = JSON.parse(localStorage.getItem('avaliadoresPorEvento')) || {};
+            setAvaliadoresPorEvento(avaliadores);
         }
     }, [navigate]);
 
@@ -48,7 +52,6 @@ export default function Dashboard() {
 
     const handleCadastroProjeto = (e) => {
         e.preventDefault();
-
         const titulo = e.target.titulo.value;
         const coordenador = e.target.coordenador.value;
         const categoria = e.target.categoria.value;
@@ -60,21 +63,18 @@ export default function Dashboard() {
         const codigoEvento = e.target.codigoEvento.value;
 
         const eventos = JSON.parse(localStorage.getItem('eventos'));
-
         if (!Array.isArray(eventos)) {
             alert("Nenhum evento encontrado. Recarregue a página ou cadastre um evento.");
             return;
         }
 
         const eventoRelacionado = eventos.find(ev => ev.codigoAluno === codigoEvento);
-
         if (!eventoRelacionado) {
             alert("Código do evento inválido.");
             return;
         }
 
         const nomeEvento = eventoRelacionado.nome;
-
         const novoProjeto = {
             titulo, coordenador, categoria, resumo, tema, materiais, qtdAlunos, imagem,
             evento: nomeEvento, autor: usuarioAtual, codigoEvento
@@ -99,7 +99,6 @@ export default function Dashboard() {
 
     const handleCadastrarEvento = (e) => {
         e.preventDefault();
-
         const nome = e.target.nome.value;
         const tema = e.target.tema.value;
         const banner = "#";
@@ -124,12 +123,26 @@ export default function Dashboard() {
     };
 
     const buscarProjetosPorCodigo = () => {
+        const eventos = JSON.parse(localStorage.getItem('eventos')) || [];
+        const evento = eventos.find(e => e.codigoAvaliador === codigoAvaliador);
+
+        if (!evento) {
+            alert("Código do evento inválido.");
+            return;
+        }
+
+        const avaliadores = JSON.parse(localStorage.getItem('avaliadoresPorEvento')) || {};
+        const listaAtual = new Set(avaliadores[evento.nome] || []);
+        listaAtual.add(usuarioAtual);
+        avaliadores[evento.nome] = Array.from(listaAtual);
+        localStorage.setItem('avaliadoresPorEvento', JSON.stringify(avaliadores));
+        setAvaliadoresPorEvento(avaliadores);
+
         const todosProjetos = JSON.parse(localStorage.getItem('projetosPorUsuario')) || {};
         const encontrados = [];
-
         Object.values(todosProjetos).forEach(lista => {
             lista.forEach(proj => {
-                if (proj.codigoEvento === codigoAvaliador) {
+                if (proj.evento === evento.nome) {
                     encontrados.push(proj);
                 }
             });
@@ -191,6 +204,12 @@ export default function Dashboard() {
                                     </li>
                                 ))}
                             </ul>
+                            <h5>Avaliadores Vinculados:</h5>
+                            <ul>
+                                {(avaliadoresPorEvento[evento] || []).map((aval, idx) => (
+                                    <li key={idx}>{aval}</li>
+                                ))}
+                            </ul>
                         </div>
                     ))}
                     <button onClick={logout}>Sair</button>
@@ -245,7 +264,7 @@ export default function Dashboard() {
                         value={codigoAvaliador}
                         onChange={(e) => setCodigoAvaliador(e.target.value)}
                     />
-                    <button onClick={buscarProjetosPorCodigo}>Buscar Projetos</button>
+                    <button onClick={buscarProjetosPorCodigo}>Entrar no Evento</button>
                     {mostrarProjetosAvaliacao && (
                         <div>
                             <button onClick={() => setMostrarProjetosAvaliacao(false)}>
