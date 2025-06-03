@@ -3,27 +3,19 @@ import '../../global.css';
 
 export default function Layout() {
     return (
-        <div className="layout">
-            <header class="header">
-                <div class="header-content">
-                    <h1 class="header-title">SCAP</h1>
-                    <p class="header-subtitle">Sistema de Cadastro e Avaliação de Projetos</p>
-                </div>
+        <div className="home-container">
+            <header className="home-header">
+                <h1 className="logo-text">SCAP</h1>
+                <p className="subtitulo">Sistema de Cadastro e avaliacao de Projetos.</p>
+                <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet" />
             </header>
-
-
-            <nav>
-                <a href="/">Início</a>
-                <a href="/sobre">Sobre</a>
-            </nav>
-
 
             <main>
                 <Outlet />
             </main>
 
-            <footer>
-                <p>&copy; 2025 SCAP - Todos os direitos reservados.</p>
+            <footer className="home-footer">
+                <p><strong>SCAP</strong> – Todos os direitos reservados.</p>
             </footer>
         </div>
     );

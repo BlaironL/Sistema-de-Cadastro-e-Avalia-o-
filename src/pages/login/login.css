@@ -1,71 +1,250 @@
-@import '../../global.css';
+/* ======================== */
+/* LOGIN.CSS       */
+/* ======================== */
 
-/* Wrapper centralizador */
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
+/* @import '../../global.css'; /* REMOVIDO - Assumindo que global.css é carregado uma vez na raiz da aplicação */
 
-/* Container do formulário de login */
-.login-container {
-    background-color: white;
-    padding: 4rem 7rem; /* mais espaço interno */
-    border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 900px;
-    min-height: 500px; /* aumenta a altura mínima */
-    text-align: left;
+/* Container que envolve toda a página de login, ajuda a centralizar o card de login */
+.login-page {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* centraliza conteúdo verticalmente */
-}
-
-
-/* Título */
-.login-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 3rem;
-    color: #005792;
-}
-
-/* Labels */
-.login-container label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Inputs e select */
-.login-container input,
-.login-container select {
+    /* Caso haja algo além do login-main dentro dele */
+    justify-content: center;
+    /* Centraliza verticalmente o .login-main */
+    align-items: center;
+    /* Centraliza horizontalmente o .login-main */
+    flex-grow: 1;
+    /* Ocupa o espaço disponível no <main> global */
     width: 100%;
-    padding: 10px;
-    margin-bottom: 1.5rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
+    padding: 20px;
+    /* Espaçamento para telas pequenas, para o card não colar nas bordas */
+    box-sizing: border-box;
 }
 
-/* Botão */
-.login-container button {
+/* O card/painel principal de login */
+.login-main {
+    display: flex;
+    flex-direction: row;
+    /* Lado a lado em telas maiores */
+    background-color: #ffffff;
+    /* FUNDO PADRONIZADO E ÚNICO */
+    border-radius: 12px;
+    /* Cantos arredondados */
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8);
+    /* Sombra suave para efeito de card */
+    max-width: 960px;
+    /* Largura máxima do card de login */
     width: 100%;
-    padding: 12px;
-    background-color: #005792;
+    /* Responsivo até o max-width */
+    overflow: hidden;
+    /* Para o border-radius funcionar bem com os filhos */
+    margin: 20px 0;
+    /* Margem vertical para o card */
+}
+
+.login-left {
+    /* background-color: #000; /* REMOVIDO */
     color: white;
+    background-color: black;
+    flex: 1;
+    padding: 40px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #eeeeee;
+}
+
+.login-msg {
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Fonte mais suave para esta mensagem */
+    line-height: 1.5;
+}
+
+.login-img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+
+.login-right {
+    /* background-color: #d9d9d9; /* REMOVIDO */
+    flex: 1;
+    /* Divide o espaço */
+    /* ou flex-basis: 55%; para um tamanho específico */
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Bordas com groove removidas para um visual mais limpo */
+}
+
+.login-right .bem-vindo {
+    color: #3b46f1;
+    /* Usando uma cor de destaque do seu dashboard */
+    margin-bottom: 30px;
+    font-size: 28px;
+    text-align: center;
+    font-family: 'Koulen', sans-serif;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 380px;
+    /* Limita a largura do formulário dentro da seção direita */
+    margin: 0 auto;
+    /* Centraliza o formulário se a seção direita for mais larga */
+}
+
+.login-form label {
+    /* Estilos de label podem vir do global.css */
+    /* Se precisar de override: */
+    text-align: left;
+    color: #495057;
+    /* Cor de label um pouco mais escura */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.875rem;
+    /* 14px */
+    margin-bottom: 6px;
+    /* Espaço abaixo do label */
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.login-form select {
+    /* Estilos de input vêm primariamente do global.css */
+    /* border: none; /* REMOVIDO do login.css - Deixe global.css definir a borda padrão */
+    margin-bottom: 20px;
+    /* Espaço consistente abaixo dos campos */
+    background-color: #f8f9fa;
+    /* Fundo sutil para os campos */
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus,
+.login-form select:focus {
+    background-color: #fff;
+    /* Fundo branco ao focar */
+    /* Efeito de foco já vem do global.css */
+}
+
+
+.btn-confirmar {
+    background-color: #3b46f1;
+    /* Cor de destaque do dashboard */
+    color: white;
+    padding: 12px 20px;
     border: none;
     border-radius: 6px;
-    font-weight: bold;
-    font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1rem;
+    /* 16px */
+    font-family: 'Koulen', sans-serif;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-top: 15px;
+    width: 100%;
 }
 
-.login-container button:hover {
-    background-color: #003f5c;
-    transform: scale(1.04);
+.btn-confirmar:hover {
+    background-color: #2a37d1;
+    /* Azul mais escuro no hover */
+    transform: translateY(-2px);
+}
+
+/* Rodapé específico da página de login (se você realmente o usar no Login.jsx) */
+/* Se não houver um <div class="login-footer"> no Login.jsx, esta regra não fará nada */
+.login-footer {
+    display: none;
+    /* Escondido por padrão, pois o Layout.jsx já tem um footer global */
+    /* Se precisar de um footer SÓ para login, descomente e estilize: */
+    /* background-color: #2b2eff; */
+    /* color: white; */
+    /* text-align: center; */
+    /* padding: 10px; */
+    /* font-family: 'Koulen', sans-serif; */
+}
+
+/* Media query para telas menores: empilhar as seções left e right */
+@media (max-width: 800px) {
+
+    /* Ponto de quebra aumentado um pouco */
+    .login-main {
+        flex-direction: column;
+        /* Empilha left e right */
+        max-width: 500px;
+        /* Card de login fica mais estreito e alto */
+    }
+
+    .login-left,
+    .login-right {
+        width: 100%;
+        /* Ocupam toda a largura do card quando empilhados */
+        flex-basis: auto;
+        /* Reseta a base do flex */
+        border-right: none;
+        /* Remove a borda divisória */
+    }
+
+    .login-left {
+        padding: 30px 25px;
+        /* Padding ajustado */
+        border-bottom: 1px solid #eeeeee;
+        /* Adiciona borda embaixo quando empilhado */
+    }
+
+    .login-right {
+        padding: 30px 25px;
+        /* Padding ajustado */
+    }
+
+    .login-msg {
+        font-size: 1.4rem;
+        /* Reduzido */
+    }
+
+    .login-right .bem-vindo {
+        font-size: 26px;
+        /* Reduzido */
+        margin-bottom: 25px;
+    }
+
+    .login-img {
+        max-width: 220px;
+        /* Imagem menor */
+    }
+}
+
+@media (max-width: 480px) {
+    .login-main {
+        margin: 10px 0;
+        /* Menos margem vertical em telas muito pequenas */
+        border-radius: 0;
+        /* Sem cantos arredondados para ocupar a tela */
+        box-shadow: none;
+        /* Sem sombra */
+    }
+
+    .login-left,
+    .login-right {
+        padding: 25px 20px;
+        /* Menos padding */
+    }
+
+    .login-img {
+        max-width: 180px;
+    }
+
+    .login-right .bem-vindo {
+        font-size: 22px;
+    }
+
+    .login-msg {
+        font-size: 1.2rem;
+    }
 }

@@ -1,3 +1,10 @@
+/* ======================== */
+/*        GLOBAL.CSS       */
+/* ======================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
+
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -7,12 +14,9 @@
 html,
 body {
     height: 100%;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fa;
+    font-family: 'Koulen', sans-serif;
+    background-color: white;
     color: #333;
-}
-
-body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -24,111 +28,145 @@ main {
     flex-direction: column;
     justify-content: center;
     padding: 40px;
+    padding-top: 20px;
     text-align: center;
 }
 
-main h1 {
-    margin-bottom: 16px;
-}
-
-main p {
-    margin-bottom: 24px;
-}
-
-.btn {
-    padding: 10px 20px;
-    background-color: #005792;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
+/* Cabeçalhos */
+h1,
+h2,
+h3 {
     font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: white;
+    margin-bottom: 1rem;
 }
 
-.btn:hover {
-    background-color: #003f5c;
-    transform: scale(1.4);
+h2 {
+    font-size: 28px;
+    text-align: center;
 }
 
-button {
-    margin-top: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    background-color: #005b96;
+h3 {
+    font-size: 22px;
+}
+
+/* Botões */
+button,
+.btn,
+.btn-primary {
+    padding: 10px 20px;
+    background-color: #005b8f;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-    background-color: #003f5c;
-    transform: scale(1.06);
-}
-
-label {
-    display: block;
-    margin-top: 1rem;
+    text-decoration: none;
     font-weight: bold;
+    display: inline-block;
 }
 
-input[type="text"],
-textarea,
-select,
-input[type="file"] {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
+button:hover,
+.btn:hover,
+.btn-primary:hover {
+    background-color: #003f66;
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: #eeeeee;
+    color: #333;
     border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.layout main {
-    flex: 1;
-}
-
-/* Estilo geral do header */
-header {
-    background-color: #00558c;
-    /* Azul escuro do SCAP */
-    padding: 20px 0;
-    color: white;
-    text-align: left;
-    padding-left: 40px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-header p {
-    margin: 0;
+    border-radius: 6px;
+    padding: 6px 12px;
     font-size: 14px;
 }
 
-/* Barra de navegação horizontal */
+.btn-secondary:hover {
+    background-color: #ddd;
+}
+
+/* Formulários */
+form {
+    margin-top: 25px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #444;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+}
+
+/* Listas */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navegação e layout */
+header,
+footer,
+nav {
+    width: 100%;
+}
+
+header {
+    background-color: #00558c;
+    padding: 20px 40px;
+    color: white;
+    text-align: left;
+}
+
+footer {
+    background-color: #003852;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+}
+
 nav {
     background-color: #003852;
-    /* Azul escuro */
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 40px;
-    /* Espaçamento entre os botões */
     padding: 10px 0;
 }
 
 nav a {
     color: white;
-    text-decoration: none;
     font-weight: bold;
     font-size: 16px;
     padding: 6px 12px;
@@ -139,17 +177,4 @@ nav a:hover {
     background-color: #00558c;
     border-radius: 5px;
     color: #fff;
-}
-
-
-/* Estilo do footer */
-footer {
-    background-color: #003852;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    font-size: 14px;
 }

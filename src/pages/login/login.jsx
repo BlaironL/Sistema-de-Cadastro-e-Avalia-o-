@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../global.css';
 import './login.css';
+import ilustracao from '../../components/ImagemLogin.png'; // Use a imagem correta
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -17,56 +18,65 @@ export default function Login() {
             return;
         }
 
-        // Salvando o usuário e tipo no localStorage
         localStorage.setItem('tipoUsuario', tipo);
-        localStorage.setItem('usuarioAtual', email.toLowerCase()); // Normalizando
+        localStorage.setItem('usuarioAtual', email.toLowerCase());
 
         navigate('/dashboard');
     };
 
     return (
-        <div>
-            <main>
-                <div className="login-wrapper">
-                    <div className="login-container">
-                        <h2>Login de Usuário</h2>
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="email">E-mail ou Usuário:</label>
-                            <input
-                                type="text"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
+        <div className="login-page">
 
-                            <label htmlFor="senha">Senha:</label>
-                            <input
-                                type="password"
-                                id="senha"
-                                value={senha}
-                                onChange={(e) => setSenha(e.target.value)}
-                                required
-                            />
+            <main className="login-main">
+                <div className="login-left">
+                    <p className="login-msg">
+                        Realize seu login<br />
+                        com suas credenciais do SUAP.<br />:)
+                    </p>
+                    <img src={ilustracao} alt="Ilustração login" className="login-img" />
+                </div>
 
-                            <label htmlFor="tipo">Tipo de Usuário:</label>
-                            <select
-                                id="tipo"
-                                value={tipo}
-                                onChange={(e) => setTipo(e.target.value)}
-                                required
-                            >
-                                <option value="">Selecione</option>
-                                <option value="avaliador">Avaliador</option>
-                                <option value="organizador">Organizador</option>
-                                <option value="aluno">Aluno</option>
-                            </select>
+                <div className="login-right">
+                    <h2 className="bem-vindo">Seja Bem–Vindo!</h2>
+                    <form onSubmit={handleSubmit} className="login-form">
+                        <label htmlFor="email">E-mail:</label>
+                        <input
+                            type="text"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                            <button type="submit">Entrar</button>
-                        </form>
-                    </div>
+                        <label htmlFor="senha">Senha:</label>
+                        <input
+                            type="password"
+                            id="senha"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            required
+                        />
+
+                        <select
+                            id="tipo"
+                            value={tipo}
+                            onChange={(e) => setTipo(e.target.value)}
+                            required
+                        >
+                            <option value="">Selecione</option>
+                            <option value="avaliador">Avaliador</option>
+                            <option value="organizador">Organizador</option>
+                            <option value="aluno">Aluno</option>
+                        </select>
+
+
+                        <button type="submit" className="btn-confirmar">
+                            Confirmar
+                        </button>
+                    </form>
                 </div>
             </main>
+
         </div>
     );
 }

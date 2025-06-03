@@ -1,19 +1,21 @@
-@import 'src/global.css';
+/* ======================== */
+/*        LAYOUT.CSS      */
+/* ======================== */
 
-/* Estilo geral do header */
+@import '../../global.css';
+
+/* Header */
 header {
-    background-color: #00558c;
-    /* Azul escuro do SCAP */
-    padding: 20px 0;
+    background-color: #2b2eff;
+    /* Azul SCAP */
+    padding: 20px 40px;
     color: white;
     text-align: left;
-    padding-left: 40px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 50px;
 }
 
 header p {
@@ -21,10 +23,9 @@ header p {
     font-size: 14px;
 }
 
-/* Estilo da barra de navegação */
+/* Navegação */
 nav {
     background-color: #003852;
-    /* Faixa mais escura abaixo do header */
     display: flex;
     justify-content: center;
     padding: 10px 0;
@@ -33,22 +34,25 @@ nav {
 nav a {
     color: white;
     margin: 0 20px;
-    text-decoration: none;
     font-weight: bold;
+    font-size: 16px;
+    padding: 6px 12px;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    background-color: #00558c;
+    border-radius: 5px;
 }
 
-/* Estilo do footer */
+/* Footer */
 footer {
     background-color: #003852;
     color: white;
     text-align: center;
     padding: 15px 0;
     position: fixed;
-    width: 100%;
     bottom: 0;
     font-size: 14px;
 }
