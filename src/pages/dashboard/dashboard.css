@@ -1,536 +1,312 @@
-@import '../../global.css';
+/* ======================== */
+/* DASHBOARD.CSS            */
+/* ======================== */
 
-.dashboard-container {
+/* Estilos globais (body, html, main, header, footer, nav, etc.)
+   NÃO SÃO DEFINIDOS AQUI. Eles vêm do global.css ou do seu Layout.jsx.
+   Este arquivo se concentra APENAS nos estilos específicos do Dashboard.
+*/
+
+/* Novo wrapper para o conteúdo principal do Dashboard */
+.dashboard-main-content-wrapper {
+    flex-grow: 1; /* Ocupa o espaço disponível verticalmente */
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    padding-top: 0;
-    padding-bottom: 0;
+    align-items: center;
+    max-width: 1400px;
+    width: calc(100% - 40px); /* Garante margem lateral de 20px de cada lado */
+    margin: 40px auto; /* Centraliza horizontalmente e dá margem superior */
+    background-color: #f8f9fa; /* Um branco bem suave para a base do card do Dashboard */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+    overflow: hidden; /* CRUCIAL: Esconde qualquer conteúdo que transborde */
+    padding: 30px; /* Padding interno para o conteúdo */
+    border: 1px solid #e0e0e0; /* Uma borda sutil para definir melhor o card */
+    
+    /* Controle de altura para evitar esticamento excessivo com footer fixo */
+    min-height: 500px; /* Uma altura mínima razoável para o card principal */
+    height: auto; /* Permite que cresça além do min-height se o conteúdo exigir */
 }
 
-/* ---------- Estilos Escopados para .dashboard-container ---------- */
-
-.dashboard-container h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 26px;
-    color: #202124;
-    font-family: 'Koulen', sans-serif;
-}
-
-.dashboard-container h3 {
-    margin-top: 35px;
-    font-size: 20px;
-    color: #3c4043;
-    font-weight: 500;
-    font-family: 'Koulen', sans-serif;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-}
-
-.dashboard-container button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    margin: 10px 10px 0 0;
-    font-family: 'Koulen', sans-serif;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-}
-
-.dashboard-container button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-container .btn-primary,
-.dashboard-container .com-projetos .btn-cadastrar-novo-projeto,
-.dashboard-container .formulario button[type="submit"] {
-    background-color: #3b46f1;
-    color: white;
-    padding: 12px 28px;
-    font-size: 16px;
-}
-
-.dashboard-container .btn-primary:hover,
-.dashboard-container .com-projetos .btn-cadastrar-novo-projeto:hover,
-.dashboard-container .formulario button[type="submit"]:hover {
-    background-color: #2a37d1;
-}
-
-.dashboard-container .sem-projetos .mensagem .btn-cadastrar {
-    background-color: white;
+/* A frase de efeito agora está fora do grid de duas colunas, mas dentro do wrapper */
+.dashboard-motto {
+    font-family: 'Koulen', sans-serif; /* Usando Koulen para este título */
+    font-size: 2.2em;
     color: #3b46f1;
-    border: 2px solid #3b46f1;
-    font-size: 17px;
-    font-weight: 600;
-    padding: 12px 28px;
-    margin-top: 15px;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 30px; /* Espaço abaixo da frase e antes do grid */
+    word-break: break-word;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sombra de texto suave */
 }
 
-.dashboard-container .sem-projetos .mensagem .btn-cadastrar:hover {
-    background-color: #3b46f1;
-    color: white;
-    border-color: #2a37d1;
+/* Novo container para o grid de duas colunas (imagem e conteúdo lateral) */
+.dashboard-content-grid {
+    display: flex;
+    width: 100%; /* Ocupa a largura total do dashboard-main-content-wrapper */
+    flex-grow: 1; /* Permite que ocupe o espaço restante verticalmente */
+    gap: 30px; /* Espaço entre as duas colunas */
 }
 
-.dashboard-container .btn-sair {
-    display: block;
-    margin: 40px auto 20px auto;
-    background-color: #dc3545;
-    color: white;
-    font-weight: 500;
-}
 
-.dashboard-container .btn-sair:hover {
-    background-color: #c82333;
-}
-
-.dashboard-container .painel-base,
-.dashboard-container .com-projetos,
-.dashboard-container .sem-projetos {
-    padding: 40px 50px;
-    border-radius: 16px;
-    /* MODIFICADO AQUI - Sombra do painel mais destacada */
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-    max-width: 1100px;
-    margin: 40px auto;
-    box-sizing: border-box;
-    background-color: #ffffff;
-}
-
-/* --- Seção SEM PROJETOS --- */
-.dashboard-container .sem-projetos {
+/* Seção Esquerda (Visual/Imagem) */
+.dashboard-left-section {
+    flex: 2; /* Ocupa 2/3 do espaço disponível horizontalmente */
+    flex-basis: 60%; /* Base de 60% da largura do pai */
+    min-width: 0; /* CRUCIAL: permite que o item flex encolha abaixo do seu conteúdo */
+    background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1b 100%); /* Gradiente de azul escuro para preto */
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 60px;
-}
-
-.dashboard-container .sem-projetos .imagem-container {
-    flex-shrink: 0;
-    flex-basis: 40%;
-    max-width: 400px;
-    text-align: center;
-}
-
-.dashboard-container .sem-projetos img.imagem-ilustrativa {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    /* MODIFICADO AQUI - Animação adicionada */
-    animation: floatAnimation 4s ease-in-out infinite;
-}
-
-.dashboard-container .sem-projetos .right-section-content {
-    flex-basis: 55%;
-    max-width: 580px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.dashboard-container .sem-projetos .mensagem .texto-grande {
-    font-size: 30px;
-    font-weight: normal;
-    font-family: 'Koulen', sans-serif;
-    color: #333;
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-.dashboard-container .sem-projetos .mensagem .texto-normal {
-    font-size: 18px;
-    color: #555;
-    margin-bottom: 25px;
-    text-align: left;
-    line-height: 1.65;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dashboard-container .sem-projetos .mensagem .azul {
-    color: #3b46f1;
-    font-weight: 600;
-}
-
-
-/* --- Formulário de Cadastro de Projeto (Estilo Unificado) --- */
-.dashboard-container .formulario {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 30px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-top: 3px solid #3b46f1;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 680px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 30px;
-}
-
-.dashboard-container .formulario input,
-.dashboard-container .formulario textarea,
-.dashboard-container .input-pesquisa-projetos {
-    /* Estilo unificado para inputs */
-    width: 100%;
-    padding: 14px 18px;
-    font-size: 15px;
-    background-color: #fdfdff;
-    border: 1px solid #d8dde3;
-    border-radius: 6px;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dashboard-container .formulario input::placeholder,
-.dashboard-container .formulario textarea::placeholder,
-.dashboard-container .input-pesquisa-projetos::placeholder {
-    color: #888;
-}
-
-/* MODIFICADO AQUI - Ênfase na barra de pesquisa */
-.dashboard-container .input-pesquisa-projetos {
-    padding: 16px 20px;
-    /* Mais padding vertical */
-    font-size: 16px;
-    border-width: 1px;
-    /* Borda um pouco mais grossa */
-    border-color: #adb5bd;
-    /* Borda um pouco mais escura */
-}
-
-.dashboard-container .formulario input:focus,
-.dashboard-container .formulario textarea:focus,
-.dashboard-container .input-pesquisa-projetos:focus {
-    outline: none;
-    border-color: #3b46f1;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(59, 70, 241, 0.25);
-    /* Sombra de foco mais pronunciada */
-}
-
-.dashboard-container .formulario textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-
-/* --- Seção COM PROJETOS --- */
-.dashboard-container .com-projetos {
-    text-align: left;
-}
-
-.dashboard-container .com-projetos h2 {
-    /* "Painel de Projetos" */
-    color: #333;
-}
-
-/* --- Barra de Pesquisa de Projetos --- */
-.dashboard-container .barra-pesquisa-container {
-    margin-top: 15px;
-    margin-bottom: 25px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.dashboard-container .nenhum-projeto-encontrado-busca {
-    text-align: center;
-    padding: 25px;
-    font-size: 16px;
-    color: #555;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dashboard-container .com-projetos .formulario {
-    /* Espaçamento do formulário dentro de .com-projetos */
-    margin-top: 20px;
-}
-
-/* Lista de Cards de Projeto */
-.dashboard-container .projetos-lista {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    padding: 0;
-    margin-top: 10px;
-    list-style-type: none;
-}
-
-.dashboard-container .projeto-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
+    align-items: center; /* Centraliza a imagem verticalmente */
+    padding: 40px; /* Aumentei o padding para dar mais "respiro" à imagem */
     overflow: hidden;
+    border-radius: 8px; /* Cantos arredondados para a seção */
+    min-height: 400px; /* Altura mínima para a seção esquerda */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra interna para profundidade */
+    border: 1px solid rgba(59, 70, 241, 0.3); /* Borda azul clara sutil */
+}
+
+.dashboard-animated-image {
+    max-width: 80%; /* REDUZI o tamanho máximo da imagem */
+    max-height: 80%; /* REDUZI o tamanho máximo da imagem em relação à altura da seção */
+    width: auto; /* Permite que a largura se ajuste */
+    height: auto; /* Permite que a altura se ajuste */
+    object-fit: contain;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite; /* Animação de flutuação */
+    display: block;
+    filter: drop-shadow(0 5px 15px rgba(59, 70, 241, 0.4)); /* Sombra azulada */
+    transition: filter 0.3s ease; /* Transição suave para a sombra */
+}
+/* Efeito de hover na imagem para dar mais vida */
+.dashboard-animated-image:hover {
+    filter: drop-shadow(0 8px 25px rgba(59, 70, 241, 0.6)); /* Sombra mais intensa no hover */
+}
+
+
+/* Overlay para efeitos futuristas */
+.animated-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(59, 70, 241, 0.2), rgba(0, 255, 255, 0.1), rgba(59, 70, 241, 0.2), rgba(255, 0, 255, 0.1)); /* Gradiente com mais cores vivas */
+    background-size: 300% 300%; /* Aumentei o tamanho para um movimento mais longo */
+    animation: gradientAnimation 15s ease infinite; /* Aumentei a duração da animação */
+    z-index: 0;
+    opacity: 0.8; /* Aumentei a opacidade para ser mais visível */
+}
+
+/* Keyframes para animações */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* Seção Direita (Conteúdo: Notificações e Ações) */
+.dashboard-right-section {
+    flex: 1;
+    flex-basis: 40%;
+    min-width: 0;
+    padding: 0; /* Removido padding, pois o gap já dá espaçamento entre as subseções */
     display: flex;
     flex-direction: column;
-    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out, border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out, transform 0.25s ease-in-out;
-    min-height: 220px;
+    gap: 30px; /* Espaçamento entre os blocos (notificações, ações) */
 }
 
-/* MODIFICADO AQUI - Hover do card de projeto */
-.dashboard-container .projeto-card:hover {
-    background-color: #3b46f1;
-    /* Fundo azul no hover */
-    color: white;
-    /* Cor do texto padrão para branco no hover */
-    border-color: #2a37d1;
-    /* Borda um pouco mais escura */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-4px);
+/* Notificações */
+.notifications-panel {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
 }
 
-.dashboard-container .projeto-card .card-header {
-    padding: 16px 20px;
-    background-color: transparent;
-    border-bottom: 1px solid #ebebeb;
-    transition: border-color 0.25s ease-in-out;
-    /* Adiciona transição para a borda */
-}
-
-.dashboard-container .projeto-card:hover .card-header {
-    border-bottom-color: rgba(255, 255, 255, 0.3);
-    /* Borda mais clara no hover */
-}
-
-.dashboard-container .projeto-card .card-header h4 {
-    margin: 0;
-    font-size: 18px;
-    color: #202124;
-    /* Cor original do título */
-    font-weight: normal;
-    font-family: 'Koulen', sans-serif;
-    line-height: 1.35;
-    word-break: break-word;
-    transition: color 0.25s ease-in-out;
-    /* Transição de cor para o título */
-}
-
-.dashboard-container .projeto-card:hover .card-header h4 {
-    color: white;
-    /* Título branco no hover */
-}
-
-
-.dashboard-container .projeto-card .card-content {
-    padding: 16px 20px;
-    flex-grow: 1;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dashboard-container .projeto-card .card-info-label {
-    font-size: 11px;
-    color: #6c757d;
-    /* Cor original */
-    margin-bottom: 2px;
-    margin-top: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: color 0.25s ease-in-out;
-    /* Transição de cor */
-}
-
-.dashboard-container .projeto-card:hover .card-info-label {
-    color: rgba(255, 255, 255, 0.8);
-    /* Label mais claro no hover */
-}
-
-.dashboard-container .projeto-card .card-content .card-info-label:first-child {
+.notifications-panel h3 {
+    color: #3b46f1;
     margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    text-align: center;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
 }
 
-.dashboard-container .projeto-card .card-info-value {
-    font-size: 14px;
-    color: #343a40;
-    /* Cor original */
-    margin-bottom: 12px;
-    word-wrap: break-word;
-    line-height: 1.4;
-    transition: color 0.25s ease-in-out;
-    /* Transição de cor */
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px; /* Limita a altura da lista de notificação para ser scrollável */
+    overflow-y: auto; /* Adiciona scroll vertical se a lista for muito longa */
 }
 
-.dashboard-container .projeto-card:hover .card-info-value {
-    color: white;
-    /* Valor branco no hover */
-}
-
-
-.dashboard-container .projeto-card .card-footer {
-    padding: 12px 20px;
-    border-top: 1px solid #ebebeb;
-    min-height: 50px;
+.notification-item {
+    background-color: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    background-color: transparent;
-    transition: border-color 0.25s ease-in-out;
-    /* Adiciona transição para a borda */
+    font-size: 0.95em;
+    color: #495057;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, opacity 0.3s ease;
+    cursor: pointer;
+    position: relative;
 }
 
-.dashboard-container .projeto-card:hover .card-footer {
-    border-top-color: rgba(255, 255, 255, 0.3);
-    /* Borda mais clara no hover */
+.notification-item.read {
+    opacity: 0.7;
+    background-color: #f0f0f0;
+    border-color: #ddd;
 }
 
-/* FIM DAS MODIFICAÇÕES PARA HOVER DO CARD */
+.notification-item:hover {
+    background-color: #e2e4e8;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.notification-item:last-child {
+    margin-bottom: 0;
+}
+
+.notification-icon {
+    margin-right: 10px;
+    font-size: 1.2em;
+    flex-shrink: 0;
+    color: #3b46f1;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+}
+
+.remove-notification-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-left: 10px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.remove-notification-btn:hover {
+    color: #c82333;
+}
 
 
-/* ... (Outros estilos como .formulario-projeto, .codigos-gerados permanecem escopados) ... */
-.dashboard-container .formulario-projeto {
-    margin: 20px;
+/* Seção de Ações */
+.dashboard-actions h2 {
+    color: #3b46f1;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    font-family: 'Koulen', sans-serif;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Card de Opção */
+.dashboard-card {
+    background-color: #f0f2f5;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    width: 300px;
+    justify-content: space-between;
+    border: 1px solid #e0e0e0;
 }
 
-.dashboard-container .formulario-projeto input,
-.dashboard-container .formulario-projeto button {
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    background-color: #e2e4e8;
+}
+
+.dashboard-card h3 {
+    color: #3b46f1;
+    margin-top: 0;
+    font-size: 1.3em;
+    font-family: 'Koulen', sans-serif;
     margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.03);
 }
 
-.dashboard-container .codigos-gerados {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-.dashboard-container .codigos-gerados code {
-    font-weight: bold;
-    background-color: #d9f0ff;
-    padding: 2px 6px;
-    border-radius: 4px;
-}
-
-.dashboard-container .codigos-gerados button {
-    margin-left: 10px;
-    padding: 6px 12px;
-    background-color: #005b8f;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.dashboard-container .codigos-gerados button:hover {
-    background-color: #003f66;
+.dashboard-card p {
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.4;
 }
 
 
-/* --- Media Queries --- */
-/* (As media queries da última versão completa permanecem aqui, com os seletores já escopados) */
-/* Exemplo de como elas devem estar: */
-@media (max-width: 1250px) {
-
-    .dashboard-container .painel-base,
-    .dashboard-container .com-projetos,
-    .dashboard-container .sem-projetos {
-        width: 95%;
-        margin: 30px auto;
-        padding: 30px 35px;
-    }
-
-    .dashboard-container .sem-projetos {
+/* Responsividade */
+@media (max-width: 992px) {
+    .dashboard-main-content-wrapper {
         flex-direction: column;
-        text-align: center;
-        gap: 30px;
+        padding: 20px;
+        margin: 20px auto;
     }
-
-    /* ... etc ... */
-
-    .dashboard-container .projetos-lista {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    .dashboard-motto {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    .dashboard-content-grid {
+        flex-direction: column;
         gap: 20px;
     }
-}
-
-@media (max-width: 992px) {
-
-    .dashboard-container .painel-base,
-    .dashboard-container .com-projetos,
-    .dashboard-container .sem-projetos {
-        padding: 25px 30px;
-    }
-
-    /* ... etc ... */
-
-    .dashboard-container .projetos-lista {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .dashboard-container .barra-pesquisa-container {
-        max-width: 90%;
-    }
+    .dashboard-left-section { flex-basis: auto; min-height: 200px; padding: 20px; }
+    .dashboard-animated-image { max-width: 70%; }
+    .dashboard-right-section { flex-basis: auto; padding: 0; }
+    .dashboard-actions h2 { font-size: 1.5em; }
 }
 
 @media (max-width: 768px) {
-
-    .dashboard-container .painel-base,
-    .dashboard-container .com-projetos,
-    .dashboard-container .sem-projetos {
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 10px;
-    }
-
-    /* ... etc ... */
-
-    .dashboard-container .projetos-lista {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 15px;
-    }
-}
-
-@media (max-width: 576px) {
-
-    .dashboard-container .painel-base,
-    .dashboard-container .com-projetos,
-    .dashboard-container .sem-projetos {
-        width: 100%;
-        margin: 0;
+    .dashboard-main-content-wrapper {
         border-radius: 0;
         box-shadow: none;
+        width: 100%;
+        margin: 0;
         padding: 15px;
-        background-color: #fff;
     }
-
-    .dashboard-container .projetos-lista {
-        grid-template-columns: 1fr;
-    }
-
-    /* ... etc ... */
+    .dashboard-motto { font-size: 1.6em; }
+    .notifications-panel, .dashboard-actions { padding: 15px; }
+    .dashboard-options-grid { grid-template-columns: 1fr; gap: 15px; }
+    .dashboard-card { padding: 20px; }
 }
 
-
-/* ADICIONADO NO FINAL - Keyframes para animação da imagem */
-@keyframes floatAnimation {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-
-    100% {
-        transform: translateY(0px);
-    }
+@media (max-width: 480px) {
+    .dashboard-motto { font-size: 1.4em; }
 }

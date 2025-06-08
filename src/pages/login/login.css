@@ -112,25 +112,47 @@
     /* 14px */
     margin-bottom: 6px;
     /* Espaço abaixo do label */
+    display: block;
+    /* Garante que o label ocupe sua própria linha */
 }
 
-.login-form input[type="text"],
+.login-form input[type="email"],
+/* Alterado de text para email */
 .login-form input[type="password"],
 .login-form select {
     /* Estilos de input vêm primariamente do global.css */
     /* border: none; /* REMOVIDO do login.css - Deixe global.css definir a borda padrão */
+    width: 100%;
+    /* Ocupa a largura total disponível */
+    padding: 10px 12px;
+    /* Padding interno */
+    border: 1px solid #ddd;
+    /* Borda padrão */
+    border-radius: 6px;
+    /* Cantos arredondados */
+    box-sizing: border-box;
+    /* Garante que padding e border não aumentem a largura total */
     margin-bottom: 20px;
     /* Espaço consistente abaixo dos campos */
     background-color: #f8f9fa;
     /* Fundo sutil para os campos */
+    font-size: 1rem;
+    /* Tamanho da fonte do input */
+    line-height: 1.5;
+    /* Altura da linha */
 }
 
-.login-form input[type="text"]:focus,
+.login-form input[type="email"]:focus,
 .login-form input[type="password"]:focus,
 .login-form select:focus {
     background-color: #fff;
     /* Fundo branco ao focar */
-    /* Efeito de foco já vem do global.css */
+    border-color: #3b46f1;
+    /* Cor da borda ao focar */
+    box-shadow: 0 0 0 0.2rem rgba(59, 70, 241, 0.25);
+    /* Sombra ao focar */
+    outline: none;
+    /* Remove o outline padrão do navegador */
 }
 
 
@@ -169,6 +191,24 @@
     /* padding: 10px; */
     /* font-family: 'Koulen', sans-serif; */
 }
+
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.register-link a {
+    color: #3b46f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
 
 /* Media query para telas menores: empilhar as seções left e right */
 @media (max-width: 800px) {

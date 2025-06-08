@@ -1,58 +1,229 @@
 /* ======================== */
-/*        LAYOUT.CSS      */
+/* LAYOUT.CSS               */
 /* ======================== */
 
-@import '../../global.css';
+/* Container principal da aplicação que engloba header, main, footer */
+.app-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-/* Header */
-header {
-    background-color: #2b2eff;
-    /* Azul SCAP */
-    padding: 20px 40px;
+/* Estilos para o cabeçalho principal (Header do Layout.jsx) */
+header.home-header { 
+    background-color: #3b46f1; /* Cor de fundo principal do header */
+    color: white;
+    padding: 15px 30px; /* Padding padrão */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%; /* GARANTE LARGURA TOTAL */
+}
+
+/* Lado esquerdo do header (Logo e subtítulo) */
+.header-left-content { 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 1;
+}
+
+/* H1 dentro do header (Logo "SCAP") */
+header.home-header .logo-text { 
+    font-size: 1.8em; /* >>> VOLTADO AO TAMANHO ORIGINAL <<< */
+    font-weight: bold;
+    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen */
+    letter-spacing: 0; /* >>> REMOVIDO LETTER-SPACING <<< */
+    color: white;
+    margin: 0; /* Zera margens */
+    line-height: 1.2; /* Ajuda a controlar o espaçamento vertical */
+    text-shadow: none; /* >>> REMOVIDO TEXT-SHADOW <<< */
+}
+
+/* P dentro do header (Subtítulo "Sistema de Cadastro...") */
+header.home-header .subtitulo { 
+    font-size: 0.9em;
+    opacity: 0.8;
+    color: white;
+    font-family: 'Montserrat', sans-serif; /* MANTIDO Montserrat */
+    margin: 0; /* Zera margens */
+    line-height: 1.2; /* Ajuda a controlar o espaçamento vertical */
+    margin-top: 5px; /* Espaçamento pequeno entre logo e subtítulo */
+}
+
+/* Lado direito do header (Container para o menu) */
+.header-right-content { 
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Informações do usuário DENTRO do menu dropdown */
+.dropdown-user-info { 
+    display: block;
+    padding: 12px 20px;
     color: white;
     text-align: left;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 50px;
-}
-
-header p {
-    margin: 0;
-    font-size: 14px;
-}
-
-/* Navegação */
-nav {
-    background-color: #003852;
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
-
-nav a {
-    color: white;
-    margin: 0 20px;
+    font-size: 0.9em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 5px;
     font-weight: bold;
-    font-size: 16px;
-    padding: 6px 12px;
-    transition: background-color 0.3s, color 0.3s;
-    text-decoration: none;
 }
 
-nav a:hover {
-    background-color: #00558c;
+.dropdown-user-info span {
+    display: block;
+    font-weight: normal;
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+.dropdown-user-info span#userNameDisplay {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Botão de Toggle do Menu (o ☰) */
+.menu-toggle-btn { 
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
     border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
 }
 
-/* Footer */
-footer {
-    background-color: #003852;
+.menu-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Menu Dropdown (oculto por padrão) */
+.dropdown-menu { 
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #3b46f1;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 1001;
+    min-width: 180px;
+    display: none;
+    flex-direction: column;
+}
+
+.dropdown-menu.active {
+    display: flex;
+}
+
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu ul li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu ul li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu ul li:first-child {
+    border-bottom: none;
+}
+
+.dropdown-menu ul li:first-child .dropdown-user-info {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.dropdown-menu ul li a,
+.menu-logout-btn { 
+    display: block;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.menu-logout-btn:hover {
+    background-color: #2a37d1;
+}
+
+/* Estilos para o footer global */
+footer.home-footer {
+    background-color: #3b46f1; /* Mesma cor do header */
     color: white;
     text-align: center;
     padding: 15px 0;
-    position: fixed;
-    bottom: 0;
     font-size: 14px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+/* Responsividade para o Header e Footer no Layout.jsx */
+@media (max-width: 768px) {
+    header.home-header {
+        flex-direction: column;
+        align-items: center; /* Centraliza tudo em mobile */
+        gap: 10px;
+        padding: 15px 20px;
+    }
+
+    .header-left-content {
+        width: 100%;
+        text-align: center;
+    }
+    header.home-header .logo-text,
+    header.home-header .subtitulo {
+        text-align: center;
+    }
+
+    .header-right-content {
+        width: auto;
+        justify-content: center;
+    }
+
+    .dropdown-menu {
+        top: calc(100% + 5px);
+        right: 0;
+        left: auto;
+        min-width: 100%;
+        border-radius: 0;
+    }
+
+    .menu-toggle-btn {
+        margin-left: 0;
+    }
+
+    footer.home-footer {
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    header.home-header {
+        padding: 10px 15px;
+    }
+    header.home-header .logo-text {
+        font-size: 1.5em;
+    }
+    header.home-header .subtitulo {
+        font-size: 0.8em;
+    }
 }

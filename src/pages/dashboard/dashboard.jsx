@@ -1,196 +1,280 @@
 import React, { useState, useEffect } from 'react';
-import './dashboard.css';
 import { useNavigate } from 'react-router-dom';
+import './dashboard.css'; // Estilos específicos do dashboard
+import animatedImage from '../../components/ImagemFemininaSCAP.png'; // Sua imagem (PNG)
 
-function Dashboard() {
-    const [tipoUsuario, setTipoUsuario] = useState('');
-    // const [usuarioAtual, setUsuarioAtual] = useState(''); // Não mais necessário para o H2
-    const [projetos, setProjetos] = useState([]);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+// Importe o hook useNotifications para adicionar e gerenciar notificações
+import { useNotifications } from "../contexts/NotificationContext";
+
+export default function Dashboard() {
+    const [userProfile, setUserProfile] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const navigate = useNavigate();
-
-    const [termoBusca, setTermoBusca] = useState('');
+    const { addNotification } = useNotifications(); 
 
     useEffect(() => {
-        const tipo = localStorage.getItem('tipoUsuario');
-        // const usuario = localStorage.getItem('usuario'); // Buscava o nome
-        setTipoUsuario(tipo);
-        // setUsuarioAtual(usuario || ''); // Não precisamos mais setar para o H2
+        const storedProfile = localStorage.getItem('userProfile');
+        const storedEmail = localStorage.getItem('userEmail');
 
-        const dadosSalvos = localStorage.getItem('projetos');
-        if (dadosSalvos) {
-            setProjetos(JSON.parse(dadosSalvos));
+        console.log("Dashboard.jsx: userProfile lido do localStorage:", storedProfile); 
+
+        if (storedProfile) {
+            setUserProfile(storedProfile);
+            setUserEmail(storedEmail || 'Usuário');
+
+            // Notificações de teste ao carregar o Dashboard
+            setTimeout(() => {
+                console.log("Dashboard.jsx: Disparando addNotification (testes)...");
+                addNotification(`Bem-vindo(a) de volta, ${storedEmail}!`, 'info');
+                // Alterado: Garantir que 'details' esteja presente e correto para convites
+                addNotification('Você foi convidado(a) para avaliar o Evento "Tech Summit 2025"!', 'convite', { eventId: 'tech_summit_2025', role: 'avaliador', additionalInfo: 'Prazo até 15/07' });
+                addNotification('Convite: Ajude a organizar o projeto "App de Impacto Social"!', 'convite', { projectId: 'app_social_impact', role: 'organizador_colab', team: 'Equipe Alpha' });
+                addNotification('Seu projeto "Inovação Sustentável" foi APROVADO para o evento!', 'info');
+                addNotification('Atenção: Prazo final para avaliações do Evento X se aproxima.', 'alerta');
+            }, 1000);
+
+        } else {
+            alert('Sessão expirada ou não iniciada. Faça login novamente.');
+            navigate('/login');
         }
-    }, []);
+    }, [navigate, addNotification]);
 
-    const handleCadastroProjeto = (e) => {
-        e.preventDefault();
-        const novoProjeto = {
-            titulo: e.target.titulo.value,
-            coordenador: e.target.coordenador.value,
-            categoria: e.target.categoria.value,
-            resumo: e.target.resumo.value,
-            tema: e.target.tema.value,
-            materiais: e.target.materiais.value,
-            qtdAlunos: e.target.qtdAlunos.value,
-            evento: e.target.codigoEvento.value
+    const renderOptions = () => {
+        const options = [];
+
+        // Opções específicas para ALUNO
+        if (userProfile === 'aluno') {
+            options.push(
+                <DashboardCard
+                    key="submitProject"
+                    title="Submeter Novo Projeto"
+                    description="Envie seu projeto para avaliação em um evento aberto."
+                    onClick={() => alert('Navegar para tela de Submissão de Projeto')}
+                />,
+                <DashboardCard
+                    key="mySubmittedProjects"
+                    title="Meus Projetos Submetidos"
+                    description="Visualize o status e os detalhes dos seus projetos enviados."
+                    onClick={() => alert('Navegar para tela de Meus Projetos Submetidos')}
+                />,
+                 <DashboardCard
+                    key="helpOrganize"
+                    title="Ajudar a Organizar"
+                    description="Colabore com a organização de um evento ou projeto existente."
+                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
+                />
+            );
+        }
+
+        // Opções específicas para AVALIADOR
+        else if (userProfile === 'avaliador') {
+            options.push(
+                <DashboardCard
+                    key="evaluateProjects"
+                    title="Avaliar Projetos"
+                    description="Acesse os projetos de eventos para os quais foi convidado para avaliar."
+                    onClick={() => alert('Navegar para tela de Avaliação de Projetos')}
+                />,
+                <DashboardCard
+                    key="helpOrganize"
+                    title="Ajudar a Organizar"
+                    description="Colabore com a organização de um evento ou projeto existente."
+                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
+                />
+            );
+        }
+
+        // Opções específicas para ORGANIZADOR
+        else if (userProfile === 'organizador') {
+            options.push(
+                <DashboardCard
+                    key="createEvent"
+                    title="Criar Novo Evento"
+                    description="Configure um novo evento, defina critérios de avaliação e convide avaliadores."
+                    onClick={() => navigate('/criar-evento')}
+                />,
+                <DashboardCard
+                    key="manageProjects"
+                    title="Gerenciar Projetos Submetidos"
+                    description="Aprove ou recuse projetos, e gerencie submissões."
+                    onClick={() => alert('Navegar para tela de Gerenciamento de Projetos')}
+                />,
+                <DashboardCard
+                    key="generateRanking"
+                    title="Gerar Ranking de Projetos"
+                    description="Calcule as médias e visualize o ranking final dos projetos avaliados."
+                    onClick={() => alert('Navegar para tela de Geração de Ranking')}
+                />,
+                <DashboardCard
+                    key="manageEvaluators"
+                    title="Gerenciar Avaliadores"
+                    description="Convide e acompanhe o progresso dos avaliadores em seus eventos."
+                    onClick={() => alert('Navegar para tela de Gerenciamento de Avaliadores')}
+                />,
+                <DashboardCard
+                    key="helpOrganize"
+                    title="Ajudar a Organizar"
+                    description="Colabore com a organização de um evento ou projeto existente."
+                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
+                />
+            );
+        }
+
+        return options;
+    };
+
+    // --- Componente interno para exibir as notificações ---
+    const NotificationsPanel = () => {
+        const { notifications, markAsRead, removeNotification, addNotification } = useNotifications(); 
+        const [expandedNotificationId, setExpandedNotificationId] = useState(null); // Estado para controlar qual notificação está expandida
+
+        // DEBUG LOG: Vê o que o NotificationsPanel está recebendo do contexto
+        console.log("NotificationsPanel: Notificações recebidas do contexto:", notifications); 
+        console.log("NotificationsPanel: Notificação expandida ID:", expandedNotificationId); // DEBUG LOG
+
+        const toggleExpand = (id) => {
+            console.log("Toggle expand para ID:", id); // DEBUG LOG
+            setExpandedNotificationId(prevId => {
+                const newId = prevId === id ? null : id;
+                if (newId !== null) { // Apenas marca como lida se for expandir
+                    markAsRead(id); 
+                }
+                return newId;
+            });
         };
-        const listaAtualizada = [...projetos, novoProjeto];
-        setProjetos(listaAtualizada);
-        localStorage.setItem('projetos', JSON.stringify(listaAtualizada));
-        setMostrarFormulario(false);
-    };
 
-    const logout = () => {
-        localStorage.clear();
-        navigate('/');
-    };
+        const handleAcceptInvite = (e, notifId, details) => { 
+            e.stopPropagation(); // Impede que o clique suba para o li e o contraia
+            alert(`Convite ACEITO! Detalhes: ${JSON.stringify(details)}. Notificação: ${notifId}`);
+            addNotification(`Convite aceito para ${details.role === 'avaliador' ? 'avaliar' : 'organizar'}.`, 'info');
+            removeNotification(notifId); // Remove após aceitar
+            setExpandedNotificationId(null); // Fecha a notificação expandida
+            console.log("Convite Aceito, Notificação removida:", notifId);
+            // Lógica real de backend para aceitar o convite
+        };
 
-    const handleBuscaChange = (e) => {
-        setTermoBusca(e.target.value);
-    };
+        const handleDeclineInvite = (e, notifId, details) => { 
+            e.stopPropagation(); // Impede que o clique suba para o li e o contraia
+            alert(`Convite RECUSADO! Detalhes: ${JSON.stringify(details)}. Notificação: ${notifId}`);
+            addNotification(`Convite recusado para ${details.role === 'avaliador' ? 'avaliar' : 'organizar'}.`, 'info');
+            removeNotification(notifId); // Remove após recusar
+            setExpandedNotificationId(null); // Fecha a notificação expandida
+            console.log("Convite Recusado, Notificação removida:", notifId);
+            // Lógica real de backend para recusar o convite
+        };
 
-    const renderConteudoAluno = () => {
-        const projetosFiltrados = projetos.filter(proj =>
-            proj.titulo.toLowerCase().includes(termoBusca.toLowerCase()) ||
-            (proj.categoria && proj.categoria.toLowerCase().includes(termoBusca.toLowerCase())) ||
-            (proj.coordenador && proj.coordenador.toLowerCase().includes(termoBusca.toLowerCase())) ||
-            (proj.tema && proj.tema.toLowerCase().includes(termoBusca.toLowerCase())) ||
-            (proj.evento && proj.evento.toLowerCase().includes(termoBusca.toLowerCase()))
-        );
-
-        const mostrarFormularioSemProjetos = projetos.length === 0 && mostrarFormulario;
-        const mostrarMensagemSemProjetos = projetos.length === 0 && !mostrarFormulario;
 
         return (
-            <>
-                {mostrarMensagemSemProjetos && (
-                    <div className="sem-projetos">
-                        <div className="imagem-container">
-                            <img
-                                src="src/components/ImagemCadastroAluno.png"
-                                alt="Pessoa no notebook"
-                                className="imagem-ilustrativa"
-                            />
-                        </div>
-                        <div className="right-section-content">
-                            <div className="mensagem">
-                                <p className="texto-grande">Voce ainda nao possui projetos.</p>
-                                <p className="texto-normal">
-                                    Cadastre agora de maneira <span className="azul">rapida e facil.</span>
-                                </p>
-                                <button className="btn-cadastrar" onClick={() => setMostrarFormulario(true)}>
-                                    Cadastrar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {mostrarFormularioSemProjetos && (
-                    <div className="sem-projetos">
-                        <div className="imagem-container">
-                            <img
-                                src="src/components/ImagemCadastroAluno.png"
-                                alt="Pessoa no notebook"
-                                className="imagem-ilustrativa"
-                            />
-                        </div>
-                        <div className="right-section-content">
-                            <form className="formulario" onSubmit={handleCadastroProjeto}>
-                                <input name="titulo" placeholder="Título" required />
-                                <input name="coordenador" placeholder="Coordenador" required />
-                                <input name="categoria" placeholder="Categoria" required />
-                                <textarea name="resumo" placeholder="Resumo" required />
-                                <input name="tema" placeholder="Tema" required />
-                                <input name="materiais" placeholder="Materiais" required />
-                                <input name="qtdAlunos" type="number" placeholder="Quantidade de Alunos" required />
-                                <input name="codigoEvento" placeholder="Código do Evento" required />
-                                <button type="submit">Cadastrar Projeto</button>
-                            </form>
-                        </div>
-                    </div>
-                )}
-
-                {projetos.length > 0 && (
-                    <div className="com-projetos">
-                        {/* MODIFICADO AQUI: Texto de boas-vindas genérico */}
-                        <h2>Painel de Projetos</h2>
-                        <button
-                            onClick={() => setMostrarFormulario(!mostrarFormulario)}
-                            className="btn-cadastrar-novo-projeto"
-                        >
-                            {mostrarFormulario ? 'Cancelar Cadastro' : 'Cadastrar Novo Projeto'}
-                        </button>
-
-                        <div className="barra-pesquisa-container">
-                            <input
-                                type="text"
-                                placeholder="Pesquisar projetos por título, categoria, etc..."
-                                className="input-pesquisa-projetos"
-                                value={termoBusca}
-                                onChange={handleBuscaChange}
-                            />
-                        </div>
-
-                        {mostrarFormulario && (
-                            <form className="formulario" onSubmit={handleCadastroProjeto}>
-                                <input name="titulo" placeholder="Título" required />
-                                <input name="coordenador" placeholder="Coordenador" required />
-                                <input name="categoria" placeholder="Categoria" required />
-                                <textarea name="resumo" placeholder="Resumo" required />
-                                <input name="tema" placeholder="Tema" required />
-                                <input name="materiais" placeholder="Materiais" required />
-                                <input name="qtdAlunos" type="number" placeholder="Quantidade de Alunos" required />
-                                <input name="codigoEvento" placeholder="Código do Evento" required />
-                                <button type="submit">Cadastrar Projeto</button>
-                            </form>
-                        )}
-                        <h3>Meus Projetos</h3>
-                        {projetosFiltrados.length > 0 ? (
-                            <div className="projetos-lista">
-                                {projetosFiltrados.map((proj, index) => (
-                                    <div className="projeto-card" key={index}>
-                                        <div className="card-header">
-                                            <h4>{proj.titulo}</h4>
-                                        </div>
-                                        <div className="card-content">
-                                            {proj.categoria && (<><p className="card-info-label">Categoria:</p><p className="card-info-value">{proj.categoria}</p></>)}
-                                            {proj.coordenador && (<><p className="card-info-label">Coordenador:</p><p className="card-info-value">{proj.coordenador}</p></>)}
-                                            {proj.tema && (<><p className="card-info-label">Tema:</p><p className="card-info-value">{proj.tema}</p></>)}
-                                            {proj.evento && (<><p className="card-info-label">Cód. Evento:</p><p className="card-info-value">{proj.evento}</p></>)}
-                                        </div>
-                                        <div className="card-footer"></div>
+            <div className="notifications-panel">
+                <h3>Notificações ({notifications.filter(n => !n.read).length} não lidas)</h3>
+                {notifications.length > 0 ? (
+                    <ul className="notification-list">
+                        {notifications.map(notif => {
+                            const isExpanded = expandedNotificationId === notif.id;
+                            // Adicionando um console.log para cada notificação
+                            console.log(`Notificação ID: ${notif.id}, isExpanded: ${isExpanded}, read: ${notif.read}, Type: ${notif.type}, Details: ${JSON.stringify(notif.details)}`);
+                            return (
+                                <li
+                                    key={notif.id}
+                                    className={`notification-item notification-${notif.type} ${notif.read ? 'read' : ''} ${isExpanded ? 'expanded' : ''}`}
+                                    onClick={() => toggleExpand(notif.id)} // Expande/contrai ao clicar
+                                >
+                                    <span className="notification-icon">
+                                        {notif.type === 'convite' && '✉️'}
+                                        {notif.type === 'info' && '✅'}
+                                        {notif.type === 'evento' && '🗓️'}
+                                        {notif.type === 'alerta' && '⚠️'}
+                                    </span>
+                                    <div className="notification-content">
+                                        {notif.message}
+                                        <span className="notification-timestamp">{new Date(notif.timestamp).toLocaleString()}</span>
                                     </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="nenhum-projeto-encontrado-busca">
-                                {termoBusca ? `Nenhum projeto encontrado com o termo "${termoBusca}".` : "Nenhum projeto cadastrado no momento."}
-                            </p>
-                        )}
-                    </div>
-                )}
-                <button className="btn-sair" onClick={logout}>Sair</button>
-            </>
-        );
-    };
+                                    <button
+                                        className="remove-notification-btn"
+                                        onClick={(e) => { e.stopPropagation(); removeNotification(notif.id); }} // Impede o clique do li ao clicar no 'x'
+                                    >
+                                        &times; {/* Símbolo de 'x' para fechar */}
+                                    </button>
 
-    const renderConteudoGeral = () => {
-        // Mantido como antes, mas sem 'usuarioAtual' se não for usado aqui também
-        return (
-            <div>
-                <h2>Usuário do tipo {tipoUsuario}</h2>
-                <button className="btn-sair" onClick={logout}>Sair</button>
+                                    {/* Conteúdo expandido para notificações de convite e outros tipos */}
+                                    {isExpanded && (
+                                        <div className="notification-expanded-content">
+                                            <p className="expanded-details">
+                                                {notif.type === 'convite' && notif.details?.role === 'avaliador' &&
+                                                    `Detalhes: Você foi convidado para avaliar o evento "${notif.details?.eventId || 'Evento Desconhecido'}". ` +
+                                                    (notif.details?.additionalInfo ? `(${notif.details.additionalInfo})` : '')
+                                                }
+                                                {notif.type === 'convite' && notif.details?.role === 'organizador_colab' &&
+                                                    `Detalhes: Você foi convidado para colaborar no projeto "${notif.details?.projectId || 'Projeto Desconhecido'}". ` +
+                                                    (notif.details?.team ? `(Equipe: ${notif.details.team})` : '')
+                                                }
+                                                {/* Para notificações que NÃO são de convite, um detalhe genérico */}
+                                                {notif.type !== 'convite' && `Mais informações sobre esta notificação do tipo '${notif.type}'.`}
+                                            </p>
+                                            {notif.type === 'convite' && (
+                                                <div className="notification-actions-buttons">
+                                                    <button 
+                                                        className="btn-accept" 
+                                                        onClick={(e) => handleAcceptInvite(e, notif.id, notif.details)} // Passa o evento 'e'
+                                                    >
+                                                        Aceitar
+                                                    </button>
+                                                    <button 
+                                                        className="btn-decline" 
+                                                        onClick={(e) => handleDeclineInvite(e, notif.id, notif.details)} // Passa o evento 'e'
+                                                    >
+                                                        Recusar
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                ) : (
+                    <p className="no-notifications">Nenhuma notificação por enquanto.</p>
+                )}
             </div>
         );
     };
 
     return (
-        <div className="dashboard-container">
-            {tipoUsuario === 'aluno' ? renderConteudoAluno() : renderConteudoGeral()}
+        <div className="dashboard-main-content-wrapper"> 
+            <h1 className="dashboard-motto">
+                Inove, avalie, destaque-se.<br />
+                Sua jornada de projeto começa aqui.
+            </h1>
+            
+            <div className="dashboard-content-grid">
+                {/* Seção Esquerda: Imagem Futurista */}
+                <div className="dashboard-left-section">
+                    <img src={animatedImage} alt="Ilustração SCAP" className="dashboard-animated-image" />
+                    <div className="animated-overlay"></div>
+                </div>
+
+                {/* Seção Direita: Notificações e Ações */}
+                <div className="dashboard-right-section">
+                    <NotificationsPanel />
+
+                    <div className="dashboard-actions">
+                        <h2>O que você gostaria de fazer?</h2>
+                        <div className="dashboard-options-grid">
+                            {renderOptions()}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
 
-export default Dashboard;
+const DashboardCard = ({ title, description, onClick, className = '' }) => {
+    return (
+        <div className={`dashboard-card ${className}`} onClick={onClick}>
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
+    );
+};
