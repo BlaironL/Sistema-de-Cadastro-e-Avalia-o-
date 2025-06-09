@@ -1,3 +1,14 @@
+/* ======================== */
+/* GLOBAL.CSS               */
+/* ======================== */
+
+/* Manter import da fonte Koulen (e outras se já estiverem em seu projeto) */
+@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
+/* Manter import da Montserrat se estiver usando em algum lugar (ex: para textos não Koulen) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
+
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -7,149 +18,132 @@
 html,
 body {
     height: 100%;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fa;
-    color: #333;
-}
-
-body {
+    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen como fonte padrão */
+    background-color: white; /* MANTIDO fundo branco */
+    color: #333; /* MANTIDO cor de texto padrão */
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    flex-direction: column; /* CRUCIAL: Empurra o footer para baixo */
+    min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
+    /* REMOVIDO: padding-bottom, pois o footer não é mais fixo */
 }
 
+/* O elemento <main> global do Layout.jsx */
 main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40px;
-    text-align: center;
+    flex: 1; /* Faz com que o <main> ocupe todo o espaço disponível entre o header e o footer */
+    display: flex; /* Permite que o conteúdo interno do main (suas páginas) use flexbox */
+    flex-direction: column; /* Empilha o conteúdo das páginas verticalmente */
+    padding: 0; /* REMOVIDO padding padrão, as páginas definirão seus próprios paddings */
+    min-height: 0; /* CRUCIAL para evitar overflow em itens flex */
+    width: 100%; /* Garante que ocupe a largura total */
 }
 
-main h1 {
-    margin-bottom: 16px;
-}
-
-main p {
-    margin-bottom: 24px;
-}
-
-.btn {
-    padding: 10px 20px;
-    background-color: #005792;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
+/* Cabeçalhos (Estilos base, devem ser mantidos como estavam, sem mudar cores) */
+h1, h2, h3 {
     font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: white; /* MANTIDO cor branca para cabeçalhos base, se essa era a cor original */
+    margin-bottom: 1rem;
+    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen para títulos */
 }
 
-.btn:hover {
-    background-color: #003f5c;
-    transform: scale(1.4);
+h2 {
+    font-size: 28px;
+    /* text-align: center; REMOVIDO: alinhamento deve ser definido por classes específicas ou no componente */
 }
 
-button {
-    margin-top: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    background-color: #005b96;
+h3 {
+    font-size: 22px;
+}
+
+/* Botões (Estilos genéricos para todos os botões, mantidos como estavam) */
+button,
+.btn,
+.btn-primary {
+    padding: 10px 20px;
+    background-color: #005b8f; /* MANTIDO cor original do botão */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-    background-color: #003f5c;
-    transform: scale(1.06);
-}
-
-label {
-    display: block;
-    margin-top: 1rem;
+    text-decoration: none;
     font-weight: bold;
+    display: inline-block;
+}
+
+button:hover,
+.btn:hover,
+.btn-primary:hover {
+    background-color: #003f66;
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: #eeeeee;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    background-color: #ddd;
+}
+
+/* Formulários (Estilos genéricos para inputs e labels, mantidos como estavam) */
+form {
+    margin-top: 25px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #444;
 }
 
 input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="file"],
 textarea,
-select,
-input[type="file"] {
+select {
     width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+    box-sizing: border-box;
 }
 
-.layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff; /* MANTIDO cor original do foco */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.layout main {
-    flex: 1;
+/* Listas */
+ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-/* Estilo geral do header */
-header {
-    background-color: #00558c;
-    /* Azul escuro do SCAP */
-    padding: 20px 0;
-    color: white;
-    text-align: left;
-    padding-left: 40px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-header p {
-    margin: 0;
-    font-size: 14px;
-}
-
-/* Barra de navegação horizontal */
-nav {
-    background-color: #003852;
-    /* Azul escuro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    /* Espaçamento entre os botões */
-    padding: 10px 0;
-}
-
-nav a {
-    color: white;
+/* Links */
+a {
+    color: #007bff;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 6px 12px;
-    transition: background-color 0.3s, color 0.3s;
+    font-weight: 500;
 }
 
-nav a:hover {
-    background-color: #00558c;
-    border-radius: 5px;
-    color: #fff;
-}
-
-
-/* Estilo do footer */
-footer {
-    background-color: #003852;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    font-size: 14px;
+a:hover {
+    text-decoration: underline;
 }

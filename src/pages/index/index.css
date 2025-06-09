@@ -1,69 +1,124 @@
-@import '../../global.css';
-
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
+/* Fonte geral */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.sobre {
-    padding: 4rem 2rem;
+/* Container principal */
+.home-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    flex-wrap: wrap;
-    background-color: transparent;
+    flex-direction: column;
+    min-height: 70vh;
+    background: white;
 }
 
-.logo-box {
+/* Header */
+.home-header {
+    background: #2d40ff;
+    text-align: center;
+    padding: 15px 0;
+    color: white;
+}
+
+.logo-text {
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: -15px;
+}
+
+.subtitulo {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* Main */
+.home-main {
     flex: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    /* lado a lado */
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 0px;
+    gap: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.logo-box img {
-    width: 450px;
-    animation: flutuar 2s ease-in-out infinite, brilhar 3s ease-in-out infinite alternate;
-    filter: drop-shadow(0 0 10px #007bff);
-    transition: transform 0.6s ease;
+.home-text {
+    max-width: 800px; /* Mais largo para menos quebras */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px; /* Espaço moderado entre elementos */
 }
 
-.logo-box img:hover {
-    transform: rotate(360deg);
+.home-text h2 {
+    font-size: 42px; /* Mantém destaque sem exagero */
+    font-weight: 900;
+    color: #000;
+    line-height: 1.2; /* Mais junto */
+    margin: 0;
+    text-align: left; /* Natural e fluido */
 }
 
-.texto-box {
-    flex: 2;
-    background-color: #0d4c76;
+.blue {
+    color: #2d40ff;
+    font-weight: bold;
+}
+
+/* Botão */
+.btn-login {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #2d40ff;
     color: white;
-    padding: 2rem;
+    padding: 12px 100px;
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
-    text-align: justify;
-    min-width: 300px;
+    transition: transform 0.4s ease, background-color 0.4s ease;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
 }
 
-.texto-box h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    text-align: left;
+.btn-login:hover {
+    background-color: #1a2fcc;
+    transform: scale(1.05);
 }
 
-.texto-box p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: white;
+/* Imagem */
+.hero-img {
+    width: 800px;
+    /* Aumentado */
+    max-width: 100%;
+    animation: flutuar 2s ease-in-out infinite;
 }
 
+/* Animação */
 @keyframes flutuar {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
-@keyframes brilhar {
-    0% { filter: drop-shadow(0 0 5px #007bff); }
-    100% { filter: drop-shadow(0 0 20px #007bff); }
+/* Footer */
+.home-footer {
+    background: #2d40ff;
+    color: white;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 18px;
+    font-weight: bold;
 }
