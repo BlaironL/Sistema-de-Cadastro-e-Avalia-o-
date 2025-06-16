@@ -59,10 +59,6 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                                 <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
                                     <ul>
                                         <li>
-                                            <span className="dropdown-user-info">
-                                                Olá, <span id="userNameDisplay">{userEmail}</span>!
-                                                (<span id="userProfileDisplay">{userProfile.charAt(0).toUpperCase() + userProfile.slice(1)}</span>)
-                                            </span>
                                         </li>
                                         <li><a href="#">Meu Perfil</a></li> 
                                         <li><a href="#">Configurações</a></li> 

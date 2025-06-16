@@ -4,13 +4,17 @@ import './dashboard.css'; // Estilos específicos do dashboard
 import animatedImage from '../../components/ImagemFemininaSCAP.png'; // Sua imagem (PNG)
 
 // Importe o hook useNotifications para adicionar e gerenciar notificações
-import { useNotifications } from "../contexts/NotificationContext";
+import { useNotifications } from "../contexts/NotificationContext.jsx";
+// Importe o hook useEventsProjects (se for usado no Dashboard, caso contrário, pode remover)
+import { useEventsProjects } from "../contexts/EventProjectContext.jsx";
+
 
 export default function Dashboard() {
     const [userProfile, setUserProfile] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const navigate = useNavigate();
     const { addNotification } = useNotifications(); 
+    // const { addEvent } = useEventsProjects(); // Removido se não for usado diretamente aqui
 
     useEffect(() => {
         const storedProfile = localStorage.getItem('userProfile');
@@ -26,7 +30,6 @@ export default function Dashboard() {
             setTimeout(() => {
                 console.log("Dashboard.jsx: Disparando addNotification (testes)...");
                 addNotification(`Bem-vindo(a) de volta, ${storedEmail}!`, 'info');
-                // Alterado: Garantir que 'details' esteja presente e correto para convites
                 addNotification('Você foi convidado(a) para avaliar o Evento "Tech Summit 2025"!', 'convite', { eventId: 'tech_summit_2025', role: 'avaliador', additionalInfo: 'Prazo até 15/07' });
                 addNotification('Convite: Ajude a organizar o projeto "App de Impacto Social"!', 'convite', { projectId: 'app_social_impact', role: 'organizador_colab', team: 'Equipe Alpha' });
                 addNotification('Seu projeto "Inovação Sustentável" foi APROVADO para o evento!', 'info');
@@ -42,101 +45,73 @@ export default function Dashboard() {
     const renderOptions = () => {
         const options = [];
 
-        // Opções específicas para ALUNO
-        if (userProfile === 'aluno') {
-            options.push(
-                <DashboardCard
-                    key="submitProject"
-                    title="Submeter Novo Projeto"
-                    description="Envie seu projeto para avaliação em um evento aberto."
-                    onClick={() => alert('Navegar para tela de Submissão de Projeto')}
-                />,
-                <DashboardCard
-                    key="mySubmittedProjects"
-                    title="Meus Projetos Submetidos"
-                    description="Visualize o status e os detalhes dos seus projetos enviados."
-                    onClick={() => alert('Navegar para tela de Meus Projetos Submetidos')}
-                />,
-                 <DashboardCard
-                    key="helpOrganize"
-                    title="Ajudar a Organizar"
-                    description="Colabore com a organização de um evento ou projeto existente."
-                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
-                />
-            );
-        }
+        // --- TODAS AS OPÇÕES APARECEM PARA QUALQUER PERFIL AGORA ---
 
-        // Opções específicas para AVALIADOR
-        else if (userProfile === 'avaliador') {
-            options.push(
-                <DashboardCard
-                    key="evaluateProjects"
-                    title="Avaliar Projetos"
-                    description="Acesse os projetos de eventos para os quais foi convidado para avaliar."
-                    onClick={() => alert('Navegar para tela de Avaliação de Projetos')}
-                />,
-                <DashboardCard
-                    key="helpOrganize"
-                    title="Ajudar a Organizar"
-                    description="Colabore com a organização de um evento ou projeto existente."
-                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
-                />
-            );
-        }
+        // Opções relacionadas a Eventos e Projetos (anteriormente do Organizador)
+        options.push(
+            <DashboardCard
+                key="createEvent"
+                title="Criar Novo Evento"
+                description="Configure um novo evento e defina seus detalhes (para organizadores)."
+                onClick={() => navigate('/criar-evento')}
+            />,
+            <DashboardCard
+                key="manageMyEvents"
+                title="Gerenciar Meus Eventos"
+                description="Acompanhe e gerencie todos os eventos que você criou."
+                onClick={() => navigate('/gerenciar-eventos')}
+            />,
+            <DashboardCard
+                key="submitNewProject"
+                title="Enviar Novo Projeto"
+                description="Submeta seu projeto para avaliação em um evento existente."
+                onClick={() => alert('Navegar para tela de Envio de Projeto')} // Rota futura: /enviar-projeto
+            />,
+            <DashboardCard
+                key="viewMyProjects"
+                title="Meus Projetos Anteriores"
+                description="Visualize o status de seus projetos já submetidos."
+                onClick={() => alert('Navegar para tela de Meus Projetos')} // Rota futura: /meus-projetos
+            />
+        );
 
-        // Opções específicas para ORGANIZADOR
-        else if (userProfile === 'organizador') {
-            options.push(
-                <DashboardCard
-                    key="createEvent"
-                    title="Criar Novo Evento"
-                    description="Configure um novo evento, defina critérios de avaliação e convide avaliadores."
-                    onClick={() => navigate('/criar-evento')}
-                />,
-                <DashboardCard
-                    key="manageProjects"
-                    title="Gerenciar Projetos Submetidos"
-                    description="Aprove ou recuse projetos, e gerencie submissões."
-                    onClick={() => alert('Navegar para tela de Gerenciamento de Projetos')}
-                />,
-                <DashboardCard
-                    key="generateRanking"
-                    title="Gerar Ranking de Projetos"
-                    description="Calcule as médias e visualize o ranking final dos projetos avaliados."
-                    onClick={() => alert('Navegar para tela de Geração de Ranking')}
-                />,
-                <DashboardCard
-                    key="manageEvaluators"
-                    title="Gerenciar Avaliadores"
-                    description="Convide e acompanhe o progresso dos avaliadores em seus eventos."
-                    onClick={() => alert('Navegar para tela de Gerenciamento de Avaliadores')}
-                />,
-                <DashboardCard
-                    key="helpOrganize"
-                    title="Ajudar a Organizar"
-                    description="Colabore com a organização de um evento ou projeto existente."
-                    onClick={() => alert('Navegar para tela de Colaboração em Organização')}
-                />
-            );
-        }
+        // Opções relacionadas a Avaliação e Colaboração (anteriormente do Avaliador e de 'Ajudar a Organizar')
+        options.push(
+            <DashboardCard
+                key="requestEvaluate"
+                title="Solicitar Avaliação de Evento"
+                description="Envie uma solicitação para avaliar projetos em um evento."
+                onClick={() => alert('Navegar para tela de Solicitação de Avaliação')} // Rota futura: /solicitar-avaliacao
+            />,
+            <DashboardCard
+                key="requestOrganize"
+                title="Solicitar Colaboração em Organização"
+                description="Ofereça ajuda na organização de um evento ou projeto."
+                onClick={() => alert('Navegar para tela de Solicitação de Colaboração')} // Rota futura: /solicitar-organizacao
+            />
+            // REMOVIDO: <DashboardCard key="evaluateProjects" ... /> - Agora está em Gerenciar Eventos
+        );
 
+        // Opções de Gerenciamento Geral (removidas as duplicatas)
+        // REMOVIDO: <DashboardCard key="generateRanking" ... /> - Agora está em Gerenciar Eventos
+        // REMOVIDO: <DashboardCard key="manageEvaluators" ... /> - Agora está em Gerenciar Eventos
+        
         return options;
     };
 
     // --- Componente interno para exibir as notificações ---
     const NotificationsPanel = () => {
         const { notifications, markAsRead, removeNotification, addNotification } = useNotifications(); 
-        const [expandedNotificationId, setExpandedNotificationId] = useState(null); // Estado para controlar qual notificação está expandida
+        const [expandedNotificationId, setExpandedNotificationId] = useState(null); 
 
-        // DEBUG LOG: Vê o que o NotificationsPanel está recebendo do contexto
         console.log("NotificationsPanel: Notificações recebidas do contexto:", notifications); 
-        console.log("NotificationsPanel: Notificação expandida ID:", expandedNotificationId); // DEBUG LOG
+        console.log("NotificationsPanel: Notificação expandida ID:", expandedNotificationId); 
 
         const toggleExpand = (id) => {
-            console.log("Toggle expand para ID:", id); // DEBUG LOG
+            console.log("Toggle expand para ID:", id); 
             setExpandedNotificationId(prevId => {
                 const newId = prevId === id ? null : id;
-                if (newId !== null) { // Apenas marca como lida se for expandir
+                if (newId !== null) { 
                     markAsRead(id); 
                 }
                 return newId;
@@ -144,23 +119,19 @@ export default function Dashboard() {
         };
 
         const handleAcceptInvite = (e, notifId, details) => { 
-            e.stopPropagation(); // Impede que o clique suba para o li e o contraia
+            e.stopPropagation(); 
             alert(`Convite ACEITO! Detalhes: ${JSON.stringify(details)}. Notificação: ${notifId}`);
             addNotification(`Convite aceito para ${details.role === 'avaliador' ? 'avaliar' : 'organizar'}.`, 'info');
-            removeNotification(notifId); // Remove após aceitar
-            setExpandedNotificationId(null); // Fecha a notificação expandida
-            console.log("Convite Aceito, Notificação removida:", notifId);
-            // Lógica real de backend para aceitar o convite
+            removeNotification(notifId); 
+            setExpandedNotificationId(null); 
         };
 
         const handleDeclineInvite = (e, notifId, details) => { 
-            e.stopPropagation(); // Impede que o clique suba para o li e o contraia
+            e.stopPropagation(); 
             alert(`Convite RECUSADO! Detalhes: ${JSON.stringify(details)}. Notificação: ${notifId}`);
             addNotification(`Convite recusado para ${details.role === 'avaliador' ? 'avaliar' : 'organizar'}.`, 'info');
-            removeNotification(notifId); // Remove após recusar
-            setExpandedNotificationId(null); // Fecha a notificação expandida
-            console.log("Convite Recusado, Notificação removida:", notifId);
-            // Lógica real de backend para recusar o convite
+            removeNotification(notifId); 
+            setExpandedNotificationId(null); 
         };
 
 
@@ -171,13 +142,12 @@ export default function Dashboard() {
                     <ul className="notification-list">
                         {notifications.map(notif => {
                             const isExpanded = expandedNotificationId === notif.id;
-                            // Adicionando um console.log para cada notificação
                             console.log(`Notificação ID: ${notif.id}, isExpanded: ${isExpanded}, read: ${notif.read}, Type: ${notif.type}, Details: ${JSON.stringify(notif.details)}`);
                             return (
                                 <li
                                     key={notif.id}
                                     className={`notification-item notification-${notif.type} ${notif.read ? 'read' : ''} ${isExpanded ? 'expanded' : ''}`}
-                                    onClick={() => toggleExpand(notif.id)} // Expande/contrai ao clicar
+                                    onClick={() => toggleExpand(notif.id)} 
                                 >
                                     <span className="notification-icon">
                                         {notif.type === 'convite' && '✉️'}
@@ -191,7 +161,7 @@ export default function Dashboard() {
                                     </div>
                                     <button
                                         className="remove-notification-btn"
-                                        onClick={(e) => { e.stopPropagation(); removeNotification(notif.id); }} // Impede o clique do li ao clicar no 'x'
+                                        onClick={(e) => { e.stopPropagation(); removeNotification(notif.id); }} 
                                     >
                                         &times; {/* Símbolo de 'x' para fechar */}
                                     </button>
@@ -201,7 +171,7 @@ export default function Dashboard() {
                                         <div className="notification-expanded-content">
                                             <p className="expanded-details">
                                                 {notif.type === 'convite' && notif.details?.role === 'avaliador' &&
-                                                    `Detalhes: Você foi convidado para avaliar o evento "${notif.details?.eventId || 'Evento Desconhecido'}". ` +
+                                                    `Detalhes: Você foi convidado para avaliar o Evento "${notif.details?.eventId || 'Evento Desconhecido'}". ` +
                                                     (notif.details?.additionalInfo ? `(${notif.details.additionalInfo})` : '')
                                                 }
                                                 {notif.type === 'convite' && notif.details?.role === 'organizador_colab' &&
@@ -215,13 +185,13 @@ export default function Dashboard() {
                                                 <div className="notification-actions-buttons">
                                                     <button 
                                                         className="btn-accept" 
-                                                        onClick={(e) => handleAcceptInvite(e, notif.id, notif.details)} // Passa o evento 'e'
+                                                        onClick={(e) => handleAcceptInvite(e, notif.id, notif.details)} 
                                                     >
                                                         Aceitar
                                                     </button>
                                                     <button 
                                                         className="btn-decline" 
-                                                        onClick={(e) => handleDeclineInvite(e, notif.id, notif.details)} // Passa o evento 'e'
+                                                        onClick={(e) => handleDeclineInvite(e, notif.id, notif.details)} 
                                                     >
                                                         Recusar
                                                     </button>

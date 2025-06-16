@@ -1,28 +1,22 @@
 import React, { useState } from 'react';
 // Importações de Contexto (usando caminho relativo que funcionou)
-import { useEventsProjects } from '../contexts/EventProjectContext.jsx'; 
-import { useNotifications } from '../contexts/NotificationContext.jsx'; 
-import { useNavigate } from 'react-router-dom'; 
+import { useEventsProjects } from '../contexts/EventProjectContext.jsx';
+import { useNotifications } from '../contexts/NotificationContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 // IMPORTAÇÃO DO CSS AGORA USANDO O ALIAS '@/'
-import '@/pages/gerenciar-eventos/gerenciar-eventos.css'; 
+import '@/pages/gerenciar-eventos/gerenciar-eventos.css';
 
 
 export default function GerenciarEventos() {
-    // Pegar a lista de eventos e as funções addProjectToEvent, updateProjectStatus do contexto
-    const { events, addProjectToEvent, updateProjectStatus } = useEventsProjects(); 
-    const { addNotification } = useNotifications(); // Para notificações de feedback
-    
-    const [selectedEvent, setSelectedEvent] = useState(null); 
-    const [activeTab, setActiveTab] = useState('visaoGeral'); 
-    const [searchTerm, setSearchTerm] = useState(''); 
+    const { events, addProjectToEvent, updateProjectStatus } = useEventsProjects();
+    const { addNotification } = useNotifications();
 
-    // Estados para o modal/input de rejeição
-    const [showRejectionInput, setShowRejectionInput] = useState(false);
-    const [currentProjectToReject, setCurrentProjectToReject] = useState(null); // Armazena o ID do projeto a ser rejeitado
-    const [rejectionMessage, setRejectionMessage] = useState(''); // Armazena a mensagem de rejeição
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [activeTab, setActiveTab] = useState('visaoGeral');
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     // Filtra os eventos com base no termo de pesquisa
     const filteredEvents = events.filter(event =>
@@ -44,13 +38,16 @@ export default function GerenciarEventos() {
         navigate('/dashboard');
     };
 
-    // --- Lógica de Gerenciamento de Projetos ---
+    // Estados para o modal/input de rejeição
+    const [showRejectionInput, setShowRejectionInput] = useState(false);
+    const [currentProjectToReject, setCurrentProjectToReject] = useState(null);
+    const [rejectionMessage, setRejectionMessage] = useState('');
 
     // Função para iniciar o processo de rejeição
     const handleRejectProject = (projectId) => {
         setCurrentProjectToReject(projectId);
-        setRejectionMessage(''); // Limpa a mensagem anterior
-        setShowRejectionInput(true); // Abre o input/modal
+        setRejectionMessage('');
+        setShowRejectionInput(true);
     };
 
     // Função para confirmar a rejeição com mensagem
@@ -72,7 +69,6 @@ export default function GerenciarEventos() {
     };
 
     // Agrupamento de projetos por status
-    // Os dados dos projetos agora vêm de selectedEvent.projetos
     const pendingProjects = selectedEvent?.projetos?.filter(p => p.status === 'pendente') || [];
     const approvedProjects = selectedEvent?.projetos?.filter(p => p.status === 'aprovado') || [];
     const rejectedProjects = selectedEvent?.projetos?.filter(p => p.status === 'rejeitado') || [];
@@ -157,7 +153,6 @@ export default function GerenciarEventos() {
                                 <img src={selectedEvent.foto} alt={`Foto do evento ${selectedEvent.nome}`} className="event-details-image" />
                             </div>
                         )}
-                        {/* O botão de adicionar projeto de teste foi movido para a aba de Projetos para facilitar */}
                     </div>
                 )}
 
@@ -186,7 +181,7 @@ export default function GerenciarEventos() {
                                 Adicionar Projeto de Teste
                             </button>
                         </div>
-                        <hr className="section-divider" /> {/* Divisor para separar o botão de teste */}
+                        <hr className="section-divider" />
 
                         {/* Projetos Pendentes */}
                         <div className="project-status-section">
@@ -198,7 +193,7 @@ export default function GerenciarEventos() {
                                     {pendingProjects.map(project => (
                                         <div key={project.id} className="project-card pending">
                                             <h5>{project.nome} <span className="project-status-badge pending">Pendente</span></h5>
-                                            <p><strong>Aluno:</strong> {project.alunoId}</p> {/* Substituir por nome do aluno real */}
+                                            <p><strong>Aluno:</strong> {project.alunoId}</p>
                                             <p>{project.descricao}</p>
                                             {project.arquivoUrl && <a href={project.arquivoUrl} target="_blank" rel="noopener noreferrer" className="btn-view-project">Ver Projeto</a>}
                                             <div className="project-actions">
