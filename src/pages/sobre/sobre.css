@@ -25,7 +25,7 @@
 }
 
 .logo-box img {
-    width: 250px;
+    width: 450px;
     animation: flutuar 2s ease-in-out infinite, brilhar 3s ease-in-out infinite alternate;
     filter: drop-shadow(0 0 10px #007bff);
     transition: transform 0.6s ease;

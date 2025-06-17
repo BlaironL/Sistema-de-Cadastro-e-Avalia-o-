@@ -8,14 +8,15 @@ export const NotificationProvider = ({ children }) => {
     console.log("NotificationProvider: Componente Provedor renderizando..."); // DEBUG LOG
     const [notifications, setNotifications] = useState([]);
 
-    const addNotification = useCallback((message, type = 'info') => {
+    const addNotification = useCallback((message, type = 'info', details = {}) => { // Adicionei 'details' novamente, caso seja usado
         console.log("addNotification: Adicionando notificação ->", message); // DEBUG LOG
         const newNotification = {
-            id: Date.now(),
+            id: Date.now() + Math.random(), // <<< AGORA O ID É REALMENTE ÚNICO
             message,
             type,
             read: false,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            details // Garantir que detalhes sejam passados e armazenados
         };
         setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
     }, []);

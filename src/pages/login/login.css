@@ -19,6 +19,7 @@
     padding: 20px;
     /* Espaçamento para telas pequenas, para o card não colar nas bordas */
     box-sizing: border-box;
+    background: linear-gradient(135deg, #e0f2f7, #c1e4f4);
 }
 
 /* O card/painel principal de login */

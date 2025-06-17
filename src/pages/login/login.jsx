@@ -36,8 +36,8 @@ export default function Login({ onLoginSuccess }) {
             <main className="login-main">
                 <div className="login-left">
                     <p className="login-msg">
-                        Realize seu login<br />
-                        com suas credenciais do SCAP.<br />:)
+                        Realize Seu Login<br />
+                        De Maneira Rápida e Fácil.<br />:)
                     </p>
                     <img src={ilustracao} alt="Ilustração login" className="login-img" />
                 </div>

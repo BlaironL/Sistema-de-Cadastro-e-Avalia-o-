@@ -4,9 +4,9 @@
 .home-header {
     background-color: #2c3e50; /* Fundo escuro para o cabeçalho */
     color: white;
-    padding: 20px 40px; /* Voltei o padding horizontal para 40px, o espaçamento será feito pelo margin do menu */
+    padding: 20px 80px; /* Padding aumentado */
     display: flex;
-    justify-content: space-between; /* Mantém o espaçamento entre esq/dir */
+    justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -17,17 +17,17 @@
 
 .header-left-content {
     display: flex;
-    flex-direction: column; /* Empilha logo e subtítulo verticalmente */
-    align-items: center; /* Centraliza horizontalmente o conteúdo da seção esquerda */
-    flex-grow: 1; /* Permite que a seção esquerda ocupe o máximo de espaço disponível */
-    text-align: center; /* Garante que o texto seja centralizado */
-    gap: 5px; /* Espaçamento menor entre logo e subtítulo */
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+    gap: 5px;
 }
 
 .logo-text {
     font-size: 2.5em;
     margin: 0;
-    color: white; /* Cor do logo */
+    color: white;
     letter-spacing: 2px;
     font-weight: 700;
 }
@@ -39,14 +39,14 @@
     opacity: 0.8;
 }
 
-/* Dropdown Menu e botão */
+/* Dropdown Menu */
 .header-right-content {
     position: relative;
-    margin-right: 20px; /* NOVO: Adiciona um espaçamento à direita para descolar da borda */
+    margin-right: 20px; /* Descola o botão da borda */
 }
 
 .menu-toggle-btn {
-    background-color: cornflowerblue; /* Cor do botão do menu */
+    background-color: cornflowerblue;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -62,8 +62,8 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 100%; /* Abaixo do botão */
-    right: 0; /* Alinha com a borda direita do .header-right-content (que agora tem margin) */
+    top: 100%;
+    right: 0;
     background-color: white;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     border-radius: 8px;
@@ -133,14 +133,14 @@
     background-color: #fdd;
 }
 
-/* MAIN CONTENT (mantido) */
+/* MAIN CONTENT */
 .global-main-content {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(135deg, #e0f2f7, #c1e4f4);
 }
 
-/* --- FOOTER (mantido) --- */
+/* --- NOVO FOOTER --- */
 .main-footer {
     background-color: #2c3e50;
     color: white;
@@ -215,6 +215,7 @@
     filter: brightness(0) saturate(100%) invert(48%) sepia(85%) saturate(1478%) hue-rotate(189deg) brightness(98%) contrast(92%);
 }
 
+/* Seção de contato */
 .footer-section.contact p {
     margin-bottom: 5px;
 }

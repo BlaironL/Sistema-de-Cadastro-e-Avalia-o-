@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: center; /* Centraliza o conteúdo horizontalmente */
     padding: 30px 20px; /* Padding no wrapper principal */
-    background-color: #f8f8f8; /* Fundo suave */
+    background: linear-gradient(135deg, #e0f2f7, #c1e4f4);
     font-family: 'Koulen', sans-serif; /* Consistência da fonte */
     color: #333;
 }
@@ -29,88 +29,92 @@
     gap: 40px; /* Espaço entre seções */
 }
 
-/* NOTIFICAÇÕES - MAIS ÊNFASE */
+/* NOTIFICAÇÕES - AGORA COM MENOS ÊNFASE */
 .dashboard-notifications-emphasis {
     background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra mais proeminente */
-    padding: 30px;
-    margin-bottom: 20px; /* Espaço antes das ações */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    margin-bottom: 20px;
 }
 
 .notifications-panel h3 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #34495e;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: center;
-    border-bottom: 1px solid #eee; /* Linha divisória */
-    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
 }
 
 .notification-list {
     list-style: none;
-    max-height: 350px; /* Altura máxima para rolagem de notificações */
+    max-height: 300px;
     overflow-y: auto;
-    padding-right: 10px; /* Espaço para a barra de rolagem */
+    padding-right: 10px;
 }
 
 .notification-item {
     background-color: #fefefe;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     font-size: 0.95em;
     position: relative;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer; /* Indica que é clicável */
+    cursor: pointer;
+    padding-right: 40px; /* Mais padding à direita para o botão 'X' */
 }
 
 .notification-item.read {
-    background-color: #f0f0f0;
+    background-color: #f5f5f5;
     color: #888;
 }
 
-.notification-item.notification-info { border-left: 5px solid #3498db; }
-.notification-item.notification-convite { border-left: 5px solid #f39c12; }
-.notification-item.notification-evento { border-left: 5px solid #28a745; }
-.notification-item.notification-alerta { border-left: 5px solid #e74c3c; }
+.notification-item.notification-info { border-left: 4px solid #3498db; }
+.notification-item.notification-convite { border-left: 4px solid #f39c12; }
+.notification-item.notification-evento { border-left: 4px solid #28a745; }
+.notification-item.notification-alerta { border-left: 4px solid #e74c3c; }
 
 .notification-icon {
-    font-size: 1.5em;
-    margin-right: 15px;
+    font-size: 1.3em;
+    margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .notification-content {
     flex-grow: 1;
+    word-break: break-word;
 }
 
 .notification-timestamp {
     display: block;
-    font-size: 0.8em;
-    color: #a0a0a0;
-    margin-top: 5px;
+    font-size: 0.75em;
+    color: #b0b0b0;
+    margin-top: 3px;
 }
 
 .remove-notification-btn {
     background: none;
     border: none;
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: #ccc;
     cursor: pointer;
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    opacity: 0; /* Oculta por padrão */
+    opacity: 0;
     transition: opacity 0.2s ease, color 0.2s ease;
+    padding: 5px;
 }
 
 .notification-item:hover .remove-notification-btn {
-    opacity: 1; /* Mostra no hover */
+    opacity: 1;
     color: #e74c3c;
 }
 
@@ -118,24 +122,56 @@
     color: #c0392b;
 }
 
+/* --- ÍCONE DE EXPANSÃO (NOVO) --- */
+.expand-icon {
+    font-size: 1.2em; /* Tamanho do triângulo */
+    margin-left: 10px; /* Espaçamento à esquerda do ícone */
+    color: #555; /* Cor um pouco mais escura */
+    transition: transform 0.3s ease; /* Transição mais suave */
+    flex-shrink: 0;
+}
+
+.expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
 .notification-expanded-content {
+    /* Estado padrão (colapsado) */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+
+    width: 100%; /* Garante que ocupe a largura total do item pai */
+}
+
+.notification-item.expanded .notification-expanded-content {
+    /* Estado expandido */
+    max-height: 200px; /* Altura máxima para o conteúdo expandido (ajuste conforme necessidade) */
+    opacity: 1;
     margin-top: 15px;
     padding-top: 10px;
     border-top: 1px dashed #eee;
-    font-size: 0.9em;
-    color: #666;
+}
+
+.notification-expanded-content p {
     text-align: left;
+    margin-bottom: 5px;
 }
 
 .notification-actions-buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 8px;
+    margin-top: 12px;
     justify-content: flex-end;
 }
 
 .notification-actions-buttons button {
-    padding: 8px 15px;
+    padding: 7px 12px;
     border-radius: 5px;
     font-weight: bold;
     transition: background-color 0.3s ease;
@@ -160,15 +196,16 @@
 .no-notifications {
     text-align: center;
     color: #888;
-    padding: 30px;
+    padding: 20px;
     font-style: italic;
+    font-size: 0.9em;
 }
 
 /* --- SEÇÃO DE AÇÕES --- */
 .dashboard-actions-section {
     background-color: #ffffff;
     border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra proeminente */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     padding: 30px;
 }
 
@@ -181,9 +218,9 @@
 
 .dashboard-options-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grid responsivo para os cards */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
-    justify-content: center; /* Centraliza os cards no grid */
+    justify-content: center;
 }
 
 .dashboard-card {
@@ -195,7 +232,7 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    min-height: 140px; /* Altura mínima para os cards */
+    min-height: 140px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -220,26 +257,6 @@
     color: #666;
     line-height: 1.4;
 }
-
-/* REMOVIDO: Estilos para a seção esquerda que não existe mais */
-/* .dashboard-left-section { display: none; } */
-/* .dashboard-animated-image { display: none; } */
-/* .animated-overlay { display: none; } */
-
-/* REMOVIDO: Estilos antigos de grid que não são mais usados */
-/* .dashboard-content-grid {
-    display: flex;
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-} */
-
-/* .dashboard-right-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-} */
 
 /* Responsividade */
 @media (max-width: 992px) {
@@ -277,6 +294,6 @@
     }
 
     .dashboard-options-grid {
-        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+        grid-template-columns: 1fr;
     }
 }

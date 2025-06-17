@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './dashboard.css'; // Estilos específicos do dashboard
-// animatedImage import REMOVIDO, pois a imagem não será mais usada no JSX
-// import animatedImage from '../../components/ImagemFemininaSCAP.png'; 
 
 // Importe o hook useNotifications para adicionar e gerenciar notificações
 import { useNotifications } from "../contexts/NotificationContext.jsx";
 // Importe o hook useEventsProjects (se for usado no Dashboard, caso contrário, pode remover)
-// import { useEventsProjects } from "../contexts/EventProjectContext.jsx"; // Removido se não for usado
+// import { useEventsProjects } from "../contexts/EventProjectContext.jsx"; 
 
 export default function Dashboard() {
     const [userProfile, setUserProfile] = useState('');
@@ -97,14 +95,19 @@ export default function Dashboard() {
         console.log("NotificationsPanel: Notificações recebidas do contexto:", notifications); 
         console.log("NotificationsPanel: Notificação expandida ID:", expandedNotificationId); 
 
+        // Ajuste na função toggleExpand: Lógica mais robusta para marcar como lida e expandir
         const toggleExpand = (id) => {
             console.log("Toggle expand para ID:", id); 
+            
+            // Usar atualização funcional para garantir que estamos trabalhando com o estado mais recente
             setExpandedNotificationId(prevId => {
-                const newId = prevId === id ? null : id;
-                if (newId !== null) { 
+                const nextExpandedId = prevId === id ? null : id; // Se já estiver expandido, contrai; senão, expande
+                
+                // Só marca como lida se estiver expandindo para uma nova notificação
+                if (nextExpandedId !== null && nextExpandedId !== prevId) {
                     markAsRead(id); 
                 }
-                return newId;
+                return nextExpandedId;
             });
         };
 
@@ -155,6 +158,9 @@ export default function Dashboard() {
                                     >
                                         &times; {/* Símbolo de 'x' para fechar */}
                                     </button>
+                                    
+                                    {/* Ícone de expansão/contração */}
+                                    <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>&#9660;</span> {/* Triângulo para baixo/cima */}
 
                                     {/* Conteúdo expandido para notificações de convite e outros tipos */}
                                     {isExpanded && (

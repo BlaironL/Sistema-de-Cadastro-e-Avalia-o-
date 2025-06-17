@@ -86,9 +86,6 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                                 <h3>Links Rápidos</h3>
                                 <ul>
                                     <li><a href="/">Home</a></li>
-                                    <li><a href="/dashboard">Dashboard</a></li>
-                                    <li><a href="/criar-evento">Criar Evento</a></li>
-                                    <li><a href="/gerenciar-eventos">Gerenciar Eventos</a></li>
                                     <li><a href="/sobre">Sobre Nós</a></li>
                                 </ul>
                             </div>

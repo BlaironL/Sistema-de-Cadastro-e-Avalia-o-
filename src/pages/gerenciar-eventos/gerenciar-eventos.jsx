@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// Importações de Contexto (usando caminho relativo que funcionou)
 import { useEventsProjects } from '../contexts/EventProjectContext.jsx';
 import { useNotifications } from '../contexts/NotificationContext.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -9,12 +8,18 @@ import '@/pages/gerenciar-eventos/gerenciar-eventos.css';
 
 
 export default function GerenciarEventos() {
+    // Pegar a lista de eventos e as funções addProjectToEvent, updateProjectStatus do contexto
     const { events, addProjectToEvent, updateProjectStatus } = useEventsProjects();
-    const { addNotification } = useNotifications();
+    const { addNotification } = useNotifications(); // Para notificações de feedback
 
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [activeTab, setActiveTab] = useState('visaoGeral');
     const [searchTerm, setSearchTerm] = useState('');
+
+    // Estados para o modal/input de rejeição
+    const [showRejectionInput, setShowRejectionInput] = useState(false);
+    const [currentProjectToReject, setCurrentProjectToReject] = useState(null); // Armazena o ID do projeto a ser rejeitado
+    const [rejectionMessage, setRejectionMessage] = useState(''); // Armazena a mensagem de rejeição
 
     const navigate = useNavigate();
 
@@ -38,16 +43,13 @@ export default function GerenciarEventos() {
         navigate('/dashboard');
     };
 
-    // Estados para o modal/input de rejeição
-    const [showRejectionInput, setShowRejectionInput] = useState(false);
-    const [currentProjectToReject, setCurrentProjectToReject] = useState(null);
-    const [rejectionMessage, setRejectionMessage] = useState('');
+    // --- Lógica de Gerenciamento de Projetos ---
 
     // Função para iniciar o processo de rejeição
     const handleRejectProject = (projectId) => {
         setCurrentProjectToReject(projectId);
-        setRejectionMessage('');
-        setShowRejectionInput(true);
+        setRejectionMessage(''); // Limpa a mensagem anterior
+        setShowRejectionInput(true); // Abre o input/modal
     };
 
     // Função para confirmar a rejeição com mensagem

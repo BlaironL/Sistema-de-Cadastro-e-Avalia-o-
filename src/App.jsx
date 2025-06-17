@@ -14,6 +14,7 @@ import Organizador from './pages/Organizador/Organizador';
 import Resultados from './pages/Resultados/resultados'; // Correção de capitalização (resultados)
 import CriarEvento from './pages/criar-evento/criar-evento'; 
 import GerenciarEventos from './pages/gerenciar-eventos/gerenciar-eventos'; 
+import Cadastro from './pages/cadastro/cadastro'; 
 
 // Importe seu CSS global (apenas uma vez, na raiz)
 import './global.css';
@@ -72,6 +73,7 @@ export default function App() {
           <Route path="/resultados" element={<Resultados />} />
           <Route path="/criar-evento" element={<CriarEvento />} />
           <Route path="/gerenciar-eventos" element={<GerenciarEventos />} />
+          <Route path="/cadastro" element={<Cadastro />} />
         </Route>
       </Routes>
     </Router>
