@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './dashboard.css'; // Estilos específicos do dashboard
-import animatedImage from '../../components/ImagemFemininaSCAP.png'; // Sua imagem (PNG)
+// animatedImage import REMOVIDO, pois a imagem não será mais usada no JSX
+// import animatedImage from '../../components/ImagemFemininaSCAP.png'; 
 
 // Importe o hook useNotifications para adicionar e gerenciar notificações
 import { useNotifications } from "../contexts/NotificationContext.jsx";
 // Importe o hook useEventsProjects (se for usado no Dashboard, caso contrário, pode remover)
-import { useEventsProjects } from "../contexts/EventProjectContext.jsx";
-
+// import { useEventsProjects } from "../contexts/EventProjectContext.jsx"; // Removido se não for usado
 
 export default function Dashboard() {
     const [userProfile, setUserProfile] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const navigate = useNavigate();
     const { addNotification } = useNotifications(); 
-    // const { addEvent } = useEventsProjects(); // Removido se não for usado diretamente aqui
 
     useEffect(() => {
         const storedProfile = localStorage.getItem('userProfile');
@@ -47,12 +46,12 @@ export default function Dashboard() {
 
         // --- TODAS AS OPÇÕES APARECEM PARA QUALQUER PERFIL AGORA ---
 
-        // Opções relacionadas a Eventos e Projetos (anteriormente do Organizador)
+        // Opções relacionadas a Eventos e Projetos
         options.push(
             <DashboardCard
                 key="createEvent"
                 title="Criar Novo Evento"
-                description="Configure um novo evento e defina seus detalhes (para organizadores)."
+                description="Configure um novo evento e defina seus detalhes."
                 onClick={() => navigate('/criar-evento')}
             />,
             <DashboardCard
@@ -72,11 +71,7 @@ export default function Dashboard() {
                 title="Meus Projetos Anteriores"
                 description="Visualize o status de seus projetos já submetidos."
                 onClick={() => alert('Navegar para tela de Meus Projetos')} // Rota futura: /meus-projetos
-            />
-        );
-
-        // Opções relacionadas a Avaliação e Colaboração (anteriormente do Avaliador e de 'Ajudar a Organizar')
-        options.push(
+            />,
             <DashboardCard
                 key="requestEvaluate"
                 title="Solicitar Avaliação de Evento"
@@ -89,12 +84,7 @@ export default function Dashboard() {
                 description="Ofereça ajuda na organização de um evento ou projeto."
                 onClick={() => alert('Navegar para tela de Solicitação de Colaboração')} // Rota futura: /solicitar-organizacao
             />
-            // REMOVIDO: <DashboardCard key="evaluateProjects" ... /> - Agora está em Gerenciar Eventos
         );
-
-        // Opções de Gerenciamento Geral (removidas as duplicatas)
-        // REMOVIDO: <DashboardCard key="generateRanking" ... /> - Agora está em Gerenciar Eventos
-        // REMOVIDO: <DashboardCard key="manageEvaluators" ... /> - Agora está em Gerenciar Eventos
         
         return options;
     };
@@ -217,22 +207,18 @@ export default function Dashboard() {
                 Sua jornada de projeto começa aqui.
             </h1>
             
-            <div className="dashboard-content-grid">
-                {/* Seção Esquerda: Imagem Futurista */}
-                <div className="dashboard-left-section">
-                    <img src={animatedImage} alt="Ilustração SCAP" className="dashboard-animated-image" />
-                    <div className="animated-overlay"></div>
+            {/* NOVO LAYOUT DA SEÇÃO DE CONTEÚDO */}
+            <div className="dashboard-content-area">
+                {/* NOTIFICAÇÕES - AGORA EM MAIOR ÊNFASE */}
+                <div className="dashboard-notifications-emphasis">
+                    <NotificationsPanel />
                 </div>
 
-                {/* Seção Direita: Notificações e Ações */}
-                <div className="dashboard-right-section">
-                    <NotificationsPanel />
-
-                    <div className="dashboard-actions">
-                        <h2>O que você gostaria de fazer?</h2>
-                        <div className="dashboard-options-grid">
-                            {renderOptions()}
-                        </div>
+                {/* AÇÕES - ABAIXO DAS NOTIFICAÇÕES */}
+                <div className="dashboard-actions-section">
+                    <h2>O que você gostaria de fazer?</h2>
+                    <div className="dashboard-options-grid">
+                        {renderOptions()}
                     </div>
                 </div>
             </div>

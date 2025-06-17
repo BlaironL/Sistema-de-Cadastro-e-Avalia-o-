@@ -1,229 +1,304 @@
-/* ======================== */
-/* LAYOUT.CSS               */
-/* ======================== */
+/* src/pages/layout/layout.css */
 
-/* Container principal da aplicação que engloba header, main, footer */
-.app-main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Estilos para o cabeçalho principal (Header do Layout.jsx) */
-header.home-header { 
-    background-color: #3b46f1; /* Cor de fundo principal do header */
+/* HEADER */
+.home-header {
+    background-color: #2c3e50; /* Fundo escuro para o cabeçalho */
     color: white;
-    padding: 15px 30px; /* Padding padrão */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px 40px; /* Voltei o padding horizontal para 40px, o espaçamento será feito pelo margin do menu */
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Mantém o espaçamento entre esq/dir */
     align-items: center;
-    flex-shrink: 0;
-    width: 100%; /* GARANTE LARGURA TOTAL */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-family: 'Koulen', sans-serif;
 }
 
-/* Lado esquerdo do header (Logo e subtítulo) */
-.header-left-content { 
+.header-left-content {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex-shrink: 1;
+    flex-direction: column; /* Empilha logo e subtítulo verticalmente */
+    align-items: center; /* Centraliza horizontalmente o conteúdo da seção esquerda */
+    flex-grow: 1; /* Permite que a seção esquerda ocupe o máximo de espaço disponível */
+    text-align: center; /* Garante que o texto seja centralizado */
+    gap: 5px; /* Espaçamento menor entre logo e subtítulo */
 }
 
-/* H1 dentro do header (Logo "SCAP") */
-header.home-header .logo-text { 
-    font-size: 1.8em; /* >>> VOLTADO AO TAMANHO ORIGINAL <<< */
-    font-weight: bold;
-    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen */
-    letter-spacing: 0; /* >>> REMOVIDO LETTER-SPACING <<< */
-    color: white;
-    margin: 0; /* Zera margens */
-    line-height: 1.2; /* Ajuda a controlar o espaçamento vertical */
-    text-shadow: none; /* >>> REMOVIDO TEXT-SHADOW <<< */
+.logo-text {
+    font-size: 2.5em;
+    margin: 0;
+    color: white; /* Cor do logo */
+    letter-spacing: 2px;
+    font-weight: 700;
 }
 
-/* P dentro do header (Subtítulo "Sistema de Cadastro...") */
-header.home-header .subtitulo { 
-    font-size: 0.9em;
+.subtitulo {
+    font-size: 1.1em;
+    margin: 0;
+    color: #ecf0f1;
     opacity: 0.8;
-    color: white;
-    font-family: 'Montserrat', sans-serif; /* MANTIDO Montserrat */
-    margin: 0; /* Zera margens */
-    line-height: 1.2; /* Ajuda a controlar o espaçamento vertical */
-    margin-top: 5px; /* Espaçamento pequeno entre logo e subtítulo */
 }
 
-/* Lado direito do header (Container para o menu) */
-.header-right-content { 
+/* Dropdown Menu e botão */
+.header-right-content {
     position: relative;
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
+    margin-right: 20px; /* NOVO: Adiciona um espaçamento à direita para descolar da borda */
 }
 
-/* Informações do usuário DENTRO do menu dropdown */
-.dropdown-user-info { 
-    display: block;
-    padding: 12px 20px;
+.menu-toggle-btn {
+    background-color: cornflowerblue; /* Cor do botão do menu */
     color: white;
-    text-align: left;
-    font-size: 0.9em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.dropdown-user-info span {
-    display: block;
-    font-weight: normal;
-    font-size: 0.9em;
-    opacity: 0.9;
-}
-
-.dropdown-user-info span#userNameDisplay {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-/* Botão de Toggle do Menu (o ☰) */
-.menu-toggle-btn { 
-    background-color: transparent;
-    color: white;
-    border: 1px solid white;
+    border: none;
+    padding: 10px 15px;
     border-radius: 5px;
-    padding: 5px 10px;
-    font-size: 1.2em;
+    font-size: 1.5em;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    flex-shrink: 0;
+    transition: background-color 0.3s ease;
 }
 
 .menu-toggle-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #2980b9;
 }
 
-/* Menu Dropdown (oculto por padrão) */
-.dropdown-menu { 
+.dropdown-menu {
     position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background-color: #3b46f1;
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    z-index: 1001;
-    min-width: 180px;
-    display: none;
-    flex-direction: column;
+    top: 100%; /* Abaixo do botão */
+    right: 0; /* Alinha com a borda direita do .header-right-content (que agora tem margin) */
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
 }
 
 .dropdown-menu.active {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .dropdown-menu ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 10px 0;
 }
 
 .dropdown-menu ul li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
 }
 
 .dropdown-menu ul li:last-child {
     border-bottom: none;
 }
 
-.dropdown-menu ul li:first-child {
-    border-bottom: none;
-}
-
-.dropdown-menu ul li:first-child .dropdown-user-info {
-    margin-bottom: 0;
-    border-bottom: none;
-}
-
 .dropdown-menu ul li a,
-.menu-logout-btn { 
-    display: block;
-    padding: 12px 20px;
-    color: white;
+.dropdown-menu ul li button {
     text-decoration: none;
-    background-color: transparent;
-    border: none;
+    color: #333;
+    display: block;
     width: 100%;
     text-align: left;
-    font-size: 1em;
+    background: none;
+    border: none;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    font-size: 1em;
+    padding: 0;
+}
+
+.dropdown-menu ul li a:hover,
+.dropdown-menu ul li button:hover {
+    background-color: #f5f5f5;
+    color: #3498db;
+}
+
+.dropdown-user-info {
+    font-weight: bold;
+    color: #2c3e50;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-logout-btn {
+    color: #e74c3c;
 }
 
 .menu-logout-btn:hover {
-    background-color: #2a37d1;
+    color: #c0392b;
+    background-color: #fdd;
 }
 
-/* Estilos para o footer global */
-footer.home-footer {
-    background-color: #3b46f1; /* Mesma cor do header */
+/* MAIN CONTENT (mantido) */
+.global-main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- FOOTER (mantido) --- */
+.main-footer {
+    background-color: #2c3e50;
     color: white;
-    text-align: center;
-    padding: 15px 0;
-    font-size: 14px;
-    width: 100%;
-    flex-shrink: 0;
+    padding: 50px 40px 20px;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.95em;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsividade para o Header e Footer no Layout.jsx */
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 1.4em;
+    color: #3498db;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+    line-height: 1.8;
+    color: #ecf0f1;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-section ul li a {
+    color: #ecf0f1;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icons a img {
+    width: 30px;
+    height: 30px;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.social-icons a:hover img {
+    transform: translateY(-3px);
+    filter: brightness(0) saturate(100%) invert(48%) sepia(85%) saturate(1478%) hue-rotate(189deg) brightness(98%) contrast(92%);
+}
+
+.footer-section.contact p {
+    margin-bottom: 5px;
+}
+.footer-section.contact a {
+    color: #ecf0f1;
+    text-decoration: underline;
+}
+.footer-section.contact a:hover {
+    color: #3498db;
+}
+
+
+/* Direitos Autorais */
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    margin-top: 20px;
+    color: #bdc3c7;
+    font-size: 0.9em;
+}
+
+.footer-bottom strong {
+    color: white;
+}
+
+
+/* Responsividade do Footer (mantida) */
 @media (max-width: 768px) {
-    header.home-header {
+    .main-footer {
+        padding: 30px 20px 15px;
+    }
+
+    .footer-content {
         flex-direction: column;
-        align-items: center; /* Centraliza tudo em mobile */
-        gap: 10px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        min-width: unset;
+        width: 100%;
+        margin-bottom: 25px;
+    }
+
+    .footer-section h3 {
+        margin-bottom: 10px;
+    }
+
+    .social-icons {
+        justify-content: center;
+    }
+}
+
+/* Responsividade Geral do Layout (ajustada para o header) */
+@media (max-width: 992px) {
+    .home-header {
         padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
     }
 
     .header-left-content {
-        width: 100%;
+        flex-direction: column;
+        gap: 5px;
         text-align: center;
     }
-    header.home-header .logo-text,
-    header.home-header .subtitulo {
-        text-align: center;
+
+    .logo-text {
+        font-size: 2em;
+    }
+
+    .subtitulo {
+        font-size: 0.9em;
     }
 
     .header-right-content {
-        width: auto;
-        justify-content: center;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 0; /* Remove a margem direita em telas menores */
     }
 
     .dropdown-menu {
-        top: calc(100% + 5px);
-        right: 0;
-        left: auto;
-        min-width: 100%;
-        border-radius: 0;
-    }
-
-    .menu-toggle-btn {
-        margin-left: 0;
-    }
-
-    footer.home-footer {
-        padding: 10px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    header.home-header {
-        padding: 10px 15px;
-    }
-    header.home-header .logo-text {
-        font-size: 1.5em;
-    }
-    header.home-header .subtitulo {
-        font-size: 0.8em;
+        min-width: 150px;
     }
 }
