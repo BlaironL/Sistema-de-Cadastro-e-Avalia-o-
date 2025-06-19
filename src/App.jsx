@@ -15,6 +15,8 @@ import Resultados from './pages/Resultados/resultados'; // Correção de capital
 import CriarEvento from './pages/criar-evento/criar-evento'; 
 import GerenciarEventos from './pages/gerenciar-eventos/gerenciar-eventos'; 
 import Cadastro from './pages/cadastro/cadastro'; 
+import CriarProjeto from './pages/criar-projeto/criar-projeto'; 
+import VerProjetos from './pages/ver-projetos/ver-projetos'; 
 
 // Importe seu CSS global (apenas uma vez, na raiz)
 import './global.css';
@@ -74,6 +76,8 @@ export default function App() {
           <Route path="/criar-evento" element={<CriarEvento />} />
           <Route path="/gerenciar-eventos" element={<GerenciarEventos />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/criar-projeto" element={<CriarProjeto />} />
+          <Route path="/ver-projetos" element={<VerProjetos />} />
         </Route>
       </Routes>
     </Router>

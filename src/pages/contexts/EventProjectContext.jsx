@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 // 1. Criação do Contexto
 export const EventProjectContext = createContext();
@@ -16,40 +16,55 @@ const generateUniqueCode = (length = 6) => {
 
 // 2. Provedor do Contexto
 export const EventProjectProvider = ({ children }) => {
-    const [events, setEvents] = useState([]);
+    // Estado inicial: tentar carregar eventos do localStorage
+    const [events, setEvents] = useState(() => {
+        try {
+            const storedEvents = localStorage.getItem('events'); // Usar 'events' como chave
+            return storedEvents ? JSON.parse(storedEvents) : [];
+        } catch (error) {
+            console.error("Erro ao carregar eventos do localStorage:", error);
+            return [];
+        }
+    });
+
+    // Efeito para salvar eventos no localStorage sempre que 'events' mudar
+    useEffect(() => {
+        try {
+            localStorage.setItem('events', JSON.stringify(events)); // Salvar 'events'
+        } catch (error) {
+            console.error("Erro ao salvar eventos no localStorage:", error);
+        }
+    }, [events]);
 
     // Função para adicionar um novo evento
     const addEvent = useCallback((newEventData) => {
         const newEvent = {
-            id: Date.now() + Math.random(), // Garante ID único
-            codigo: generateUniqueCode(), // NOVO: Gerar código único para o evento
-            projetos: [], // NOVO: Array para armazenar projetos submetidos a este evento
-            avaliadoresConvidados: [], // NOVO: Array para gerenciar avaliadores convidados (email, status)
-            organizadoresConvidados: [], // NOVO: Array para gerenciar outros organizadores
+            id: Date.now().toString(), // ID único como string
+            codigo: generateUniqueCode(), // Gera código único para o evento
+            projetos: [], // Array para armazenar projetos submetidos a este evento
+            avaliadoresConvidados: [],
+            organizadoresConvidados: [],
             ...newEventData,
             createdAt: new Date().toISOString()
         };
-        setEvents(prevEvents => [newEvent, ...prevEvents]);
+        setEvents(prevEvents => [newEvent, ...prevEvents]); // Adiciona no início da lista
         console.log('EventProjectProvider: Evento adicionado:', newEvent);
         return newEvent;
     }, []);
 
     // NOVO: Função para adicionar um projeto a um evento específico (simulando submissão de aluno)
-    // Para fins de teste, pode ser chamado manualmente, mas no futuro virá de um formulário de aluno.
-    const addProjectToEvent = useCallback((eventId, projectData) => {
+    // Os campos do projeto virão direto do formulário EnviarProjeto
+    const addProjectToEvent = useCallback((eventIdentifier, projectData) => {
         setEvents(prevEvents => prevEvents.map(event => {
-            if (event.id === eventId) {
+            // Pode ser pelo ID ou pelo CÓDIGO do evento
+            if (event.id === eventIdentifier || event.codigo === eventIdentifier) {
                 const newProject = {
-                    id: Date.now() + Math.random(),
-                    nome: projectData.nome,
-                    alunoId: projectData.alunoId, // ID do aluno que submeteu
-                    descricao: projectData.descricao,
-                    arquivoUrl: projectData.arquivoUrl, // Ex: link para um PDF, GitHub, etc.
-                    status: 'pendente', // Status inicial do projeto (pendente, aprovado, rejeitado)
-                    mensagemRejeicao: '', // Mensagem caso seja rejeitado
-                    avaliacoes: [], // Array para notas dos avaliadores
+                    id: Date.now().toString(), // ID único para o projeto
+                    ...projectData, // Todos os dados do formulário do projeto
+                    status: projectData.status || 'Pendente Avaliação', // Garante um status inicial
                     createdAt: new Date().toISOString(),
-                    // Outros campos relevantes do projeto
+                    avaliacoes: [],
+                    mensagemRejeicao: '',
                 };
                 return {
                     ...event,
@@ -62,9 +77,9 @@ export const EventProjectProvider = ({ children }) => {
 
 
     // NOVO: Função para atualizar o status de um projeto (aprovar/rejeitar) e adicionar mensagem
-    const updateProjectStatus = useCallback((eventId, projectId, newStatus, rejectionMessage = '') => {
+    const updateProjectStatus = useCallback((eventIdentifier, projectId, newStatus, rejectionMessage = '') => {
         setEvents(prevEvents => prevEvents.map(event => {
-            if (event.id === eventId) {
+            if (event.id === eventIdentifier || event.codigo === eventIdentifier) {
                 return {
                     ...event,
                     projetos: event.projetos.map(project => {
@@ -87,7 +102,7 @@ export const EventProjectProvider = ({ children }) => {
     const inviteParticipant = useCallback((eventId, participantEmail, role) => {
         setEvents(prevEvents => prevEvents.map(event => {
             if (event.id === eventId) {
-                const newParticipant = { email: participantEmail, role: role, status: 'pendente' }; // Status do convite
+                const newParticipant = { email: participantEmail, role: role, status: 'pendente' };
                 if (role === 'avaliador') {
                     return { ...event, avaliadoresConvidados: [...event.avaliadoresConvidados, newParticipant] };
                 } else if (role === 'organizador') {
@@ -96,17 +111,20 @@ export const EventProjectProvider = ({ children }) => {
             }
             return event;
         }));
-        // FUTURO: Aqui você chamaria o addNotification para o usuário (email) convidado
     }, []);
 
+    // NOVO: Função para buscar um evento por código ou ID
+    const getEventByIdentifier = useCallback((identifier) => {
+        return events.find(event => event.id === identifier || event.codigo === identifier);
+    }, [events]);
 
     const contextValue = {
         events,
         addEvent,
-        addProjectToEvent, // NOVO
-        updateProjectStatus, // NOVO
-        inviteParticipant, // NOVO (Placeholder)
-        // Adicione outras funções de gerenciamento de eventos/projetos aqui (ex: updateEvent, deleteEvent, getEventById)
+        addProjectToEvent,
+        updateProjectStatus,
+        inviteParticipant,
+        getEventByIdentifier, // Disponibiliza a função de busca
     };
 
     return (

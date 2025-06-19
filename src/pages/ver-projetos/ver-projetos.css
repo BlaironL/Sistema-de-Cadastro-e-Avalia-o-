@@ -1,0 +1,417 @@
+/* src/pages/ver-projetos/ver-projetos.css */
+
+/* --- Variáveis de Cores (para consistência e flexibilidade) --- */
+:root {
+    --color-primary: #3498db;
+    --color-secondary: #2c3e50;
+    --color-accent: #2ecc71;
+    --color-text-dark: #34495e;
+    --color-text-light: #7f8c8d;
+    --color-bg-light: #f4f7f6;
+    --color-card-bg: #ffffff;
+    --color-border: #e0e6e9;
+    --color-gradient-start: #e0f2f7;
+    --color-gradient-end: #c1e4f4;
+
+    --status-pending: #f1c40f;
+    --status-approved: #27ae60;
+    --status-rejected: #e74c3c;
+    --status-evaluating: #3498db;
+
+    --card-hover-elevation: 12px;
+    --card-hover-shadow-intensity: rgba(0, 0, 0, 0.25);
+    --card-hover-border-highlight: #3498db;
+}
+
+/* Geral */
+body {
+    font-family: 'Roboto', sans-serif !important;
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end)) !important;
+    color: var(--color-text-dark) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    line-height: 1.6 !important;
+}
+
+/* --- Container Principal --- */
+.ver-projetos-container {
+    max-width: 1280px !important;
+    margin: 50px auto !important;
+    padding: 40px !important;
+    background-color: var(--color-card-bg) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1) !important;
+    text-align: center !important;
+    overflow: hidden !important;
+}
+
+/* Títulos e Descrições */
+.projetos-title {
+    font-size: 3.2em !important;
+    color: var(--color-secondary) !important;
+    margin-bottom: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.projetos-description {
+    font-size: 1.25em !important;
+    color: var(--color-text-light) !important;
+    margin-bottom: 60px !important;
+    max-width: 800px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    line-height: 1.5 !important;
+}
+
+/* Mensagem de Sem Projetos */
+.no-projects-message {
+    padding: 60px !important;
+    background-color: #f7f9fa !important;
+    border: 2px dashed var(--color-primary) !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 25px !important;
+    margin-top: 40px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+.no-projects-message p {
+    font-size: 1.4em !important;
+    color: var(--color-primary) !important;
+    font-weight: 600 !important;
+}
+
+.add-first-project-btn {
+    background-color: var(--color-accent) !important;
+    color: white !important;
+    padding: 14px 30px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-size: 1.15em !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease !important;
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4) !important;
+    letter-spacing: 0.5px !important;
+}
+
+.add-first-project-btn:hover {
+    background-color: #27ae60 !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.5) !important;
+}
+
+/* --- Grade de Projetos usando Flexbox --- */
+.projetos-list-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 30px !important;
+    justify-content: center !important;
+}
+
+.projetos-list-grid > * {
+    flex: 1 1 320px !important;
+    max-width: 320px !important;
+    box-sizing: border-box !important;
+}
+
+/* Cartão de Projeto */
+.projeto-card {
+    background-color: var(--color-card-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 12px !important;
+    padding: 25px !important;
+    text-align: left !important;
+    box-shadow: 0 6px 15px var(--shadow-light) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 220px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.projeto-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 6px !important;
+    background-color: var(--color-primary) !important;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.projeto-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 var(--card-hover-elevation) 30px var(--card-hover-shadow-intensity) !important;
+    border-color: var(--card-hover-border-highlight) !important;
+}
+
+.projeto-card-title {
+    font-size: 1.6em !important;
+    color: var(--color-secondary) !important;
+    margin-top: 10px !important;
+    margin-bottom: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+}
+
+.projeto-card-professor,
+.projeto-card-category,
+.projeto-card-status,
+.projeto-card-date {
+    font-size: 0.98em !important;
+    color: var(--color-text-dark) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.4 !important;
+}
+
+.projeto-card-professor span,
+.projeto-card-category span,
+.projeto-card-status span,
+.projeto-card-date span {
+    font-weight: 600 !important;
+    color: var(--color-secondary) !important;
+}
+
+.projeto-card-status span {
+    display: inline-block !important;
+    padding: 5px 10px !important;
+    border-radius: 20px !important;
+    font-size: 0.85em !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-left: 8px !important;
+}
+
+.projeto-card-status .status-pendente-avaliacao {
+    background-color: #fff3cd !important;
+    color: var(--status-pending) !important;
+    border: 1px solid var(--status-pending) !important;
+}
+
+.projeto-card-status .status-aprovado {
+    background-color: #d4edda !important;
+    color: var(--status-approved) !important;
+    border: 1px solid var(--status-approved) !important;
+}
+
+.projeto-card-status .status-rejeitado {
+    background-color: #f8d7da !important;
+    color: var(--status-rejected) !important;
+    border: 1px solid var(--status-rejected) !important;
+}
+
+.projeto-card-status .status-em-avaliacao {
+    background-color: #d1ecf1 !important;
+    color: var(--status-evaluating) !important;
+    border: 1px solid var(--status-evaluating) !important;
+}
+
+/* Ações do Cartão */
+.projeto-card-actions {
+    margin-top: 25px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    border-top: 1px solid var(--color-border) !important;
+    padding-top: 15px !important;
+}
+
+.btn-view-details,
+.btn-change-status,
+.btn-remove-project {
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 0.92em !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.4px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease !important;
+    min-width: 110px !important;
+    text-align: center !important;
+}
+
+.btn-view-details {
+    background-color: var(--color-primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3) !important;
+}
+
+.btn-view-details:hover {
+    background-color: #2980b9 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4) !important;
+}
+
+.btn-change-status {
+    background-color: #7f8c8d !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(127, 140, 141, 0.3) !important;
+}
+
+.btn-change-status:hover {
+    background-color: #636e72 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(127, 140, 141, 0.4) !important;
+}
+
+.btn-remove-project {
+    background-color: var(--status-rejected) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3) !important;
+}
+
+.btn-remove-project:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4) !important;
+}
+
+/* --- Responsividade Aprimorada --- */
+@media (max-width: 1200px) {
+    .ver-projetos-container {
+        padding: 30px !important;
+        margin: 40px 20px !important;
+    }
+
+    .projetos-title {
+        font-size: 2.8em !important;
+    }
+
+    .projetos-description {
+        font-size: 1.1em !important;
+        margin-bottom: 50px !important;
+    }
+
+    .projetos-list-grid > * {
+        max-width: 290px !important;
+        flex-basis: 290px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .ver-projetos-container {
+        margin: 30px 15px !important;
+        padding: 25px !important;
+        border-radius: 10px !important;
+    }
+
+    .projetos-title {
+        font-size: 2.4em !important;
+    }
+
+    .projetos-description {
+        font-size: 1em !important;
+        margin-bottom: 40px !important;
+    }
+
+    .projetos-list-grid > * {
+        max-width: 270px !important;
+        flex-basis: 270px !important;
+    }
+
+    .projeto-card {
+        padding: 20px !important;
+        min-height: 190px !important;
+    }
+
+    .add-first-project-btn {
+        padding: 12px 25px !important;
+        font-size: 1.05em !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .ver-projetos-container {
+        padding: 20px 15px !important;
+        margin: 20px auto !important;
+    }
+
+    .projetos-title {
+        font-size: 2em !important;
+        margin-bottom: 10px !important;
+    }
+
+    .projetos-description {
+        font-size: 0.9em !important;
+        margin-bottom: 30px !important;
+    }
+
+    .no-projects-message {
+        padding: 40px !important;
+        gap: 15px !important;
+    }
+
+    .no-projects-message p {
+        font-size: 1.1em !important;
+    }
+
+    .projetos-list-grid {
+        flex-wrap: nowrap !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .projetos-list-grid > * {
+        max-width: 100% !important;
+        flex-basis: auto !important;
+    }
+
+    .projeto-card {
+        padding: 18px !important;
+        min-height: auto !important;
+    }
+
+    .projeto-card-title {
+        font-size: 1.4em !important;
+    }
+
+    .projeto-card-professor,
+    .projeto-card-category,
+    .projeto-card-status,
+    .projeto-card-date {
+        font-size: 0.9em !important;
+        margin-bottom: 4px !important;
+    }
+
+    .projeto-card-status span {
+        padding: 3px 8px !important;
+        font-size: 0.8em !important;
+    }
+
+    .projeto-card-actions {
+        margin-top: 15px !important;
+        padding-top: 10px !important;
+        gap: 8px !important;
+    }
+
+    .btn-view-details,
+    .btn-change-status,
+    .btn-remove-project {
+        padding: 8px 14px !important;
+        font-size: 0.85em !important;
+        min-width: unset !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .ver-projetos-container {
+        padding: 15px 10px !important;
+        margin: 15px auto !important;
+    }
+
+    .projetos-title {
+        font-size: 1.7em !important;
+    }
+}
