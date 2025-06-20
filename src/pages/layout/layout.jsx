@@ -3,8 +3,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import '../../global.css'; // Seu CSS global
 import './layout.css'; // Estilos específicos do Layout
 
-// Importe os provedores de contexto
-import { NotificationProvider } from "../contexts/NotificationContext.jsx";
+// Importe os provedores de contexto (caminho corrigido para ser consistente com o App.jsx)
+import { NotificationProvider, NotificationWidget } from "../contexts/NotificationContext.jsx"; // <--- Importe NotificationWidget
 import { EventProjectProvider } from "../contexts/EventProjectContext.jsx";
 
 export default function Layout({ userEmail, userProfile, handleLogout }) {
@@ -41,12 +41,14 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
     };
 
     return (
+        // Provedores de Contexto devem envolver todo o conteúdo que precisa deles
+        // Eles já estavam aqui, o que é ótimo!
         <NotificationProvider>
             <EventProjectProvider>
                 {console.log("Layout.jsx: NotificationProvider e EventProjectProvider envolvendo conteúdo")}
                 <div className="app-main-container">
 
-                    <header className="home-header">
+                    <header className="home-header"> {/* Garanta que este header tenha um z-index alto no CSS */}
                         <div className="header-left-content">
                             <h1 className="logo-text">SCAP</h1>
                             <p className="subtitulo">Sistema de Cadastro e Avaliacao de Projetos.</p>
@@ -68,12 +70,15 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                         )}
                     </header>
 
+                    {/* NOVO: Renderize o NotificationWidget AQUI, logo abaixo do header */}
+                    <NotificationWidget /> {/* <--- CHAVE! Adicionado aqui */}
+
                     <main className="global-main-content">
                         {console.log("Layout.jsx: Outlet sendo renderizado")}
-                        <Outlet />
+                        <Outlet /> {/* Aqui é onde o conteúdo da rota atual é renderizado */}
                     </main>
 
-                    {/* NOVO FOOTER GRANDE E DETALHADO */}
+                    {/* Seu footer existente */}
                     <footer className="main-footer">
                         <div className="footer-content">
                             <div className="footer-section about">

@@ -1,3 +1,5 @@
+/* src/pages/dashboard/dashboard.css */
+
 /* --- Variáveis de Cor (para fácil customização) --- */
 :root {
     --primary-color: #007bff;
@@ -12,11 +14,25 @@
     --info-color: #17a2b8;
     --warning-color: #ffc107;
 
-    --theme-primary: #3498db;
+    --theme-primary: #3498db; /* Azul principal do tema */
     --theme-secondary: #2c3e50;
     --theme-background-gradient-start: #e0f2f7;
     --theme-background-gradient-end: #c1e4f4;
     --theme-card-hover: #f0f8ff;
+
+    /* Adições para notificação */
+    --notification-aprovado: #2ecc71; /* Verde */
+    --notification-rejeitado: #e74c3c; /* Vermelho */
+
+    /* NOVAS VARIÁVEIS para o botão de notificação bonito */
+    --fab-bg: #3498db; /* Cor de fundo do FAB (azul principal) */
+    --fab-bg-hover: #2980b9; /* Cor de fundo do FAB no hover */
+    --fab-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Sombra do FAB */
+    --fab-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.35); /* Sombra do FAB no hover */
+    --fab-size: 55px; /* Tamanho do FAB */
+    --badge-bg: #e74c3c; /* Cor do badge (vermelho de perigo) */
+    --badge-text: white;
+    --badge-size: 22px; /* Tamanho do badge */
 }
 
 body {
@@ -61,77 +77,89 @@ body {
     max-width: 800px;
 }
 
-/* === Ícone de Notificações (Topo) === */
-.notifications-icon-wrapper {
-    position: absolute;
-    top: 30px;
+/* === ESTILOS PARA O NOTIFICATION WIDGET (BOTÃO FAB E PAINEL) === */
+
+/* Container do botão de notificação e popover */
+.notification-widget-container {
+    position: fixed;
+    top: 80px; /* Ajuste este valor conforme a altura real do seu header */
     right: 30px;
-    z-index: 50;
+    z-index: 1000; /* Abaixo do header principal (que deve ter z-index 1001+) */
     cursor: pointer;
 }
 
-.notifications-icon {
-    font-size: 2.2em;
-    color: var(--theme-primary);
-    transition: transform 0.2s ease;
-}
-
-.notifications-icon:hover {
-    transform: scale(1.1);
-    color: #2980b9;
-}
-
-/* === Badge de Notificações (Contador) === */
-#notification-badge-id {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: var(--danger-color);
-    color: white;
-    font-family: 'Koulen', sans-serif;
-    font-size: 0.9em;
-    font-weight: bold;
-    padding: 3px 7px;
-    border-radius: 50%;
-    border: 2px solid var(--background-light);
-    min-width: 22px;
-    height: 22px;
+/* Estilo do botão FAB (Floating Action Button) */
+.notification-icon-button {
+    background-color: var(--fab-bg); /* Cor de fundo do FAB */
+    color: white; /* Cor do ícone */
+    width: var(--fab-size); /* Tamanho do FAB */
+    height: var(--fab-size); /* Tamanho do FAB */
+    border-radius: 50%; /* Faz o FAB ser redondo */
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    line-height: 1;
+    font-size: 2em; /* Tamanho do ícone de sino dentro do FAB */
+    cursor: pointer;
+    box-shadow: var(--fab-shadow); /* Sombra inicial */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    position: relative; /* Para posicionar o badge */
+    outline: none; /* Remove o contorno de foco padrão */
 }
 
-/* --- Sidebar de Notificações --- */
-.notifications-sidebar {
-    position: fixed;
-    top: 0;
-    right: -350px;
-    width: 350px;
-    height: 100%;
-    background-color: var(--card-background);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.15);
-    z-index: 1001;
-    transition: right 0.3s ease-out;
+.notification-icon-button:hover {
+    background-color: var(--fab-bg-hover); /* Cor no hover */
+    transform: translateY(-5px); /* Elevação no hover */
+    box-shadow: var(--fab-shadow-hover); /* Sombra mais proeminente no hover */
+}
+
+.notification-icon-button .material-icons {
+    font-size: 1em; /* Usa o tamanho definido pelo pai (.notification-icon-button) */
+}
+
+/* Badge de Notificações (Contador) */
+.notification-badge {
+    position: absolute;
+    top: -5px; /* Ajuste para posicionar sobre o FAB */
+    right: -5px; /* Ajuste para posicionar sobre o FAB */
+    background-color: var(--badge-bg); /* Cor de fundo do badge */
+    color: var(--badge-text); /* Cor do texto do badge */
+    font-family: 'Koulen', sans-serif; /* Fonte para o contador */
+    font-size: 0.75em; /* Tamanho da fonte do número */
+    font-weight: bold;
+    padding: 3px 6px; /* Padding ajustado para o tamanho do badge */
+    border-radius: 50%; /* Torna o badge redondo */
+    border: 2px solid var(--card-background); /* Borda para destaque, use a cor de fundo do card */
+    min-width: var(--badge-size); /* Largura mínima do badge */
+    height: var(--badge-size); /* Altura do badge */
     display: flex;
-    flex-direction: column;
-    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* Inclui padding e borda na dimensão total */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Sombra sutil para o badge */
+    line-height: 1; /* Alinhamento vertical do texto */
 }
 
-.notifications-sidebar.open {
+/* Painel de Notificações (Popover) */
+.notifications-panel-popover {
+    position: absolute;
+    top: calc(var(--fab-size) + 15px); /* Posiciona abaixo do FAB + 15px de margem */
     right: 0;
+    width: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 1002; /* Mais alto que o header, para o popover ficar visível */
 }
 
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .sidebar-header {
@@ -149,7 +177,7 @@ body {
     margin: 0;
 }
 
-.close-sidebar-btn {
+.close-sidebar-btn { /* Este botão é do NotificationsSidebar, se você o usar */
     background: none;
     border: none;
     font-size: 2em;
@@ -165,8 +193,6 @@ body {
 }
 
 .notification-list {
-    flex-grow: 1;
-    overflow-y: auto;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -174,88 +200,85 @@ body {
 
 .notification-item {
     background-color: #fefefe;
-    border: 1px solid #e0e0e0;
-    border-left: 4px solid;
+    border: 1px solid var(--border-color);
+    border-left: 5px solid;
     border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
     display: flex;
     align-items: flex-start;
-    font-size: 0.95em;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    gap: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.notification-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
 .notification-item.read {
+    opacity: 0.7;
     background-color: #f2f2f2;
-    opacity: 0.8;
 }
 
-.notification-item.notification-info { border-left-color: #3498db; }
-.notification-item.notification-convite { border-left-color: #f39c12; }
-.notification-item.notification-evento { border-left-color: #28a745; }
-.notification-item.notification-alerta { border-left-color: #e74c3c; }
+.notification-item.expanded {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Cores das bordas por tipo */
+.notification-info { border-left-color: var(--info-color); }
+.notification-convite { border-left-color: var(--warning-color); }
+.notification-evento { border-left-color: var(--theme-primary); }
+.notification-alerta { border-left-color: var(--danger-color); }
+.notification-aprovado-avaliador { border-left-color: var(--notification-aprovado); }
+.notification-rejeitado-avaliador { border-left-color: var(--notification-rejeitado); }
 
 .notification-icon {
-    font-size: 1.3em;
-    margin-right: 10px;
+    font-size: 1.8em;
+    line-height: 1;
     flex-shrink: 0;
 }
 
-.notification-content-wrapper {
+.notification-content {
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    position: relative;
-    padding-right: 50px;
-}
-
-.notification-main-content {
-    flex-grow: 1;
-    word-break: break-word;
+    font-size: 0.95em;
+    color: var(--text-dark);
 }
 
 .notification-timestamp {
     display: block;
     font-size: 0.75em;
-    color: #b0b0b0;
-    margin-top: 3px;
-    text-align: left;
+    color: var(--text-light);
+    margin-top: 5px;
 }
 
 .remove-notification-btn {
     background: none;
     border: none;
-    font-size: 1.3em;
+    font-size: 1.5em;
     color: #ccc;
     cursor: pointer;
     position: absolute;
-    right: 0;
-    top: 0;
-    opacity: 0.7;
-    transition: opacity 0.2s ease, color 0.2s ease;
+    top: 5px;
+    right: 8px;
     padding: 5px;
     line-height: 1;
+    transition: color 0.2s ease;
 }
 
 .remove-notification-btn:hover {
-    opacity: 1;
     color: var(--danger-color);
 }
 
 .expand-icon {
     font-size: 1.2em;
-    color: #555;
+    color: var(--secondary-color);
     transition: transform 0.3s ease;
-    position: absolute;
-    right: 25px;
-    top: 0;
-    line-height: 1;
-    padding: 5px;
-    box-sizing: border-box;
 }
 
 .expand-icon.expanded {
@@ -263,39 +286,28 @@ body {
 }
 
 .notification-expanded-content {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: none;
-    width: 100%;
-    padding-left: calc(1.3em + 10px);
-    box-sizing: border-box;
-}
-
-.notification-item.expanded .notification-expanded-content {
-    max-height: 200px;
-    opacity: 1;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px dashed #eee;
+    background-color: #f9f9f9;
+    border-top: 1px dashed var(--border-color);
+    margin: 10px -15px -15px -15px;
+    padding: 15px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    font-size: 0.9em;
+    line-height: 1.5;
 }
 
 .expanded-details {
     margin-bottom: 15px;
-    text-align: left;
+    color: var(--text-dark);
 }
 
 .notification-actions-buttons {
     display: flex;
     gap: 8px;
-    margin-top: 12px;
     justify-content: flex-end;
 }
 
-.notification-actions-buttons button {
+.btn-accept, .btn-decline {
     padding: 7px 12px;
     border-radius: 5px;
     font-weight: bold;
@@ -308,6 +320,7 @@ body {
     background-color: var(--success-color);
     color: white;
 }
+
 .btn-accept:hover {
     background-color: #218838;
 }
@@ -316,6 +329,7 @@ body {
     background-color: var(--danger-color);
     color: white;
 }
+
 .btn-decline:hover {
     background-color: #c0392b;
 }
@@ -325,7 +339,6 @@ body {
     color: var(--text-light);
     padding: 20px;
     font-style: italic;
-    font-size: 0.9em;
 }
 
 /* --- Ações do Dashboard --- */
@@ -415,8 +428,13 @@ body {
         margin-right: 0;
     }
 
-    .notifications-sidebar {
+    /* Ocultar a sidebar de notificações em telas pequenas (se ela for um elemento separado) */
+    .notifications-sidebar { /* Este bloco é do NotificationsSidebar, se você o usar */
         width: 300px;
+    }
+    .notifications-panel-popover {
+        width: 90%; /* Ocupa 90% da largura em telas pequenas */
+        right: 5%;
     }
 }
 

@@ -23,6 +23,8 @@
     --event-action-delete: #e74c3c; /* Vermelho para excluir */
     --btn-save: #28a745; /* Verde para salvar */
     --btn-cancel: #95a5a6; /* Cinza para cancelar */
+    --btn-approve: #2ecc71; /* Verde para aprovar solicitação */
+    --btn-reject: #e74c3c; /* Vermelho para rejeitar solicitação */
 
     /* Sombras e transições */
     --shadow-light: rgba(0, 0, 0, 0.08);
@@ -214,14 +216,14 @@ body {
 
 /* Botões de Ação na Lista de Eventos */
 .btn-manage,
-.btn-view-projects, /* Manter por enquanto se for re-ativado */
+.btn-view-projects,
 .btn-delete {
     padding: 8px 14px;
     border: none;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 0.9em;
     font-weight: 600;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     letter-spacing: 0.3px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -315,7 +317,7 @@ body {
     margin-bottom: 30px;
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 5px;
-    flex-wrap: wrap; /* Permite que as abas quebrem a linha */
+    flex-wrap: wrap;
 }
 
 .tab-btn {
@@ -344,7 +346,7 @@ body {
 }
 
 .tab-btn.active:hover {
-    background-color: var(--color-primary); /* Não muda cor no hover quando ativo */
+    background-color: var(--color-primary);
     color: white;
 }
 
@@ -355,12 +357,13 @@ body {
 
 .event-details-section,
 .projects-list-section,
-.participants-list-section {
+.participants-list-section,
+.requests-list-section {
     background-color: var(--color-bg-light);
     border-radius: 12px;
     padding: 25px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Sombra interna suave */
-    min-height: 250px; /* Altura mínima para o conteúdo */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    min-height: 250px;
 }
 
 .tab-content h2 {
@@ -472,6 +475,42 @@ body {
 
 
 /* Lista de Projetos Interna */
+.projects-list-section {
+    /* Herda estilos de .tab-content (background, padding, shadow) */
+}
+
+.projects-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.toggle-ranking-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.toggle-ranking-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+.toggle-ranking-btn.active {
+    background-color: var(--color-primary);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+.toggle-ranking-btn.active:hover {
+    background-color: #2980b9;
+}
+
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -487,10 +526,24 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     text-align: left;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
 }
 .project-item-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+.ranking-position {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--color-accent);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px 0 8px 0;
+    font-weight: 700;
+    font-size: 1.1em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .project-item-card h4 {
@@ -510,20 +563,20 @@ body {
     color: var(--color-text-light);
 }
 
-.project-item-card .status-pendente-avaliacao,
-.project-item-card .status-aprovado,
-.project-item-card .status-rejeitado,
-.project-item-card .status-em-avaliacao {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 15px;
-    font-size: 0.75em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-left: 5px;
-    /* Cores definidas nas variáveis globais ou herdadas */
+.project-average-score {
+    font-size: 1em;
+    color: var(--color-secondary);
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
+.project-average-score span {
+    color: var(--color-accent);
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
 
 /* Ações dos Projetos Internos */
 .project-actions {
@@ -550,14 +603,14 @@ body {
     background-color: #2980b9;
 }
 .btn-change-status {
-    background-color: #6c757d; /* Cinza para mudar status */
+    background-color: #6c757d;
     color: white;
 }
 .btn-change-status:hover {
     background-color: #5a6268;
 }
 
-/* Listas de Participantes */
+/* Listas de Participantes (Reusado) */
 .add-participant-btn {
     background-color: var(--color-accent);
     color: white;
@@ -576,13 +629,13 @@ body {
     transform: translateY(-2px);
 }
 
-.participant-list {
+.participant-list, .request-list {
     list-style: none;
     padding: 0;
     margin-top: 20px;
     text-align: left;
 }
-.participant-list li {
+.participant-list li, .request-list li {
     background-color: var(--color-card-bg);
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -595,7 +648,7 @@ body {
     color: var(--color-text-dark);
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
-.participant-list li span {
+.participant-list li span, .request-list li span {
     font-weight: 600;
     color: var(--color-text-light);
 }
@@ -608,6 +661,77 @@ body {
     border-radius: 8px;
     margin-top: 20px;
 }
+
+/* --- Estilos para a Seção de Solicitações (Reusado) --- */
+.requests-list-section {
+    /* Herda estilos de .tab-content (background, padding, shadow) */
+}
+
+.request-item {
+    background-color: #fffaf0;
+    border: 1px solid #f1c40f;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.request-item .request-info {
+    text-align: left;
+}
+.request-item .request-info h4 {
+    font-size: 1.1em;
+    color: var(--color-secondary);
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+.request-item .request-info p {
+    font-size: 0.85em;
+    color: var(--color-text-dark);
+    margin: 0;
+}
+
+.request-item .request-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    border-top: 1px dashed var(--color-border);
+    padding-top: 10px;
+}
+
+.btn-approve, .btn-reject {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-approve {
+    background-color: var(--btn-approve);
+    color: white;
+}
+.btn-approve:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+.btn-reject {
+    background-color: var(--btn-reject);
+    color: white;
+}
+.btn-reject:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
 
 /* --- Responsividade Aprimorada --- */
 @media (max-width: 1200px) {
@@ -630,11 +754,11 @@ body {
         font-size: 2em;
     }
     .event-management-tabs {
-        gap: 0; /* Remove gap para que as abas se ajustem melhor */
+        gap: 0;
     }
     .tab-btn {
-        flex-grow: 1; /* Permite que as abas se expandam para preencher o espaço */
-        border-radius: 0; /* Remove borda arredondada entre elas */
+        flex-grow: 1;
+        border-radius: 0;
     }
     .projects-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -678,17 +802,28 @@ body {
         font-size: 1.8em;
     }
     .event-management-tabs {
-        flex-direction: column; /* Abas empilhadas em mobile */
+        flex-direction: column;
     }
     .tab-btn {
-        border-radius: 8px; /* Volta a ter borda arredondada em mobile */
-        margin-bottom: 5px; /* Espaço entre as abas empilhadas */
+        border-radius: 8px;
+        margin-bottom: 5px;
     }
     .tab-btn.active {
-        border-bottom: none; /* Remove a linha ativa inferior em mobile */
+        border-bottom: none;
     }
     .tab-content h2 {
         font-size: 1.5em;
+    }
+    .requests-list-section .request-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .request-item .request-actions {
+        justify-content: flex-start;
+        margin-top: 5px;
+        padding-top: 8px;
+        width: 100%;
     }
 }
 
@@ -750,6 +885,15 @@ body {
     .edit-event-form textarea {
         font-size: 0.9em;
         padding: 8px 12px;
+    }
+    .request-item .request-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .btn-approve, .btn-reject {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 5px;
     }
 }
 

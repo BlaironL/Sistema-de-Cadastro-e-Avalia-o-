@@ -1,81 +1,86 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Usaremos useParams para pegar o ID do evento
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEventsProjects } from '../contexts/EventProjectContext';
 import { useNotifications } from '../contexts/NotificationContext';
 import './gerenciar-eventos.css';
 
 export default function GerenciarEventos() {
     const navigate = useNavigate();
-    const { events, addEvent, updateEvent, addProjectToEvent, updateProjectStatus, getEventByIdentifier } = useEventsProjects();
+    const { events, createEvent, updateEvent, updateProjectStatus, getEventByIdentifier, handleEvaluatorRequest } = useEventsProjects(); 
     const { addNotification } = useNotifications();
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedEvent, setSelectedEvent] = useState(null); // Evento selecionado para gerenciar
-    const [isEditingEvent, setIsEditingEvent] = useState(false); // Modo de edição do evento
-    const [editedEventData, setEditedEventData] = useState({}); // Dados do evento em edição
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isEditingEvent, setIsEditingEvent] = useState(false);
+    const [editedEventData, setEditedEventData] = useState({});
+    const [activeSection, setActiveSection] = useState('detalhes');
+    const [isRankingMode, setIsRankingMode] = useState(false); // NOVO: Estado para controlar o modo de ranking
 
-    // Estados para controle das abas/seções dentro do gerenciamento do evento
-    const [activeSection, setActiveSection] = useState('detalhes'); // 'detalhes', 'projetos', 'avaliadores', 'organizadores'
-
-    // UseEffect para adicionar eventos de teste se não existirem (apenas para demonstração)
+    // UseEffect para adicionar eventos de teste se não existirem
     useEffect(() => {
-        const hasTestEventsAdded = localStorage.getItem('hasTestEventsAdded');
-        if (!hasTestEventsAdded || events.length === 0) {
-            addEvent({ id: 'event-test-001', titulo: "Feira de Inovação 2025", local: "Centro de Convenções", data: "2025-08-20", descricao: "A maior feira de inovação do ano, com projetos incríveis!" });
-            addEvent({ id: 'event-test-002', titulo: "Hackathon de Sustentabilidade", local: "Campus Tech", data: "2025-09-10", descricao: "Desenvolva soluções para um futuro mais verde." });
-            addEvent({ id: 'event-test-003', titulo: "Semana Acadêmica Online", local: "Online", data: "2025-10-05", descricao: "Palestras e workshops com especialistas de diversas áreas." });
-            localStorage.setItem('hasTestEventsAdded', 'true');
+        const testEventIds = ['test-event-001', 'test-event-002', 'test-event-003'];
+        const existingTestEvents = new Set((events || []).map(e => e.id));
+
+        const needsToAddTestEvents = testEventIds.some(id => !existingTestEvents.has(id));
+
+        if (needsToAddTestEvents) {
+            console.log("GerenciarEventos: Adicionando eventos de teste...");
+            if (!existingTestEvents.has('test-event-001')) {
+                createEvent({ id: 'test-event-001', titulo: "Feira de Inovação 2025", local: "Centro de Convenções", data: "2025-08-20", descricao: "A maior feira de inovação do ano!" });
+            }
+            if (!existingTestEvents.has('test-event-002')) {
+                createEvent({ id: 'test-event-002', titulo: "Hackathon de Sustentabilidade", local: "Campus Tech", data: "2025-09-10", descricao: "Desenvolva soluções para um futuro mais verde." });
+            }
+            if (!existingTestEvents.has('test-event-003')) {
+                createEvent({ id: 'test-event-003', titulo: "Semana Acadêmica Online", local: "Online", data: "2025-10-05", descricao: "Palestras e workshops com especialistas de diversas áreas." });
+            }
         }
-    }, [addEvent, events.length]);
+    }, [events, createEvent]);
 
     // Filtra os eventos com base no termo de pesquisa
-    const filteredEvents = events.filter(event => {
+    const filteredEvents = (events || []).filter(event => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return (
-            (event.titulo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
-            (event.codigo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
-            (event.local || '').toLowerCase().includes(lowerCaseSearchTerm) ||
-            (event.data || '').toLowerCase().includes(lowerCaseSearchTerm) ||
-            (event.descricao || '').toLowerCase().includes(lowerCaseSearchTerm) // Adicionado pesquisa na descrição
+            (event?.titulo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
+            (event?.codigo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
+            (event?.local || '').toLowerCase().includes(lowerCaseSearchTerm) ||
+            (event?.data || '').toLowerCase().includes(lowerCaseSearchTerm) ||
+            (event?.descricao || '').toLowerCase().includes(lowerCaseSearchTerm)
         );
     });
 
-    // Função para iniciar o gerenciamento de um evento específico
+    // Atualiza o selectedEvent sempre que os eventos do contexto mudarem
+    useEffect(() => {
+        if (selectedEvent && events) {
+            const updatedSelectedEvent = getEventByIdentifier(selectedEvent.id);
+            if (updatedSelectedEvent) {
+                setSelectedEvent(updatedSelectedEvent);
+            } else {
+                setSelectedEvent(null);
+            }
+        }
+    }, [events, selectedEvent, getEventByIdentifier]);
+
+
     const handleSelectEventToManage = useCallback((event) => {
         setSelectedEvent(event);
-        setEditedEventData({ ...event }); // Preenche o formulário de edição com os dados do evento
-        setIsEditingEvent(false); // Inicia no modo de visualização
-        setActiveSection('detalhes'); // Volta para a aba de detalhes
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola para o topo da página
+        setEditedEventData({ ...event });
+        setIsEditingEvent(false);
+        setActiveSection('detalhes');
+        setIsRankingMode(false); // NOVO: Reseta o modo de ranking ao selecionar novo evento
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    // Função para salvar as edições do evento
     const handleSaveEventEdits = () => {
         if (!editedEventData.titulo || !editedEventData.local || !editedEventData.data) {
             addNotification('Título, local e data são obrigatórios para atualizar o evento.', 'alerta');
             return;
         }
-        updateEvent(editedEventData.id, editedEventData); // Chama a função de atualização do contexto
+        updateEvent(editedEventData.id, editedEventData);
         addNotification(`Evento "${editedEventData.titulo}" atualizado com sucesso!`, 'info');
-        setIsEditingEvent(false); // Sai do modo de edição
-        setSelectedEvent(editedEventData); // Atualiza o evento selecionado com os novos dados
+        setIsEditingEvent(false);
     };
 
-    // Funções de gerenciamento de projetos/avaliadores/organizadores (simuladas)
-    const handleAddParticipant = (role) => {
-        const email = prompt(`Digite o email do novo ${role}:`);
-        if (email) {
-            // Em uma implementação real, você adicionaria essa lógica ao EventProjectContext
-            addNotification(`Simulando: ${email} convidado como ${role} para ${selectedEvent.titulo}.`, 'info');
-            // selectedEvent.avaliadoresConvidados.push({ email, status: 'pendente' }); // Simulação direta (NÃO FAZER EM PROD)
-            // Forçaria um re-render ou adicionaria uma função real no contexto
-        }
-    };
-
-    const handleInviteEvaluator = () => handleAddParticipant('avaliador');
-    const handleInviteOrganizer = () => handleAddParticipant('organizador');
-
-    // Funções para gerenciar o status de um projeto (exemplo, já vem do EventProjectContext)
     const handleChangeProjectStatus = (project) => {
         const newStatus = prompt(`Mudar status de "${project.titulo}" para (Aprovado, Rejeitado, Em Avaliação, Pendente Avaliação):`, project.status);
         if (newStatus && ['Aprovado', 'Rejeitado', 'Em Avaliação', 'Pendente Avaliação'].includes(newStatus)) {
@@ -85,12 +90,73 @@ export default function GerenciarEventos() {
             }
             updateProjectStatus(selectedEvent.id, project.id, newStatus, rejectionMessage);
             addNotification(`Status do projeto "${project.titulo}" atualizado para: ${newStatus}`, 'info');
-            // Força o re-render do componente selecionado para refletir a mudança
-            setSelectedEvent(prev => getEventByIdentifier(prev.id)); 
-        } else if (newStatus !== null) { // Usuário não cancelou, mas inseriu inválido
+        } else if (newStatus !== null) {
             addNotification('Status inválido. Escolha entre Aprovado, Rejeitado, Em Avaliação ou Pendente Avaliação.', 'alerta');
         }
     };
+
+    const handleApproveRejectRequest = (request, status) => {
+        if (!window.confirm(`Tem certeza que deseja ${status === 'aprovado' ? 'APROVAR' : 'REJEITAR'} a solicitação de ${request.nome || request.email}?`)) {
+            return;
+        }
+
+        const acceptedParticipant = handleEvaluatorRequest(selectedEvent.id, request.id, status, request);
+
+        if (status === 'aprovado') {
+            addNotification(`Solicitação de ${request.nome || request.email} APROVADA para ${selectedEvent.titulo}!`, 'info');
+            if (acceptedParticipant) {
+                addNotification(`Parabéns! Você foi aprovado(a) como avaliador(a) no evento "${selectedEvent.titulo}"!`, 'aprovado-avaliador', { eventId: selectedEvent.id, eventTitle: selectedEvent.titulo, recipientEmail: acceptedParticipant.email });
+            }
+        } else {
+            addNotification(`Solicitação de ${request.nome || request.email} REJEITADA para ${selectedEvent.titulo}.`, 'alerta');
+            addNotification(`Sua solicitação para avaliar o evento "${selectedEvent.titulo}" foi rejeitada.`, 'rejeitado-avaliador', { eventId: selectedEvent.id, eventTitle: selectedEvent.titulo, recipientEmail: request.email });
+        }
+    };
+
+    const handleDeleteEvent = (eventId, eventTitle) => {
+        if (window.confirm(`Tem certeza que deseja SIMULAR a exclusão do evento "${eventTitle}"? (Esta função não remove realmente no contexto ainda)`)) {
+            addNotification(`Simulando: Evento "${eventTitle}" excluído.`, 'info');
+            setSelectedEvent(null);
+        }
+    };
+
+    // Função auxiliar para calcular a média das avaliações de UM projeto
+    const calculateAverageScore = (project) => {
+        if (!project.avaliacoes || project.avaliacoes.length === 0) {
+            return 'N/A';
+        }
+        // Média ponderada ou simples das médias finais de cada avaliador
+        const validScores = project.avaliacoes.map(evalu => Number(evalu.mediaFinal)).filter(score => !isNaN(score));
+
+        if (validScores.length === 0) {
+            return 'N/A';
+        }
+        const sum = validScores.reduce((acc, score) => acc + score, 0);
+        return (sum / validScores.length).toFixed(1);
+    };
+
+    // NOVO: Função para ordenar os projetos para o ranking
+    const getRankedProjects = useCallback(() => {
+        // Garante que selectedEvent e projetos existem
+        if (!selectedEvent || !selectedEvent.projetos) {
+            return [];
+        }
+        // Filtra projetos que já foram avaliados pelo menos uma vez
+        const projectsWithScores = selectedEvent.projetos.filter(project => 
+            project.avaliacoes && project.avaliacoes.length > 0 && calculateAverageScore(project) !== 'N/A'
+        );
+
+        // Ordena os projetos pela média final (do maior para o menor)
+        return [...projectsWithScores].sort((a, b) => {
+            const scoreA = parseFloat(calculateAverageScore(a));
+            const scoreB = parseFloat(calculateAverageScore(b));
+            return scoreB - scoreA; // Ordem decrescente
+        });
+    }, [selectedEvent, calculateAverageScore]);
+
+
+    // Projetos a serem exibidos (ordenados ou não)
+    const projectsToDisplay = isRankingMode ? getRankedProjects() : (selectedEvent?.projetos || []);
 
 
     return (
@@ -127,6 +193,12 @@ export default function GerenciarEventos() {
                             onClick={() => setActiveSection('organizadores')}
                         >
                             Organizadores ({selectedEvent.organizadoresConvidados ? selectedEvent.organizadoresConvidados.length : 0})
+                        </button>
+                        <button 
+                            className={`tab-btn ${activeSection === 'solicitacoes' ? 'active' : ''}`} 
+                            onClick={() => setActiveSection('solicitacoes')}
+                        >
+                            Solicitações ({selectedEvent.solicitacoesAvaliadores ? selectedEvent.solicitacoesAvaliadores.filter(r => r.status === 'pendente').length : 0})
                         </button>
                     </div>
 
@@ -173,17 +245,33 @@ export default function GerenciarEventos() {
                         {activeSection === 'projetos' && (
                             <div className="projects-list-section">
                                 <h2>Projetos Participantes</h2>
-                                {selectedEvent.projetos && selectedEvent.projetos.length > 0 ? (
+                                <div className="projects-controls"> {/* NOVO: Controles de projetos */}
+                                    <button 
+                                        className={`toggle-ranking-btn ${isRankingMode ? 'active' : ''}`}
+                                        onClick={() => setIsRankingMode(!isRankingMode)}
+                                    >
+                                        {isRankingMode ? 'Ver Todos Projetos' : 'Gerar Ranking'}
+                                    </button>
+                                </div>
+                                {projectsToDisplay && projectsToDisplay.length > 0 ? (
                                     <div className="projects-grid">
-                                        {selectedEvent.projetos.map(project => (
+                                        {projectsToDisplay.map((project, index) => ( // NOVO: index para ranking
                                             <div key={project.id} className="project-item-card">
+                                                {isRankingMode && (
+                                                    <div className="ranking-position">#{index + 1}</div> /* NOVO: Posição no ranking */
+                                                )}
                                                 <h4>{project.titulo}</h4>
                                                 <p>Coordenador: <span>{project.professorCoordenador}</span></p>
                                                 <p>Status: <span className={`status-${(project.status || '').toLowerCase().replace(/\s/g, '-')}`}>{project.status}</span></p>
-                                                <p className="project-actions">
-                                                    <button className="btn-details" onClick={() => alert(`Detalhes de ${project.titulo}`)}>Ver Detalhes</button>
-                                                    <button className="btn-change-status" onClick={() => handleChangeProjectStatus(project)}>Mudar Status</button>
-                                                </p>
+                                                {project.avaliacoes && project.avaliacoes.length > 0 && (
+                                                    <p className="project-average-score">Média Avaliações: <span>{calculateAverageScore(project)}</span></p>
+                                                )}
+                                                {!isRankingMode && ( /* Ações visíveis apenas fora do modo ranking */
+                                                    <p className="project-actions">
+                                                        <button className="btn-details" onClick={() => alert(`Detalhes de ${project.titulo}`)}>Ver Detalhes</button>
+                                                        <button className="btn-change-status" onClick={() => handleChangeProjectStatus(project)}>Mudar Status</button>
+                                                    </p>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -196,17 +284,16 @@ export default function GerenciarEventos() {
                         {activeSection === 'avaliadores' && (
                             <div className="participants-list-section">
                                 <h2>Avaliadores Convidados</h2>
-                                <button className="add-participant-btn" onClick={handleInviteEvaluator}>Convidar Avaliador</button>
                                 {selectedEvent.avaliadoresConvidados && selectedEvent.avaliadoresConvidados.length > 0 ? (
                                     <ul className="participant-list">
                                         {selectedEvent.avaliadoresConvidados.map((p, index) => (
-                                            <li key={index}>
-                                                {p.email} - Status: <span>{p.status}</span>
+                                            <li key={p.email || index}>
+                                                {p.nome || p.email} - Status: <span>{p.status}</span>
                                             </li>
                                         ))}
                                     </ul>
                                 ) : (
-                                    <p className="no-items-message">Nenhum avaliador convidado ainda.</p>
+                                    <p className="no-items-message">Nenhum avaliador convidado ou aprovado ainda.</p>
                                 )}
                             </div>
                         )}
@@ -214,12 +301,11 @@ export default function GerenciarEventos() {
                         {activeSection === 'organizadores' && (
                             <div className="participants-list-section">
                                 <h2>Organizadores Convidados</h2>
-                                <button className="add-participant-btn" onClick={handleInviteOrganizer}>Convidar Organizador</button>
                                 {selectedEvent.organizadoresConvidados && selectedEvent.organizadoresConvidados.length > 0 ? (
                                     <ul className="participant-list">
                                         {selectedEvent.organizadoresConvidados.map((p, index) => (
-                                            <li key={index}>
-                                                {p.email} - Status: <span>{p.status}</span>
+                                            <li key={p.email || index}>
+                                                {p.nome || p.email} - Status: <span>{p.status}</span>
                                             </li>
                                         ))}
                                     </ul>
@@ -228,7 +314,44 @@ export default function GerenciarEventos() {
                                 )}
                             </div>
                         )}
-                    </div>
+
+                        {activeSection === 'solicitacoes' && (
+                            <div className="requests-list-section">
+                                <h2>Solicitações de Avaliadores</h2>
+                                {selectedEvent.solicitacoesAvaliadores && selectedEvent.solicitacoesAvaliadores.length > 0 ? (
+                                    <ul className="request-list">
+                                        {selectedEvent.solicitacoesAvaliadores
+                                            .filter(req => req.status === 'pendente')
+                                            .map((request) => (
+                                                <li key={request.id} className="request-item">
+                                                    <div className="request-info">
+                                                        <h4>Solicitação de: {request.nome || request.email}</h4>
+                                                        <p>Motivação: "{request.motivation}"</p>
+                                                        <p>Enviado em: {new Date(request.createdAt).toLocaleDateString()}</p>
+                                                    </div>
+                                                    <div className="request-actions">
+                                                        <button 
+                                                            className="btn-approve" 
+                                                            onClick={() => handleApproveRejectRequest(request, 'aprovado')}
+                                                        >
+                                                            Aprovar
+                                                        </button>
+                                                        <button 
+                                                            className="btn-reject" 
+                                                            onClick={() => handleApproveRejectRequest(request, 'rejeitado')}
+                                                        >
+                                                            Rejeitar
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="no-items-message">Nenhuma solicitação de avaliador pendente para este evento.</p>
+                                )}
+                            </div>
+                        )}
+                    </div> {/* Fim do tab-content */}
                 </div>
             ) : (
                 <>
@@ -281,9 +404,6 @@ export default function GerenciarEventos() {
                                         <button className="btn-manage" onClick={() => handleSelectEventToManage(event)}>
                                             Gerenciar
                                         </button>
-                                        {/* <button className="btn-view-projects" onClick={() => handleViewEventProjects(event.id, event.titulo)}>
-                                            Ver Projetos
-                                        </button> */}
                                         <button className="btn-delete" onClick={() => handleDeleteEvent(event.id, event.titulo)}>
                                             Excluir
                                         </button>
