@@ -162,7 +162,7 @@ export const NotificationWidget = () => {
         <div className="notification-widget-container" ref={widgetRef}> {/* <--- ASSOCIA A REF A ESTE DIV PAI */}
             {/* Botão do Ícone de Notificação - O clique aqui ABRE/FECHA o painel */}
             <div className="notification-icon-button" onClick={() => setShowPanel(!showPanel)}>
-                <span className="material-icons">notifications</span>
+                <span className="material-icons">📩</span>
                 {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
             </div>
 

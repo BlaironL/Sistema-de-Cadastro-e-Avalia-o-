@@ -44,7 +44,7 @@ body {
 }
 
 .gerenciar-eventos-container {
-    max-width: 1280px;
+    max-width: 1280px; /* Largura máxima do container principal */
     margin: 50px auto;
     padding: 40px;
     background-color: var(--color-card-bg);
@@ -139,14 +139,16 @@ body {
     font-weight: 600;
 }
 
-/* Grade de Eventos */
+/* --- Grade de Eventos (Aqui está a chave para lado a lado) --- */
 .eventos-list-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    /* Ajuste o minmax para controlar quantas colunas você quer e qual a largura mínima */
+    /* Exemplo: minmax(350px, 1fr) para tentar 3 colunas em telas largas, mas 2 ou 1 em menores */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+    gap: 30px; /* Espaço entre os cartões */
     margin-top: 30px;
-    justify-content: center;
-    align-items: stretch;
+    justify-content: center; /* Centraliza a grade se não preencher toda a largura */
+    align-items: stretch; /* Garante que todos os cards na mesma linha tenham a mesma altura */
 }
 
 /* Cartão de Evento na Lista */
@@ -161,7 +163,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 220px;
+    min-height: 220px; /* Altura mínima para o card */
     position: relative;
     overflow: hidden;
 }
@@ -539,7 +541,7 @@ body {
     left: 0;
     background-color: var(--color-accent);
     color: white;
-    padding: 5px 10px;
+    padding: 3px 15px;
     border-radius: 8px 0 8px 0;
     font-weight: 700;
     font-size: 1.1em;
@@ -549,7 +551,7 @@ body {
 .project-item-card h4 {
     font-size: 1.2em;
     color: var(--color-secondary);
-    margin-top: 0;
+    margin-top: 20px;
     margin-bottom: 8px;
     font-weight: 600;
 }
@@ -734,10 +736,10 @@ body {
 
 
 /* --- Responsividade Aprimorada --- */
-@media (max-width: 1200px) {
+@media (max-width: 1500px) {
     .gerenciar-eventos-container {
         padding: 30px;
-        margin: 40px 20px;
+        margin: 30px 80px;
     }
     .eventos-title {
         font-size: 2.8em;
@@ -901,7 +903,6 @@ body {
     .gerenciar-eventos-container {
         padding: 15px 10px;
         margin: 15px auto;
-        border-radius: 10px;
     }
     .eventos-title {
         font-size: 1.7em;
@@ -927,7 +928,7 @@ body {
         font-size: 0.9em;
     }
     .tab-btn {
-        padding: 8px 15px;
+        padding: 8px 15x;
     }
     .tab-content h2 {
         font-size: 1.3em;
