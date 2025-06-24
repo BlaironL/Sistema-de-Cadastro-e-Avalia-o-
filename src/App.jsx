@@ -7,8 +7,6 @@ import Home from './pages/index/index';
 import Sobre from './pages/sobre/sobre';
 import Login from './pages/Login/Login'; 
 import Dashboard from './pages/dashboard/dashboard'; 
-import Avaliacoes from './pages/Avaliacoes/Avaliacoes';
-import Avaliador from './pages/Avaliador/Avaliador';
 import Organizador from './pages/Organizador/Organizador';
 import Resultados from './pages/Resultados/resultados'; 
 import CriarEvento from './pages/criar-evento/criar-evento'; 
@@ -89,8 +87,6 @@ export default function App() {
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/avaliacoes" element={<Avaliacoes />} />
-              <Route path="/avaliador" element={<Avaliador />} />
               <Route path="/organizador" element={<Organizador />} />
               <Route path="/resultados" element={<Resultados />} />
               <Route path="/criar-evento" element={<CriarEvento />} />

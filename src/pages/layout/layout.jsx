@@ -48,6 +48,9 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
     // Verifica se o utilizador está autenticado. userEmail será nulo ou vazio antes do login.
     const isAuthenticated = !!userEmail; // Converte para booleano: true se userEmail não for nulo/vazio
 
+    // REMOVIDO: O useEffect para carregar e inicializar o VLibras. Ele deve estar APENAS no index.html.
+    // REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS) NO RETURN. Ele deve estar APENAS no index.html.
+
     return (
         // Os provedores de contexto envolvem toda a aplicação para que os dados fiquem disponíveis
         <NotificationProvider>
@@ -92,11 +95,11 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                         <Outlet /> {/* Aqui é onde o conteúdo da rota atual é renderizado */}
                     </main>
 
-                    {/* NOVO: Div para o widget VLibras */}
-                    <div vw className="enabled">
+                    {/* REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS). Ele deve estar APENAS no index.html. */}
+                    {/* <div vw className="enabled">
                         <div vw-access-button className="active"></div>
                         <div vw-plugin-wrapper></div>
-                    </div>
+                    </div> */}
 
                     {/* O seu rodapé existente */}
                     <footer className="main-footer">

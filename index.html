@@ -9,19 +9,25 @@
   <body>
     <div id="root"></div>
 
-    <!-- INÍCIO DO CÓDIGO VLIBRAS (ELEMENTOS DIVS E SCRIPTS) - ESTE É O LOCAL MAIS ROBUSTO PARA VITE -->
+    <!-- INÍCIO DO CÓDIGO VLIBRAS (ELEMENTOS DIVS E SCRIPTS) - POSICIONAMENTO CRÍTICO! -->
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
     </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
+        // Esta função garante que o widget só é inicializado depois que o DOM está pronto.
+        // É uma medida extra de segurança para compatibilidade.
         window.addEventListener('load', function() {
-            new window.VLibras.Widget('https://vlibras.gov.br/app');
+            if (window.VLibras) { // Verifica se o objeto VLibras existe
+                new window.VLibras.Widget('https://vlibras.gov.br/app');
+            } else {
+                console.error("Erro VLibras: window.VLibras não está definido após o carregamento do script.");
+            }
         });
     </script>
     <!-- FIM DO CÓDIGO VLIBRAS -->
 
     <script type="module" src="/src/main.jsx"></script>
   </body>
-</html>
+</html>``
