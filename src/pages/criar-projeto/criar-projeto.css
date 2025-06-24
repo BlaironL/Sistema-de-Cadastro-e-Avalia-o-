@@ -1,46 +1,68 @@
-/* src/pages/enviar-projeto/enviar-projeto.css */
+/* src/pages/criar-projeto/criar-projeto.css */
 
-/* --- Variáveis de Cores (para consistência) --- */
+/* --- Variáveis de Cores (Atualizadas para o novo design) --- */
 :root {
-    --primary-blue: #007bff;
-    --dark-blue: #0056b3;
-    --light-gray: #f8f9fa;
-    --medium-gray: #6c757d;
-    --dark-text: #343a40;
-    --border-light: #dee2e6;
-    --form-bg: #ffffff;
+    /* Cores base */
+    --primary-blue: #3498db; /* Azul principal do tema */
+    --dark-blue: #2c3e50;    /* Azul escuro para textos e títulos */
+    --light-gray: #ecf0f1;   /* Fundo geral leve */
+    --medium-gray: #bdc3c7;  /* Texto secundário/borda */
+    --dark-text: #2c3e50;
+    --border-light: #dbe4eb; /* Borda suave */
+    --form-bg: #ffffff;      /* Fundo do formulário (branco puro para contraste) */
 
-    /* Novas cores para um visual vibrante */
-    --accent-color: #28a745; /* Verde vibrante para botões e destaques */
-    --gradient-start: #6dd5ed; /* Azul claro para gradiente */
-    --gradient-end: #2193b0;   /* Azul escuro para gradiente */
-    --shadow-color: rgba(0, 0, 0, 0.15);
-    --form-shadow: rgba(0, 0, 0, 0.08);
+    /* Cores de destaque e gradientes para vitalidade */
+    --accent-color: #2ecc71; /* Verde vivo para botões e destaques */
+    --gradient-start: #a1c4fd; /* Azul suave para gradiente do container */
+    --gradient-end: #c2e9fb;   /* Azul muito claro para gradiente do container */
+    --image-overlay-gradient-start: rgba(69, 179, 157, 0.7); /* Verde-água com transparência */
+    --image-overlay-gradient-end: rgba(52, 152, 219, 0.7);   /* Azul com transparência */
 
-    /* Adições para "dar vida" */
-    --input-focus-shadow: rgba(40, 167, 69, 0.3); /* Sombra mais vibrante no foco */
-    --button-hover-shadow: rgba(40, 167, 69, 0.5); /* Sombra maior no hover do botão */
-    --card-hover-scale: 1.01; /* Leve escala no hover de inputs */
+    /* Sombras e interações */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --input-focus-shadow: rgba(52, 152, 219, 0.4); /* Sombra do foco vibrante */
+    --button-hover-shadow: rgba(46, 204, 113, 0.4); /* Sombra maior no hover do botão */
+
+    /* NOVAS VARIAVEIS para o formulario */
+    --form-background-soft: #f8faff; /* Um branco levemente azulado para o formulário */
+    --form-border-subtle: #e0e6ed; /* Borda mais definida */
+    --input-bg-subtle: #ffffff; /* Fundo do input */
+    --input-border-focus: var(--accent-color); /* Cor da borda no foco */
+    --input-shadow-focus: 0 0 0 3px rgba(46, 204, 113, 0.25); /* Sombra no foco do input */
+    --form-section-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Sombra mais destacada para a seção */
 }
 
+/* Base Body Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
     background-color: var(--light-gray);
     color: var(--dark-text);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* --- Container Principal da Tela --- */
+/* --- Container Principal da Tela (Redesenhado) --- */
 .enviar-projeto-container {
     display: flex;
     min-height: 100vh;
     width: 100%;
     background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    /* Adiciona uma animação suave de entrada para toda a página */
+    animation: fadeInPage 1s ease-out;
 }
 
-/* --- Seção da Imagem (Esquerda) --- */
+@keyframes fadeInPage {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Seção da Imagem (Esquerda - Redesenhada) --- */
 .projeto-image-section {
     flex: 1;
     position: relative;
@@ -50,60 +72,88 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    background-color: var(--dark-blue); /* Fundo de fallback */
 }
 
 .projeto-hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7);
-    transition: transform 0.5s ease-in-out;
+    filter: brightness(0.6);
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: absolute;
     top: 0;
     left: 0;
 }
 
 .projeto-image-section:hover .projeto-hero-image {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .image-overlay {
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, var(--image-overlay-gradient-start) 0%, var(--image-overlay-gradient-end) 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    padding: 20px;
+    padding: 40px;
     box-sizing: border-box;
+    z-index: 2;
+    animation: fadeInOverlay 1.5s ease-out;
 }
 
-.image-overlay h2 {
-    font-size: 3em;
-    margin-bottom: 15px;
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.overlay-title {
+    font-size: 3.5em;
+    margin-bottom: 20px;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    line-height: 1.2;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    line-height: 1.1;
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: slideInText 1s forwards 0.5s;
 }
 
-.image-overlay p {
-    font-size: 1.2em;
+.overlay-description {
+    font-size: 1.4em;
     max-width: 80%;
-    line-height: 1.5;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    line-height: 1.6;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    animation: slideInText 1s forwards 0.8s;
 }
 
-/* --- Seção do Formulário (Direita) --- */
+@keyframes slideInText {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* --- Seção do Formulário (Direita - Redesenhada com mais vida) --- */
 .projeto-form-section {
     flex: 1;
-    background-color: var(--form-bg);
-    padding: 30px 40px;
-    box-shadow: -5px 0 20px var(--shadow-color);
+    /* NOVO: Fundo suavemente colorido e mais dinâmico */
+    background: linear-gradient(180deg, var(--form-background-soft) 0%, var(--form-bg) 100%);
+    padding: 40px 50px;
+    /* Sombra mais destacada e suave para dar profundidade */
+    box-shadow: -10px 0 40px var(--form-section-shadow); /* Sombra mais proeminente */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -111,43 +161,76 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
     position: relative;
+    z-index: 10;
+    animation: fadeInRight 1s ease-out;
 }
 
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
 .form-title {
-    font-size: 2em;
-    color: var(--dark-text);
-    margin-bottom: 30px;
+    font-size: 2.5em;
+    color: var(--dark-blue);
+    margin-bottom: 35px;
     text-align: center;
-    font-weight: 600;
-    border-bottom: 3px solid var(--accent-color);
-    padding-bottom: 10px;
+    font-weight: 700;
+    border-bottom: 4px solid var(--accent-color);
+    padding-bottom: 15px;
     width: 100%;
-    max-width: 500px;
-    position: sticky; /* Título fixo ao rolar o formulário */
+    max-width: 550px;
+    position: sticky;
     top: 0;
-    background-color: var(--form-bg);
+    background-color: var(--form-background-soft); /* Fundo do título sticky */
     z-index: 10;
-    padding-top: 10px;
+    padding-top: 20px;
+    box-sizing: border-box;
 }
 
 .projeto-form {
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     overflow-y: auto;
-    max-height: calc(100vh - 120px); /* Ajustado para deixar espaço para o título sticky e o botão */
-    padding-right: 10px;
+    max-height: calc(100vh - 180px);
+    padding-right: 15px;
     box-sizing: border-box;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
+    /* NOVO: Estilo da scrollbar customizado (WebKit) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--form-background-soft);
 }
 
-/* --- Nova Grade para Campos --- */
+.projeto-form::-webkit-scrollbar {
+    width: 8px;
+}
+
+.projeto-form::-webkit-scrollbar-track {
+    background: var(--form-background-soft);
+    border-radius: 10px;
+}
+
+.projeto-form::-webkit-scrollbar-thumb {
+    background-color: var(--primary-blue);
+    border-radius: 10px;
+    border: 2px solid var(--form-background-soft);
+}
+
+/* --- Nova Grade para Campos (Aprimorada) --- */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 20px;
 }
 
 .form-group.full-width {
@@ -158,27 +241,54 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    /* NOVO: Animação de entrada individual para os grupos de formulário */
+    animation: fadeInGroup 0.8s ease-out forwards;
+    opacity: 0; /* Começa invisível */
 }
 
+/* Delay para cada grupo de formulário (exemplo, você pode ajustar) */
+.form-group:nth-child(1) { animation-delay: 0.2s; }
+.form-group:nth-child(2) { animation-delay: 0.3s; }
+.form-group:nth-child(3) { animation-delay: 0.4s; }
+.form-group:nth-child(4) { animation-delay: 0.5s; }
+.form-group:nth-child(5) { animation-delay: 0.6s; }
+.form-group:nth-child(6) { animation-delay: 0.7s; }
+.form-group:nth-child(7) { animation-delay: 0.8s; }
+.form-group:nth-child(8) { animation-delay: 0.9s; }
+.form-group:nth-child(9) { animation-delay: 1.0s; }
+
+@keyframes fadeInGroup {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 .form-group label {
-    font-size: 1em;
-    color: var(--dark-text);
-    margin-bottom: 5px;
-    font-weight: 500;
+    font-size: 1.05em;
+    color: var(--dark-blue);
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group select,
 .form-group textarea {
-    padding: 10px 12px;
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
-    font-size: 0.95em;
+    padding: 12px 15px;
+    border: 1px solid var(--form-border-subtle); /* Borda mais definida */
+    border-radius: 10px;
+    font-size: 1em;
     width: 100%;
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    background-color: #fcfcfc;
+    background-color: var(--input-bg-subtle); /* Fundo do input */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Efeito sutil no hover dos inputs */
@@ -186,145 +296,241 @@ body {
 .form-group select:hover,
 .form-group textarea:hover {
     border-color: var(--primary-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px var(--input-focus-shadow);
+    border-color: var(--input-border-focus); /* Cor da borda no foco */
+    box-shadow: var(--input-shadow-focus); /* Sombra de foco proeminente */
     outline: none;
     transform: translateY(-1px);
 }
 
-.form-group input[type="file"] {
-    padding: 8px 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: var(--dark-text);
+/* Estilo para input[type="file"] */
+.file-upload-group {
+    position: relative;
 }
 
-.form-group input[type="file"]::file-selector-button {
-    background-color: var(--primary-blue);
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    border: none;
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--form-border-subtle); /* Borda mais definida */
+    border-radius: 10px;
+    background-color: var(--input-bg-subtle); /* Fundo do input */
+    padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 10px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
 }
 
-.form-group input[type="file"]::file-selector-button:hover {
-    background-color: var(--dark-blue);
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
 }
+
+.file-input-label {
+    flex-grow: 1;
+    color: var(--dark-blue);
+    font-size: 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+}
+
+.file-input-wrapper::after {
+    content: '📁';
+    font-size: 1.2em;
+    color: var(--primary-blue);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-name-display {
+    font-size: 0.85em;
+    color: var(--text-light);
+    margin-top: 5px;
+    padding-left: 5px;
+}
+
 
 .form-group textarea {
     resize: vertical;
-    min-height: 60px;
+    min-height: 80px;
 }
 
 /* Estilo para a seção de seleção de evento */
 .event-selection {
-    margin-top: 10px;
-    border-top: 1px dashed var(--border-light);
-    padding-top: 15px;
+    margin-top: 25px;
+    border-top: 1px dashed var(--form-border-subtle); /* Borda dashed mais clara */
+    padding-top: 20px;
 }
 
 .event-selection label {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary-blue);
 }
 
 .evento-selecionado-info {
-    font-size: 0.9em;
+    font-size: 0.95em;
     color: var(--accent-color);
-    margin-top: 5px;
+    margin-top: 8px;
     font-weight: 500;
+    display: flex; /* Para alinhar o ícone de status */
+    align-items: center;
+    gap: 5px;
+}
+
+.evento-selecionado-info::before { /* Ícone de status */
+    content: '✅'; /* Ícone de sucesso padrão */
+    font-size: 1.1em;
 }
 
 .evento-selecionado-info.alerta {
-    color: #e74c3c; /* Vermelho para alerta */
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.evento-selecionado-info.alerta::before {
+    content: '⚠️'; /* Ícone de alerta */
+}
+
+.evento-selecionado-info.info {
+    color: var(--primary-blue);
     font-weight: 500;
+    font-style: italic;
+}
+.evento-selecionado-info.info::before {
+    content: 'ℹ️'; /* Ícone de informação */
+}
+
+.evento-selecionado-info.success {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+.evento-selecionado-info.success::before {
+    content: '👍'; /* Ícone de sucesso */
 }
 
 
+/* Botão de Submissão (Redesenhado) */
 .submit-btn {
-    background-color: var(--accent-color);
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
     color: white;
-    padding: 13px 25px;
+    padding: 15px 30px;
     border: none;
-    border-radius: 8px;
-    font-size: 1.2em;
+    border-radius: 10px;
+    font-size: 1.3em;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    margin-top: 30px;
-    box-shadow: 0 4px 10px var(--button-hover-shadow);
-    letter-spacing: 0.5px;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 40px;
+    box-shadow: 0 8px 20px var(--button-hover-shadow);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .submit-btn:hover {
-    background-color: #218838;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px var(--button-hover-shadow);
+    background: linear-gradient(45deg, #27ae60, #2ecc71);
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 12px 25px var(--button-hover-shadow);
 }
 
 .submit-btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
-    background-color: #1a7a2e;
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
+    background: #218838;
 }
 
-/* --- Responsividade --- */
+.icon-send {
+    font-size: 1em;
+    vertical-align: middle;
+}
+
+/* --- Responsividade (Aprimorada) --- */
 @media (max-width: 992px) {
     .enviar-projeto-container {
         flex-direction: column;
+        min-height: auto;
     }
 
     .projeto-image-section {
         width: 100%;
-        height: 250px;
-        min-height: 250px;
+        height: 300px;
+        min-height: 300px;
+        flex: none;
     }
 
-    .image-overlay h2 {
-        font-size: 2em;
+    .image-overlay {
+        padding: 30px;
+    }
+
+    .overlay-title {
+        font-size: 2.8em;
         margin-bottom: 10px;
     }
 
-    .image-overlay p {
-        font-size: 0.9em;
+    .overlay-description {
+        font-size: 1.1em;
+        max-width: 90%;
     }
 
     .projeto-form-section {
         width: 100%;
-        padding: 30px 20px;
-        box-shadow: 0 -5px 20px var(--shadow-color);
+        padding: 35px 30px;
+        box-shadow: 0 -8px 20px var(--shadow-medium);
         min-height: auto;
         max-height: none;
+        animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .form-title {
-        font-size: 1.8em;
+        font-size: 2.2em;
         margin-bottom: 25px;
         position: static;
         padding-top: 0;
+        border-bottom: 3px solid var(--accent-color);
     }
 
     .projeto-form {
-        gap: 12px;
+        gap: 15px;
         max-height: none;
         padding-right: 0;
         padding-bottom: 0;
+        /* Remove scrollbar customizada em mobile */
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+    }
+    .projeto-form::-webkit-scrollbar {
+        display: none; /* Oculta a scrollbar customizada no mobile */
     }
 
     .form-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 15px;
     }
 
     .form-group.full-width {
@@ -332,51 +538,93 @@ body {
     }
 
     .submit-btn {
-        padding: 10px 18px;
-        font-size: 1em;
-        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 1.1em;
+        margin-top: 30px;
     }
 }
 
 @media (max-width: 768px) {
+    .projeto-image-section {
+        height: 250px;
+        min-height: 250px;
+    }
+    .overlay-title {
+        font-size: 2.2em;
+    }
+    .overlay-description {
+        font-size: 1em;
+    }
     .projeto-form-section {
-        padding: 25px 15px;
+        padding: 30px 20px;
     }
-
     .form-title {
-        font-size: 1.6em;
+        font-size: 1.8em;
     }
-
     .form-group label {
-        font-size: 0.9em;
+        font-size: 0.95em;
     }
-
     .form-group input,
     .form-group select,
     .form-group textarea {
-        font-size: 0.85em;
-        padding: 8px 10px;
+        font-size: 0.9em;
+        padding: 10px 12px;
+        border-radius: 8px;
     }
-
-    .projeto-image-section {
-        height: 200px;
-        min-height: 200px;
+    .form-group textarea {
+        min-height: 70px;
+    }
+    .file-input-wrapper {
+        padding: 8px 12px;
+    }
+    .submit-btn {
+        padding: 10px 20px;
+        font-size: 1em;
     }
 }
 
 @media (max-width: 480px) {
-    .projeto-form-section {
-        padding: 20px 10px;
+    .projeto-image-section {
+        height: 200px;
+        min-height: 200px;
     }
-
+    .image-overlay {
+        padding: 20px;
+    }
+    .overlay-title {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+    .overlay-description {
+        font-size: 0.9em;
+    }
+    .projeto-form-section {
+        padding: 25px 15px;
+    }
     .form-title {
-        font-size: 1.4em;
+        font-size: 1.6em;
         margin-bottom: 20px;
     }
-    .image-overlay h2 {
-        font-size: 1.8em;
+    .projeto-form {
+        gap: 12px;
     }
-    .image-overlay p {
-        font-size: 0.8em;
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 9px 10px;
+    }
+    .form-group label {
+        font-size: 0.9em;
+    }
+    .file-input-label {
+        font-size: 0.9em;
+    }
+    .file-input-wrapper::after {
+        font-size: 1em;
+    }
+    .submit-btn {
+        padding: 10px 15px;
+        font-size: 0.9em;
+        gap: 8px;
     }
 }

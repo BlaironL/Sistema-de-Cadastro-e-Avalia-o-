@@ -1,291 +1,418 @@
 /* ======================== */
-/* LOGIN.CSS       */
+/* LOGIN.CSS - DESIGN FANTÁSTICO */
 /* ======================== */
 
-/* @import '../../global.css'; /* REMOVIDO - Assumindo que global.css é carregado uma vez na raiz da aplicação */
+/* --- Variáveis de Cores e Estilos Globais para Login --- */
+:root {
+    --login-primary-blue: #3498db; /* Azul principal para elementos de destaque */
+    --login-dark-blue: #2c3e50; /* Azul escuro para textos e cabeçalhos */
+    --login-light-gray: #ecf0f1; /* Fundo geral claro */
+    /* --login-background-gradient-start: #a1c4fd; Removido para usar o fundo padrão */
+    /* --login-background-gradient-end: #c2e9fb; Removido para usar o fundo padrão */
 
-/* Container que envolve toda a página de login, ajuda a centralizar o card de login */
+    --login-card-background: #ffffff; /* Fundo do card principal de login */
+    --login-card-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Sombra mais proeminente para o card */
+
+    --login-left-bg-color: #1a237e; /* Azul índigo escuro para o lado esquerdo */
+    --login-left-gradient-start: #3f51b5; /* Início do gradiente para o lado esquerdo */
+    --login-left-gradient-end: #1a237e; /* Fim do gradiente para o lado esquerdo */
+    --login-left-text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Sombra para o texto do lado esquerdo */
+
+    --login-input-border: #dbe4eb; /* Borda suave para inputs */
+    --login-input-focus-border: var(--login-primary-blue); /* Borda no foco */
+    --login-input-shadow-focus: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Sombra no foco */
+    --login-input-bg: #f8faff; /* Fundo sutil para inputs */
+
+    --login-button-bg-gradient-start: #2ecc71; /* Verde vibrante para o botão */
+    --login-button-bg-gradient-end: #27ae60;
+    --login-button-shadow: 0 8px 25px rgba(46, 204, 113, 0.4); /* Sombra para o botão */
+    --login-button-hover-transform: translateY(-4px) scale(1.01); /* Efeito no hover */
+
+    --login-link-color: var(--login-primary-blue); /* Cor dos links */
+}
+
+/* Base Body Styles (garante a fonte e o overflow) */
+body {
+    font-family: 'Inter', sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
+    background-color: var(--login-light-gray); /* Fundo de fallback */
+    color: var(--login-dark-blue);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- Container Principal da Página de Login - FUNDO AJUSTADO --- */
 .login-page {
     display: flex;
-    flex-direction: column;
-    /* Caso haja algo além do login-main dentro dele */
     justify-content: center;
-    /* Centraliza verticalmente o .login-main */
     align-items: center;
-    /* Centraliza horizontalmente o .login-main */
-    flex-grow: 1;
-    /* Ocupa o espaço disponível no <main> global */
+    min-height: 80vh; /* Ocupa a altura total da viewport */
     width: 100%;
-    padding: 20px;
-    /* Espaçamento para telas pequenas, para o card não colar nas bordas */
-    box-sizing: border-box;
+    /* NOVO: Fundo padrão das outras páginas */
     background: linear-gradient(135deg, #e0f2f7, #c1e4f4);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden; /* Garante que elementos de animação não vazem */
+    animation: fadeInBackground 1s ease-out; /* Animação de entrada do background */
+}
+
+@keyframes fadeInBackground {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* O card/painel principal de login */
 .login-main {
     display: flex;
     flex-direction: row;
-    /* Lado a lado em telas maiores */
-    background-color: #ffffff;
-    /* FUNDO PADRONIZADO E ÚNICO */
-    border-radius: 12px;
-    /* Cantos arredondados */
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8);
-    /* Sombra suave para efeito de card */
-    max-width: 960px;
-    /* Largura máxima do card de login */
+    background-color: var(--login-card-background);
+    border-radius: 18px; /* Cantos mais arredondados */
+    box-shadow: var(--login-card-shadow); /* Sombra mais proeminente e suave */
+    max-width: 1000px; /* Largura máxima um pouco maior */
     width: 100%;
-    /* Responsivo até o max-width */
     overflow: hidden;
-    /* Para o border-radius funcionar bem com os filhos */
-    margin: 20px 0;
-    /* Margem vertical para o card */
+    position: relative; /* Para animar como um todo */
+    animation: slideInMainCard 0.8s ease-out forwards; /* Animação de entrada do card */
+    opacity: 0; /* Começa invisível */
 }
 
+@keyframes slideInMainCard {
+    from { transform: translateY(20px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* --- Lado Esquerdo - Mensagem e Design Visual --- */
 .login-left {
-    /* background-color: #000; /* REMOVIDO */
-    color: white;
-    background-color: black;
     flex: 1;
+    background: linear-gradient(135deg, var(--login-left-gradient-start), var(--login-left-gradient-end)); /* Gradiente de fundo */
+    color: white;
     padding: 40px 30px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid #eeeeee;
+    position: relative; /* Para a ilustração de fundo */
+    overflow: hidden;
+    border-top-left-radius: 18px; /* Arredondamento para o canto do card */
+    border-bottom-left-radius: 18px;
 }
+
+/* Ilustração de fundo com efeito de partículas/gradiente sutil */
+.login-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Imagem de fundo sutil ou padrão geométrico */
+    background-image: url('https://images.unsplash.com/photo-1579546313364-e1236166a1e3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Imagem abstrata/tech */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* Suave */
+    mix-blend-mode: overlay; /* Mistura com o gradiente */
+    animation: subtleZoom 20s infinite alternate ease-in-out; /* Animação de zoom sutil */
+}
+
+@keyframes subtleZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Overlay para garantir contraste do texto com a imagem de fundo */
+.login-left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(52, 152, 219, 0.4), rgba(46, 204, 113, 0.4)); /* Gradiente sutil */
+    z-index: 1; /* Acima da imagem de fundo */
+}
+
 
 .login-msg {
-    font-size: 1.6rem;
-    margin-bottom: 25px;
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* Fonte mais suave para esta mensagem */
+    font-family: 'Inter', sans-serif; /* Fonte moderna */
+    position: relative;
+    z-index: 2; /* Acima das overlays */
+    text-shadow: var(--login-left-text-shadow);
     line-height: 1.5;
+    opacity: 0; /* Começa invisível */
+    animation: fadeInText 1s forwards ease-out; /* Animação de entrada */
 }
 
-.login-img {
-    max-width: 300px;
-    width: 100%;
-    height: auto;
-    margin-top: 15px;
+.login-msg.welcome-text {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    animation-delay: 0.6s; /* Delay para aparecer depois do card */
 }
 
+.login-msg.motto-text {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    animation-delay: 0.8s; /* Delay para aparecer depois do welcome text */
+}
+
+@keyframes fadeInText {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Lado Direito - Formulário de Login (Redesenhado) --- */
 .login-right {
-    /* background-color: #d9d9d9; /* REMOVIDO */
     flex: 1;
-    /* Divide o espaço */
-    /* ou flex-basis: 55%; para um tamanho específico */
+    background-color: var(--login-card-background);
     padding: 40px 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Bordas com groove removidas para um visual mais limpo */
+    border-top-right-radius: 18px; /* Arredondamento para o canto do card */
+    border-bottom-right-radius: 18px;
+    position: relative;
+    z-index: 2; /* Acima do lado esquerdo para sombras */
 }
 
-.login-right .bem-vindo {
-    color: #3b46f1;
-    /* Usando uma cor de destaque do seu dashboard */
-    margin-bottom: 30px;
-    font-size: 28px;
-    text-align: center;
+.login-right .form-title-login { /* Nova classe para o título do formulário */
     font-family: 'Koulen', sans-serif;
+    color: var(--login-dark-blue); /* Cor mais neutra e elegante */
+    margin-bottom: 30px;
+    font-size: 2.5em; /* Título maior */
+    text-align: center;
+    position: relative;
+    padding-bottom: 10px;
+    animation: fadeInFormElements 0.8s forwards ease-out 0.8s; /* Animação */
+    opacity: 0; /* Começa invisível */
+}
+
+.login-right .form-title-login::after { /* Linha de destaque abaixo do título */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--login-primary-blue);
+    border-radius: 2px;
 }
 
 .login-form {
     width: 100%;
     max-width: 380px;
-    /* Limita a largura do formulário dentro da seção direita */
     margin: 0 auto;
-    /* Centraliza o formulário se a seção direita for mais larga */
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Espaçamento entre os grupos de formulário */
 }
 
+.form-group-login { /* Novo wrapper para label e input */
+    display: flex;
+    flex-direction: column;
+    animation: fadeInFormElements 0.8s forwards ease-out; /* Animação para cada grupo */
+    opacity: 0; /* Começa invisível */
+}
+
+.form-group-login:nth-child(1) { animation-delay: 1.0s; } /* Delay para o e-mail */
+.form-group-login:nth-child(2) { animation-delay: 1.2s; } /* Delay para a senha */
+
+
 .login-form label {
-    /* Estilos de label podem vir do global.css */
-    /* Se precisar de override: */
     text-align: left;
-    color: #495057;
-    /* Cor de label um pouco mais escura */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 0.875rem;
-    /* 14px */
-    margin-bottom: 6px;
-    /* Espaço abaixo do label */
+    color: var(--login-dark-blue);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 8px; /* Mais espaço */
     display: block;
-    /* Garante que o label ocupe sua própria linha */
 }
 
 .login-form input[type="email"],
-/* Alterado de text para email */
-.login-form input[type="password"],
-.login-form select {
-    /* Estilos de input vêm primariamente do global.css */
-    /* border: none; /* REMOVIDO do login.css - Deixe global.css definir a borda padrão */
+.login-form input[type="password"] {
     width: 100%;
-    /* Ocupa a largura total disponível */
-    padding: 10px 12px;
-    /* Padding interno */
-    border: 1px solid #ddd;
-    /* Borda padrão */
-    border-radius: 6px;
-    /* Cantos arredondados */
+    padding: 12px 15px; /* Mais padding */
+    border: 1px solid var(--login-input-border);
+    border-radius: 10px; /* Mais arredondado */
     box-sizing: border-box;
-    /* Garante que padding e border não aumentem a largura total */
-    margin-bottom: 20px;
-    /* Espaço consistente abaixo dos campos */
-    background-color: #f8f9fa;
-    /* Fundo sutil para os campos */
+    margin-bottom: 0; /* Removido margin-bottom aqui, usar gap no form */
+    background-color: var(--login-input-bg);
     font-size: 1rem;
-    /* Tamanho da fonte do input */
-    line-height: 1.5;
-    /* Altura da linha */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
+}
+
+.login-form input[type="email"]:hover,
+.login-form input[type="password"]:hover {
+    border-color: var(--login-primary-blue);
+    transform: translateY(-2px); /* Leve elevação no hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra externa sutil no hover */
 }
 
 .login-form input[type="email"]:focus,
-.login-form input[type="password"]:focus,
-.login-form select:focus {
-    background-color: #fff;
-    /* Fundo branco ao focar */
-    border-color: #3b46f1;
-    /* Cor da borda ao focar */
-    box-shadow: 0 0 0 0.2rem rgba(59, 70, 241, 0.25);
-    /* Sombra ao focar */
+.login-form input[type="password"]:focus {
+    background-color: var(--login-card-background);
+    border-color: var(--login-input-focus-border);
+    box-shadow: var(--login-input-shadow-focus);
     outline: none;
-    /* Remove o outline padrão do navegador */
+    transform: translateY(-1px);
 }
 
-
-.btn-confirmar {
-    background-color: #3b46f1;
-    /* Cor de destaque do dashboard */
+/* Botão de Confirmação (Redesenhado) */
+.btn-confirmar.login-submit-btn { /* Nova classe para diferenciar */
+    background: linear-gradient(45deg, var(--login-button-bg-gradient-start), var(--login-button-bg-gradient-end));
     color: white;
-    padding: 12px 20px;
+    padding: 14px 25px; /* Mais padding */
     border: none;
-    border-radius: 6px;
+    border-radius: 10px; /* Mais arredondado */
     cursor: pointer;
-    font-size: 1rem;
-    /* 16px */
-    font-family: 'Koulen', sans-serif;
-    letter-spacing: 0.5px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    margin-top: 15px;
+    font-size: 1.15rem; /* Fonte maior */
+    font-family: 'Inter', sans-serif; /* Fonte moderna */
+    letter-spacing: 0.8px; /* Espaçamento maior */
+    font-weight: 700;
+    transition: all 0.3s ease;
+    margin-top: 30px; /* Mais margem superior */
     width: 100%;
+    box-shadow: var(--login-button-shadow); /* Sombra inicial */
+    display: flex; /* Para alinhar ícone e texto */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: fadeInFormElements 0.8s forwards ease-out 1.4s; /* Animação com delay */
+    opacity: 0; /* Começa invisível */
 }
 
-.btn-confirmar:hover {
-    background-color: #2a37d1;
-    /* Azul mais escuro no hover */
-    transform: translateY(-2px);
+.btn-confirmar.login-submit-btn:hover {
+    background: linear-gradient(45deg, var(--login-button-bg-gradient-end), var(--login-button-bg-gradient-start)); /* Inverte gradiente no hover */
+    transform: var(--login-button-hover-transform);
+    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.5); /* Sombra mais intensa */
 }
 
-/* Rodapé específico da página de login (se você realmente o usar no Login.jsx) */
-/* Se não houver um <div class="login-footer"> no Login.jsx, esta regra não fará nada */
-.login-footer {
-    display: none;
-    /* Escondido por padrão, pois o Layout.jsx já tem um footer global */
-    /* Se precisar de um footer SÓ para login, descomente e estilize: */
-    /* background-color: #2b2eff; */
-    /* color: white; */
-    /* text-align: center; */
-    /* padding: 10px; */
-    /* font-family: 'Koulen', sans-serif; */
+.btn-confirmar.login-submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+    background-color: #218838; /* Cor sólida no active */
 }
+
+.icon-arrow-right { /* Estilo para o ícone de seta */
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* Animação genérica para elementos do formulário */
+@keyframes fadeInFormElements {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 
 .register-link {
-    margin-top: 20px;
+    margin-top: 25px; /* Mais espaço */
     text-align: center;
-    font-size: 0.9em;
+    font-size: 0.95em;
     color: #666;
+    animation: fadeInFormElements 0.8s forwards ease-out 1.6s; /* Animação com delay */
+    opacity: 0; /* Começa invisível */
 }
 
 .register-link a {
-    color: #3b46f1;
+    color: var(--login-link-color);
     text-decoration: none;
     font-weight: 600;
+    transition: text-decoration 0.2s ease, color 0.2s ease;
 }
 
 .register-link a:hover {
     text-decoration: underline;
+    color: var(--login-dark-blue);
 }
 
 
-/* Media query para telas menores: empilhar as seções left e right */
+/* --- Responsividade --- */
 @media (max-width: 800px) {
-
-    /* Ponto de quebra aumentado um pouco */
     .login-main {
         flex-direction: column;
-        /* Empilha left e right */
         max-width: 500px;
-        /* Card de login fica mais estreito e alto */
+        margin: 20px; /* Garante margem em telas menores */
+        border-radius: 12px; /* Reduz arredondamento */
     }
 
     .login-left,
     .login-right {
         width: 100%;
-        /* Ocupam toda a largura do card quando empilhados */
         flex-basis: auto;
-        /* Reseta a base do flex */
         border-right: none;
-        /* Remove a borda divisória */
+        border-radius: 0; /* Remove arredondamento para empilhar */
     }
 
     .login-left {
         padding: 30px 25px;
-        /* Padding ajustado */
-        border-bottom: 1px solid #eeeeee;
-        /* Adiciona borda embaixo quando empilhado */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borda inferior sutil */
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px; /* Arredondamento superior */
     }
 
     .login-right {
         padding: 30px 25px;
-        /* Padding ajustado */
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px; /* Arredondamento inferior */
     }
 
-    .login-msg {
-        font-size: 1.4rem;
-        /* Reduzido */
+    .login-msg.welcome-text {
+        font-size: 1.8rem;
     }
 
-    .login-right .bem-vindo {
-        font-size: 26px;
-        /* Reduzido */
+    .login-msg.motto-text {
+        font-size: 1.2rem;
+    }
+
+    .login-right .form-title-login {
+        font-size: 2em;
         margin-bottom: 25px;
     }
 
-    .login-img {
-        max-width: 220px;
-        /* Imagem menor */
+    .login-form input {
+        padding: 10px 12px;
+    }
+
+    .btn-confirmar.login-submit-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-    .login-main {
-        margin: 10px 0;
-        /* Menos margem vertical em telas muito pequenas */
-        border-radius: 0;
-        /* Sem cantos arredondados para ocupar a tela */
-        box-shadow: none;
-        /* Sem sombra */
+    .login-page {
+        padding: 10px;
     }
-
+    .login-main {
+        margin: 0; /* Sem margem vertical */
+        border-radius: 0; /* Sem cantos arredondados */
+        box-shadow: none; /* Sem sombra */
+    }
     .login-left,
     .login-right {
         padding: 25px 20px;
-        /* Menos padding */
     }
-
-    .login-img {
-        max-width: 180px;
+    .login-msg.welcome-text {
+        font-size: 1.5rem;
     }
-
-    .login-right .bem-vindo {
-        font-size: 22px;
+    .login-msg.motto-text {
+        font-size: 1rem;
     }
-
-    .login-msg {
-        font-size: 1.2rem;
+    .login-right .form-title-login {
+        font-size: 1.8em;
+    }
+    .login-form input {
+        padding: 8px 10px;
+    }
+    .btn-confirmar.login-submit-btn {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+    }
+    .register-link {
+        font-size: 0.85em;
     }
 }

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEventsProjects } from '../contexts/EventProjectContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import './solicitar-org.css'; // Vamos criar este CSS agora!
+// Caminho ajustado: de 'src/pages/solicitar-org/' para 'src/contexts/'
+import { useEventsProjects } from '../contexts/EventProjectContext.jsx'; // <-- Caminho Corrigido
+// Caminho ajustado: de 'src/pages/solicitar-org/' para 'src/contexts/'
+import { useNotifications } from '../contexts/NotificationContext.jsx'; // <-- Caminho Corrigido
+import './solicitar-org.css'; // Certifique-se de que este ficheiro CSS existe na mesma pasta que SolicitarOrganizacao.jsx!
 
-export default function SolicitarOrganizacao() {
+// O componente agora recebe 'userEmail' como uma prop (opcional, para redundância)
+export default function SolicitarOrganizacao({ userEmail: propUserEmail }) { // <-- Renomeado para evitar conflito
     const navigate = useNavigate();
-    const { events, getEventByIdentifier, createEvent, addOrganizerRequestToEvent } = useEventsProjects(); 
+    const { events, getEventByIdentifier, createEvent, addOrganizerRequestToEvent } = useEventsProjects();
     const { addNotification } = useNotifications();
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -15,7 +18,6 @@ export default function SolicitarOrganizacao() {
     const [motivation, setMotivation] = useState('');
 
     // Adiciona eventos de teste na primeira vez que o componente montar
-    // ATENÇÃO: Os IDs aqui são fixos e devem ser únicos.
     useEffect(() => {
         const testEventIds = ['test-event-001', 'test-event-002', 'test-event-003'];
         const existingTestEvents = new Set((events || []).map(e => e.id));
@@ -41,7 +43,7 @@ export default function SolicitarOrganizacao() {
     useEffect(() => {
         if (searchTerm.length >= 3) {
             const lowerCaseSearchTerm = searchTerm.toLowerCase();
-            const filteredResults = (events || []).filter(event => 
+            const filteredResults = (events || []).filter(event =>
                 (event?.titulo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
                 (event?.codigo || '').toLowerCase().includes(lowerCaseSearchTerm) ||
                 (event?.local || '').toLowerCase().includes(lowerCaseSearchTerm)
@@ -72,16 +74,20 @@ export default function SolicitarOrganizacao() {
             return;
         }
 
-        // Simulação do ID do organizador logado (futuramente viria de um contexto de usuário)
-        const organizerEmail = 'organizador-email@exemplo.com'; // **ATENÇÃO:** Substituir pelo email/ID real
-        const organizerName = 'Nome do Organizador'; // **ATENÇÃO:** Substituir pelo nome real
+        // Tenta obter o e-mail da prop, se não estiver disponível, tenta do localStorage
+        const currentEmail = propUserEmail || localStorage.getItem('userEmail');
+
+        if (!currentEmail) { // Verifica se o e-mail está disponível
+            addNotification('Erro: O seu e-mail de utilizador não está disponível. Faça login novamente.', 'alerta');
+            return;
+        }
 
         try {
-            addOrganizerRequestToEvent(selectedEventToRequest.id, { 
-                email: organizerEmail, 
-                nome: organizerName, 
-                motivation: motivation, 
-                status: 'pendente' 
+            addOrganizerRequestToEvent(selectedEventToRequest.id, {
+                email: currentEmail, // <-- AGORA USA O E-MAIL DISPONÍVEL
+                nome: currentEmail.split('@')[0], // Simples nome baseado no e-mail (ajuste conforme necessário)
+                motivation: motivation,
+                status: 'pendente'
             });
 
             await new Promise(resolve => setTimeout(resolve, 1000)); // Simula delay
@@ -98,7 +104,7 @@ export default function SolicitarOrganizacao() {
         <div className="solicitar-organizacao-container">
             <h1 className="solicitar-title">Solicitar Colaboração em Organização</h1>
             <p className="solicitar-description">
-                Pesquise por eventos e envie uma solicitação para participar da equipe de organização.
+                Pesquise por eventos e envie uma solicitação para participar da equipa de organização.
             </p>
 
             <div className="search-section">

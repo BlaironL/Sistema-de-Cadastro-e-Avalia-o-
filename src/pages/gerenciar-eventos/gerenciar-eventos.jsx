@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEventsProjects } from '../contexts/EventProjectContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import './gerenciar-eventos.css';
+// Caminhos ajustados: assumindo que os contextos estão em 'src/contexts/'
+import { useEventsProjects } from '../contexts/EventProjectContext.jsx'; // <-- Caminho Corrigido
+import { useNotifications } from '../contexts/NotificationContext.jsx'; // <-- Caminho Corrigido
+import './gerenciar-eventos.css'; // Certifique-se de que este ficheiro CSS existe na mesma pasta!
 
 export default function GerenciarEventos() {
     const navigate = useNavigate();
-    const { events, createEvent, updateEvent, updateProjectStatus, getEventByIdentifier, handleEvaluatorRequest } = useEventsProjects(); 
+    // Adicionado handleOrganizerRequest aos hooks importados do contexto
+    const { events, createEvent, updateEvent, updateProjectStatus, getEventByIdentifier, handleEvaluatorRequest, handleOrganizerRequest } = useEventsProjects();
     const { addNotification } = useNotifications();
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +16,7 @@ export default function GerenciarEventos() {
     const [isEditingEvent, setIsEditingEvent] = useState(false);
     const [editedEventData, setEditedEventData] = useState({});
     const [activeSection, setActiveSection] = useState('detalhes');
-    const [isRankingMode, setIsRankingMode] = useState(false); // NOVO: Estado para controlar o modo de ranking
+    const [isRankingMode, setIsRankingMode] = useState(false);
 
     // UseEffect para adicionar eventos de teste se não existirem
     useEffect(() => {
@@ -67,7 +69,7 @@ export default function GerenciarEventos() {
         setEditedEventData({ ...event });
         setIsEditingEvent(false);
         setActiveSection('detalhes');
-        setIsRankingMode(false); // NOVO: Reseta o modo de ranking ao selecionar novo evento
+        setIsRankingMode(false); // Reseta o modo de ranking ao selecionar novo evento
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
@@ -95,7 +97,7 @@ export default function GerenciarEventos() {
         }
     };
 
-    const handleApproveRejectRequest = (request, status) => {
+    const handleApproveRejectEvaluatorRequest = (request, status) => { // Renomeado para clareza
         if (!window.confirm(`Tem certeza que deseja ${status === 'aprovado' ? 'APROVAR' : 'REJEITAR'} a solicitação de ${request.nome || request.email}?`)) {
             return;
         }
@@ -112,6 +114,24 @@ export default function GerenciarEventos() {
             addNotification(`Sua solicitação para avaliar o evento "${selectedEvent.titulo}" foi rejeitada.`, 'rejeitado-avaliador', { eventId: selectedEvent.id, eventTitle: selectedEvent.titulo, recipientEmail: request.email });
         }
     };
+
+    // NOVO: Função para aceitar/rejeitar solicitações de organizadores
+    const handleApproveRejectOrganizerRequest = (request, status) => {
+        if (!window.confirm(`Tem certeza que deseja ${status === 'aprovado' ? 'APROVAR' : 'REJEITAR'} a solicitação de ORGANIZAÇÃO de ${request.nome || request.email}?`)) {
+            return;
+        }
+
+        const acceptedParticipant = handleOrganizerRequest(selectedEvent.id, request.id, status, request);
+
+        if (status === 'aprovado') {
+            addNotification(`Solicitação de ORGANIZAÇÃO de ${request.nome || request.email} APROVADA para ${selectedEvent.titulo}!`, 'info');
+            // Você pode adicionar uma notificação para o organizador convidado aqui se desejar
+        } else {
+            addNotification(`Solicitação de ORGANIZAÇÃO de ${request.nome || request.email} REJEITADA para ${selectedEvent.titulo}.`, 'alerta');
+            // Você pode adicionar uma notificação para o organizador convidado aqui se desejar
+        }
+    };
+
 
     const handleDeleteEvent = (eventId, eventTitle) => {
         if (window.confirm(`Tem certeza que deseja SIMULAR a exclusão do evento "${eventTitle}"? (Esta função não remove realmente no contexto ainda)`)) {
@@ -142,7 +162,7 @@ export default function GerenciarEventos() {
             return [];
         }
         // Filtra projetos que já foram avaliados pelo menos uma vez
-        const projectsWithScores = selectedEvent.projetos.filter(project => 
+        const projectsWithScores = selectedEvent.projetos.filter(project =>
             project.avaliacoes && project.avaliacoes.length > 0 && calculateAverageScore(project) !== 'N/A'
         );
 
@@ -170,35 +190,38 @@ export default function GerenciarEventos() {
                     <p className="selected-event-code">Código do Evento: <span>{selectedEvent.codigo}</span></p>
 
                     <div className="event-management-tabs">
-                        <button 
-                            className={`tab-btn ${activeSection === 'detalhes' ? 'active' : ''}`} 
+                        <button
+                            className={`tab-btn ${activeSection === 'detalhes' ? 'active' : ''}`}
                             onClick={() => setActiveSection('detalhes')}
                         >
                             Detalhes do Evento
                         </button>
-                        <button 
-                            className={`tab-btn ${activeSection === 'projetos' ? 'active' : ''}`} 
+                        <button
+                            className={`tab-btn ${activeSection === 'projetos' ? 'active' : ''}`}
                             onClick={() => setActiveSection('projetos')}
                         >
                             Projetos Participantes ({selectedEvent.projetos ? selectedEvent.projetos.length : 0})
                         </button>
-                        <button 
-                            className={`tab-btn ${activeSection === 'avaliadores' ? 'active' : ''}`} 
+                        <button
+                            className={`tab-btn ${activeSection === 'avaliadores' ? 'active' : ''}`}
                             onClick={() => setActiveSection('avaliadores')}
                         >
                             Avaliadores ({selectedEvent.avaliadoresConvidados ? selectedEvent.avaliadoresConvidados.length : 0})
                         </button>
-                        <button 
-                            className={`tab-btn ${activeSection === 'organizadores' ? 'active' : ''}`} 
+                        <button
+                            className={`tab-btn ${activeSection === 'organizadores' ? 'active' : ''}`}
                             onClick={() => setActiveSection('organizadores')}
                         >
                             Organizadores ({selectedEvent.organizadoresConvidados ? selectedEvent.organizadoresConvidados.length : 0})
                         </button>
-                        <button 
-                            className={`tab-btn ${activeSection === 'solicitacoes' ? 'active' : ''}`} 
+                        <button
+                            className={`tab-btn ${activeSection === 'solicitacoes' ? 'active' : ''}`}
                             onClick={() => setActiveSection('solicitacoes')}
                         >
-                            Solicitações ({selectedEvent.solicitacoesAvaliadores ? selectedEvent.solicitacoesAvaliadores.filter(r => r.status === 'pendente').length : 0})
+                            Solicitações ({
+                                (selectedEvent.solicitacoesAvaliadores ? selectedEvent.solicitacoesAvaliadores.filter(r => r.status === 'pendente').length : 0) +
+                                (selectedEvent.solicitacoesOrganizadores ? selectedEvent.solicitacoesOrganizadores.filter(r => r.status === 'pendente').length : 0) // Contagem de solicitações de organizadores
+                            })
                         </button>
                     </div>
 
@@ -245,8 +268,8 @@ export default function GerenciarEventos() {
                         {activeSection === 'projetos' && (
                             <div className="projects-list-section">
                                 <h2>Projetos Participantes</h2>
-                                <div className="projects-controls"> {/* NOVO: Controles de projetos */}
-                                    <button 
+                                <div className="projects-controls"> {/* Controles de projetos */}
+                                    <button
                                         className={`toggle-ranking-btn ${isRankingMode ? 'active' : ''}`}
                                         onClick={() => setIsRankingMode(!isRankingMode)}
                                     >
@@ -255,10 +278,10 @@ export default function GerenciarEventos() {
                                 </div>
                                 {projectsToDisplay && projectsToDisplay.length > 0 ? (
                                     <div className="projects-grid">
-                                        {projectsToDisplay.map((project, index) => ( // NOVO: index para ranking
+                                        {projectsToDisplay.map((project, index) => ( // index para ranking
                                             <div key={project.id} className="project-item-card">
                                                 {isRankingMode && (
-                                                    <div className="ranking-position">#{index + 1}</div> /* NOVO: Posição no ranking */
+                                                    <div className="ranking-position">#{index + 1}</div> /* Posição no ranking */
                                                 )}
                                                 <h4>{project.titulo}</h4>
                                                 <p>Coordenador: <span>{project.professorCoordenador}</span></p>
@@ -312,11 +335,19 @@ export default function GerenciarEventos() {
                                 ) : (
                                     <p className="no-items-message">Nenhum organizador convidado ainda.</p>
                                 )}
+                                {/* Botão para convidar novo organizador, se a rota existir */}
+                                <button
+                                    className="btn-invite-organizer"
+                                    onClick={() => navigate(`/gerenciar-eventos/${selectedEvent.id}/convidar-organizador`)}
+                                >
+                                    Convidar Novo Organizador
+                                </button>
                             </div>
                         )}
 
                         {activeSection === 'solicitacoes' && (
                             <div className="requests-list-section">
+                                {/* Secção de Solicitações de Avaliadores (existente) */}
                                 <h2>Solicitações de Avaliadores</h2>
                                 {selectedEvent.solicitacoesAvaliadores && selectedEvent.solicitacoesAvaliadores.length > 0 ? (
                                     <ul className="request-list">
@@ -325,29 +356,63 @@ export default function GerenciarEventos() {
                                             .map((request) => (
                                                 <li key={request.id} className="request-item">
                                                     <div className="request-info">
-                                                        <h4>Solicitação de: {request.nome || request.email}</h4>
+                                                        <h4>Solicitação de: {request.nome || request.email} (Avaliador)</h4>
                                                         <p>Motivação: "{request.motivation}"</p>
                                                         <p>Enviado em: {new Date(request.createdAt).toLocaleDateString()}</p>
                                                     </div>
                                                     <div className="request-actions">
-                                                        <button 
-                                                            className="btn-approve" 
-                                                            onClick={() => handleApproveRejectRequest(request, 'aprovado')}
+                                                        <button
+                                                            className="btn-approve"
+                                                            onClick={() => handleApproveRejectEvaluatorRequest(request, 'aprovado')}
                                                         >
                                                             Aprovar
                                                         </button>
-                                                        <button 
-                                                            className="btn-reject" 
-                                                            onClick={() => handleApproveRejectRequest(request, 'rejeitado')}
+                                                        <button
+                                                            className="btn-reject"
+                                                            onClick={() => handleApproveRejectEvaluatorRequest(request, 'rejeitado')}
                                                         >
                                                             Rejeitar
                                                         </button>
                                                     </div>
                                                 </li>
-                                        ))}
+                                            ))}
                                     </ul>
                                 ) : (
                                     <p className="no-items-message">Nenhuma solicitação de avaliador pendente para este evento.</p>
+                                )}
+
+                                {/* NOVO: Secção de Solicitações de Organizadores */}
+                                <h2 style={{ marginTop: '30px' }}>Solicitações de Organizadores</h2>
+                                {selectedEvent.solicitacoesOrganizadores && selectedEvent.solicitacoesOrganizadores.length > 0 ? (
+                                    <ul className="request-list">
+                                        {selectedEvent.solicitacoesOrganizadores
+                                            .filter(req => req.status === 'pendente')
+                                            .map((request) => (
+                                                <li key={request.id} className="request-item">
+                                                    <div className="request-info">
+                                                        <h4>Solicitação de: {request.nome || request.email} (Organizador)</h4>
+                                                        <p>Motivação: "{request.motivation}"</p>
+                                                        <p>Enviado em: {new Date(request.createdAt).toLocaleDateString()}</p>
+                                                    </div>
+                                                    <div className="request-actions">
+                                                        <button
+                                                            className="btn-approve"
+                                                            onClick={() => handleApproveRejectOrganizerRequest(request, 'aprovado')}
+                                                        >
+                                                            Aprovar
+                                                        </button>
+                                                        <button
+                                                            className="btn-reject"
+                                                            onClick={() => handleApproveRejectOrganizerRequest(request, 'rejeitado')}
+                                                        >
+                                                            Rejeitar
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                ) : (
+                                    <p className="no-items-message">Nenhuma solicitação de organizador pendente para este evento.</p>
                                 )}
                             </div>
                         )}

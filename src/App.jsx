@@ -21,15 +21,16 @@ import SolicitarAvaliacao from './pages/solicitar-ava/solicitar-avaliacao';
 import SolicitarOrg from './pages/solicitar-org/solicitar-org'; 
 
 // Importe seus Provedores de Contexto
-// Assume que a pasta 'contexts' está dentro de 'pages'
 import { NotificationProvider } from './pages/contexts/NotificationContext'; 
 import { EventProjectProvider } from './pages/contexts/EventProjectContext'; 
 
-// Importe o componente de debug (caminho relativo à raiz src)
-// Certifique-se de criar a pasta src/components/
+// Importe o componente de debug (REMOVER EM PRODUÇÃO)
 import DebugClearData from './DebugClearData'; 
 
-// Importe seu CSS global (apenas uma vez, na raiz)
+// Importe o componente VLibras
+import VLibras from './pages/contexts/VLibras';
+
+// Importe seu CSS global
 import './global.css';
 
 export default function App() {
@@ -49,15 +50,12 @@ export default function App() {
   const handleGlobalLogout = () => {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userEmail');
-    // Limpe também os dados de eventos e notificações do localStorage ao deslogar
     localStorage.removeItem('events');
     localStorage.removeItem('notifications');
-    localStorage.removeItem('hasTestEventsAdded'); // Flag de teste de eventos
-    localStorage.removeItem('hasAttemptedToAddTestEvents'); // Flag de tentativa de adição de eventos de teste
-
+    localStorage.removeItem('hasTestEventsAdded');
+    localStorage.removeItem('hasAttemptedToAddTestEvents');
     setUserEmail('');
     setUserProfile('');
-    // Redirecionar para a página de login após o logout
     window.location.href = '/login'; 
   };
 
@@ -69,12 +67,15 @@ export default function App() {
   return (
     <Router>
       {console.log("App.jsx: Rotas configuradas")}
-      
+
       <NotificationProvider>
         <EventProjectProvider>
-          
-          {/* Componente de debug para limpar dados de teste no console (REMOVER EM PRODUÇÃO) */}
-          <DebugClearData /> 
+
+          {/* Componente de debug (REMOVER EM PRODUÇÃO) */}
+          <DebugClearData />
+
+          {/* Componente VLibras */}
+          <VLibras />
 
           <Routes>
             <Route element={

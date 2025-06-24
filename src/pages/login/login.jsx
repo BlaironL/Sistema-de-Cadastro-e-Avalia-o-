@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../global.css'; 
 import './login.css';
-import ilustracao from '../../components/ImagemLogin.png'; 
+// REMOVIDO: import ilustracao from '../../components/ImagemLogin.png'; // Esta imagem será substituída por um design CSS
 
 export default function Login({ onLoginSuccess }) {
     const [email, setEmail] = useState('');
@@ -13,7 +13,8 @@ export default function Login({ onLoginSuccess }) {
         e.preventDefault();
 
         if (!email.includes('@')) {
-            alert('Por favor, insira um e-mail válido.');
+            // alert('Por favor, insira um e-mail válido.'); // Substituir alert por uma notificação mais amigável
+            console.warn('Por favor, insira um e-mail válido.'); // Apenas para depuração, se não tiver sistema de notificação UI
             return;
         }
 
@@ -34,37 +35,49 @@ export default function Login({ onLoginSuccess }) {
     return (
         <div className="login-page">
             <main className="login-main">
+                {/* Lado Esquerdo - Mensagem e Design Visual */}
                 <div className="login-left">
-                    <p className="login-msg">
-                        Realize Seu Login<br />
-                        De Maneira Rápida e Fácil.<br />:)
+                    <p className="login-msg welcome-text">
+                        Bem-vindo ao SCAP.
                     </p>
-                    <img src={ilustracao} alt="Ilustração login" className="login-img" />
+                    <p className="login-msg motto-text">
+                        Realize seu Login<br />
+                        De Maneira Rápida e Fácil.<br />
+                        ✨
+                    </p>
+                    {/* A imagem ilustrativa foi removida do JSX e será tratada via CSS para um design mais integrado */}
                 </div>
 
+                {/* Lado Direito - Formulário de Login */}
                 <div className="login-right">
-                    <h2 className="bem-vindo">Seja Bem–Vindo!</h2>
+                    <h2 className="bem-vindo form-title-login">Seja Bem–Vindo!</h2>
                     <form onSubmit={handleSubmit} className="login-form">
-                        <label htmlFor="email">E-mail:</label>
-                        <input
-                            type="email" 
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                        <div className="form-group-login"> {/* Novo wrapper para label+input */}
+                            <label htmlFor="email">E-mail:</label>
+                            <input
+                                type="email" 
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                placeholder="seu.email@exemplo.com"
+                            />
+                        </div>
 
-                        <label htmlFor="senha">Senha:</label>
-                        <input
-                            type="password"
-                            id="senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            required
-                        />
+                        <div className="form-group-login"> {/* Novo wrapper para label+input */}
+                            <label htmlFor="senha">Senha:</label>
+                            <input
+                                type="password"
+                                id="senha"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                required
+                                placeholder="sua senha secreta"
+                            />
+                        </div>
 
-                        <button type="submit" className="btn-confirmar">
-                            Entrar
+                        <button type="submit" className="btn-confirmar login-submit-btn">
+                            Entrar <span className="icon-arrow-right">→</span>
                         </button>
                     </form>
                     <p className="register-link">Ainda não tem conta? <a href="/cadastro">Cadastre-se aqui</a></p>

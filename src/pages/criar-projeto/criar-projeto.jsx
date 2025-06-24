@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'; // Importe useEffect aqui também
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEventsProjects } from '../contexts/EventProjectContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import './criar-projeto.css';
+// Caminho ajustado com base na sua estrutura 'src/contexts/'
+import { useEventsProjects } from '../contexts/EventProjectContext.jsx'; 
+// Caminho ajustado com base na sua estrutura 'src/contexts/'
+import { useNotifications } from '../contexts/NotificationContext.jsx'; 
+import './criar-projeto.css'; // Estilos atualizados para um design fantástico
 
 export default function EnviarProjeto() {
     const [titulo, setTitulo] = useState('');
@@ -17,40 +19,38 @@ export default function EnviarProjeto() {
     const [eventoSelecionado, setEventoSelecionado] = useState(null);
 
     const navigate = useNavigate();
-    const { addProjectToEvent, getEventByIdentifier, addEvent, events } = useEventsProjects(); // Certifique-se de pegar 'events' para depuração
+    // CORRIGIDO: Importa 'createEvent' e não 'addEvent'
+    const { addProjectToEvent, getEventByIdentifier, createEvent, events } = useEventsProjects(); 
     const { addNotification } = useNotifications();
 
     // Apenas para teste inicial: Adiciona eventos de demonstração se não existirem
+    // A flag `hasTestEventsAddedCreateProject` garante que só é executado uma vez para esta página
     useEffect(() => {
-        const hasTestEventsAdded = localStorage.getItem('hasTestEventsAdded');
-        if (!hasTestEventsAdded || events.length === 0) { // Verifica se já adicionou ou se não há eventos
-            console.log("Adicionando eventos de teste...");
-            // Assegure que os IDs sejam consistentes para evitar duplicação ou bugs
-            addEvent({ id: 'event-test-001', titulo: "Feira de Inovação 2025", local: "Centro de Convenções", data: "2025-08-20" });
-            addEvent({ id: 'event-test-002', titulo: "Hackathon de Sustentabilidade", local: "Campus Tech", data: "2025-09-10" });
-            addEvent({ id: 'event-test-003', titulo: "Semana Acadêmica", local: "Online", data: "2025-10-05" });
-            localStorage.setItem('hasTestEventsAdded', 'true'); // Marca que os eventos de teste foram adicionados
+        const hasTestEventsAddedCreateProject = localStorage.getItem('hasTestEventsAddedCreateProject');
+        if (!hasTestEventsAddedCreateProject || events.length === 0) {
+            console.log("EnviarProjeto: Adicionando eventos de teste...");
+            // CORRIGIDO: Chama createEvent (já estava correto, mas a importação estava errada)
+            createEvent({ id: 'event-test-001', titulo: "Feira de Inovação 2025", local: "Centro de Convenções", data: "2025-08-20", codigo: "INOV2025" });
+            createEvent({ id: 'event-test-002', titulo: "Hackathon de Sustentabilidade", local: "Campus Tech", data: "2025-09-10", codigo: "SUSTHACK" });
+            createEvent({ id: 'test-event-003', titulo: "Semana Acadêmica", local: "Online", data: "2025-10-05", codigo: "SEMACA" });
+            localStorage.setItem('hasTestEventsAddedCreateProject', 'true');
         }
-    }, [addEvent, events.length]); // Dependência em events.length para re-verificar
-
+    }, [createEvent, events.length]); // CORRIGIDO: 'createEvent' na dependência
 
     const handleCodigoEventoChange = (e) => {
         const inputCode = e.target.value;
         setCodigoEvento(inputCode);
         
         setEventoSelecionado(null); // Reseta a seleção a cada digitação
-        if (inputCode.length >= 3) { // Começa a buscar com 3 caracteres para ser mais reativo
-            // Procura por ID ou por parte do Título do evento
+        if (inputCode.length >= 2) { // Começa a buscar com 2 caracteres para ser mais reativo
+            const lowerCaseInput = inputCode.toLowerCase();
             const foundEvent = events.find(event => 
-                event.codigo.toLowerCase().includes(inputCode.toLowerCase()) || 
-                event.titulo.toLowerCase().includes(inputCode.toLowerCase())
+                (event?.codigo || '').toLowerCase().includes(lowerCaseInput) || 
+                (event?.titulo || '').toLowerCase().includes(lowerCaseInput)
             );
             
             if (foundEvent) {
                 setEventoSelecionado(foundEvent);
-                // addNotification(`Evento encontrado: ${foundEvent.titulo}`, 'info'); // Opcional: feedback visual
-            } else {
-                // addNotification('Nenhum evento encontrado com este termo.', 'alerta'); // Opcional: feedback visual
             }
         }
     };
@@ -64,6 +64,10 @@ export default function EnviarProjeto() {
         }
         if (!eventoSelecionado) {
             addNotification('Por favor, vincule o projeto a um evento válido. Use o código/nome e aguarde a seleção.', 'alerta');
+            return;
+        }
+        if (Number(quantidadeAlunos) <= 0) {
+            addNotification('A quantidade de alunos deve ser pelo menos 1.', 'alerta');
             return;
         }
 
@@ -80,7 +84,7 @@ export default function EnviarProjeto() {
 
         try {
             // Simulação de atraso de rede
-            await new Promise(resolve => setTimeout(resolve, 1500)); 
+            // await new Promise(resolve => setTimeout(resolve, 1500)); 
             
             addProjectToEvent(eventoSelecionado.id, novoProjetoData); // Usa o ID do evento para vincular
 
@@ -95,17 +99,20 @@ export default function EnviarProjeto() {
 
     return (
         <div className="enviar-projeto-container">
+            {/* Secção da Imagem Hero com Texto Aprimorado */}
             <div className="projeto-image-section">
-                <img 
-                    src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                    alt="Imagem ilustrativa de projeto ou inovação" 
+                <img
+                    src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Imagem ilustrativa de projeto ou inovação"
                     className="projeto-hero-image"
                 />
                 <div className="image-overlay">
-                    <h2>Submeta Seu Projeto</h2>
-                    <p>Transforme suas ideias em realidade. Seu futuro começa aqui!</p>
+                    <h2 className="overlay-title">Submeta o Seu Projeto</h2>
+                    <p className="overlay-description">Transforme as suas ideias em realidade e participe em eventos inovadores. O seu futuro começa aqui!</p>
                 </div>
             </div>
+
+            {/* Secção do Formulário com Novo Design */}
             <div className="projeto-form-section">
                 <h1 className="form-title">Detalhes do Novo Projeto</h1>
                 <form onSubmit={handleSubmit} className="projeto-form">
@@ -117,6 +124,7 @@ export default function EnviarProjeto() {
                                 id="titulo"
                                 value={titulo}
                                 onChange={(e) => setTitulo(e.target.value)}
+                                placeholder="Ex: Robô de Reciclagem Inteligente"
                                 required
                             />
                         </div>
@@ -128,6 +136,7 @@ export default function EnviarProjeto() {
                                 id="professorCoordenador"
                                 value={professorCoordenador}
                                 onChange={(e) => setProfessorCoordenador(e.target.value)}
+                                placeholder="Nome completo do professor"
                                 required
                             />
                         </div>
@@ -145,6 +154,7 @@ export default function EnviarProjeto() {
                                 <option value="foraDeSala">Projeto Fora de Sala</option>
                                 <option value="laboratorio">Laboratório</option>
                                 <option value="auditorio">Apresentação no Auditório</option>
+                                <option value="pesquisaCientifica">Pesquisa Científica</option>
                             </select>
                         </div>
 
@@ -154,7 +164,8 @@ export default function EnviarProjeto() {
                                 id="resumo"
                                 value={resumo}
                                 onChange={(e) => setResumo(e.target.value)}
-                                rows="3"
+                                rows="4"
+                                placeholder="Descreva o seu projeto em 3-5 frases."
                                 required
                             ></textarea>
                         </div>
@@ -178,6 +189,7 @@ export default function EnviarProjeto() {
                                 value={quantidadeAlunos}
                                 onChange={(e) => setQuantidadeAlunos(e.target.value)}
                                 min="1"
+                                placeholder="Mínimo 1 aluno"
                                 required
                             />
                         </div>
@@ -188,20 +200,26 @@ export default function EnviarProjeto() {
                                 id="materiais"
                                 value={materiais}
                                 onChange={(e) => setMateriais(e.target.value)}
-                                rows="2"
-                                placeholder="Liste os materiais aqui..."
+                                rows="3"
+                                placeholder="Liste os materiais e recursos que precisará para a apresentação."
                             ></textarea>
                         </div>
 
-                        <div className="form-group full-width">
+                        <div className="form-group full-width file-upload-group">
                             <label htmlFor="arquivoPDF">Enviar PDF do Projeto:</label>
-                            <input
-                                type="file"
-                                id="arquivoPDF"
-                                accept=".pdf"
-                                onChange={(e) => setArquivoPDF(e.target.files[0])}
-                                required
-                            />
+                            <div className="file-input-wrapper">
+                                <input
+                                    type="file"
+                                    id="arquivoPDF"
+                                    accept=".pdf"
+                                    onChange={(e) => setArquivoPDF(e.target.files[0])}
+                                    required
+                                />
+                                <span className="file-input-label">
+                                    {arquivoPDF ? arquivoPDF.name : 'Selecione o ficheiro PDF do seu projeto'}
+                                </span>
+                            </div>
+                            {arquivoPDF && <p className="file-name-display">Ficheiro selecionado: {arquivoPDF.name}</p>}
                         </div>
 
                         {/* SEÇÃO DE VINCULAÇÃO AO EVENTO */}
@@ -216,7 +234,7 @@ export default function EnviarProjeto() {
                                 required
                             />
                             {eventoSelecionado && (
-                                <p className="evento-selecionado-info">
+                                <p className="evento-selecionado-info success">
                                     Evento selecionado: <strong>{eventoSelecionado.titulo}</strong> (Código: {eventoSelecionado.codigo})
                                 </p>
                             )}
@@ -225,10 +243,17 @@ export default function EnviarProjeto() {
                                     Nenhum evento válido encontrado com este termo.
                                 </p>
                             )}
+                            {(!eventoSelecionado && codigoEvento.length < 2 && codigoEvento.length > 0) && (
+                                <p className="evento-selecionado-info info">
+                                    Continue a digitar para pesquisar eventos...
+                                </p>
+                            )}
                         </div>
                     </div>
 
-                    <button type="submit" className="submit-btn">Enviar Projeto</button>
+                    <button type="submit" className="submit-btn">
+                        Enviar Projeto <span className="icon-send">✉️</span>
+                    </button>
                 </form>
             </div>
         </div>
