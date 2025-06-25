@@ -1,200 +1,682 @@
 /* src/pages/criar-evento/criar-evento.css */
 
-/* Animação para a imagem */
-@keyframes fadeInSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* --- Variáveis de Cores (Atualizadas para um visual ainda mais profissional) --- */
+:root {
+    /* Cores base do seu tema, refinadas */
+    --primary-blue: #3498db; /* Azul principal elegante */
+    --dark-blue: #2c3e50;    /* Azul escuro profundo para textos e cabeçalhos */
+    --light-gray: #ecf0f1;   /* Fundo geral suave */
+    --medium-gray: #bdc3c7;  /* Cinza para textos secundários e bordas */
+    --dark-text: #2c3e50;
+    --border-light: #dbe4eb; /* Borda suave */
+    --form-bg: #ffffff;      /* Fundo do formulário (branco puro para contraste) */
+
+    /* Cores de destaque e gradientes para vitalidade e elegância */
+    --accent-color: #2ecc71; /* Verde vivo para botões e destaques */
+    --gradient-start: #6dd5ed; /* Seu azul claro para gradiente do container */
+    --gradient-end: #2193b0;   /* Seu azul escuro para gradiente do container */
+
+    /* NOVO: Gradientes e cores para a secção da imagem */
+    --image-overlay-gradient-start: rgba(52, 152, 219, 0.75); /* Azul vibrante com transparência */
+    --image-overlay-gradient-end: rgba(46, 204, 113, 0.75);   /* Verde vibrante com transparência */
+
+    /* NOVO: Cores e sombras para a secção do formulário */
+    --form-background-soft: #f8faff; /* Um branco levemente azulado para o fundo principal do formulário */
+    --form-border-subtle: #e0e6ed; /* Borda mais definida para inputs e caixas */
+    --form-section-shadow: 0 15px 50px rgba(0, 0, 0, 0.3); /* Sombra mais destacada e suave para a seção do form */
+
+    /* NOVO: Cores e sombras para inputs e botões */
+    --input-bg-subtle: #ffffff; /* Fundo do input */
+    --input-border-focus: var(--primary-blue); /* Cor da borda no foco */
+    --input-shadow-focus: 0 0 0 5px rgba(52, 152, 219, 0.25); /* Sombra no foco do input */
+    --button-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Sombra para botões */
+    --button-hover-shadow: 0 15px 35px rgba(46, 204, 113, 0.5); /* Sombra maior e mais profunda no hover do botão */
+    --form-title-border: var(--accent-color); /* Cor da borda do título do formulário */
+
+    /* NOVA VARIÁVEL para placeholder */
+    --placeholder-color: #a0a0a0;
 }
 
-/* Contêiner principal da página */
+/* Animações de Entrada (Refinadas) */
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRightForm {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInGroup {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInPageContainer {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Base Global para a Página --- */
+body {
+    font-family: 'Inter', sans-serif, 'Arial', sans-serif; /* Prioriza Inter */
+    background-color: var(--light-gray); /* Fundo padrão, mas será sobreposto pelo container */
+    color: var(--dark-text);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* --- Contêiner Principal da Página (Base para o layout de duas colunas) --- */
 .criar-evento-container {
     display: flex;
-    max-width: 1200px;
-    height: 80vh; /* Altura fixa para o container, para que o formulário possa rolar dentro */
-    margin: 40px auto;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    overflow: hidden; /* Garante que a borda arredondada funcione corretamente e conteudos não escapem */
+    max-width: 1000px; /* AJUSTADO: Largura máxima reduzida para mais compacto */
+    min-height: 80vh; /* AJUSTADO: Altura mínima reduzida para mais compacto */
+    margin: 40px auto; /* Centraliza vertical e horizontalmente */
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); /* SEU BACKGROUND ORIGINAL */
+    border-radius: 18px; /* Cantos mais arredondados */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2); /* Sombra mais profunda e suave */
+    color: var(--dark-text);
+    overflow: hidden;
+    box-sizing: border-box;
+    animation: fadeInPageContainer 1s ease-out forwards; /* Animação de entrada suave */
 }
 
-/* Container para a imagem */
+/* --- Container para a Imagem (Lado Esquerdo - DESIGN FANTÁSTICO) --- */
 .criar-evento-image-container {
-    flex: 1; /* Ocupa metade do espaço */
-    padding: 20px;
+    flex: 0.8; /* AJUSTADO: Lado da imagem ocupa menos espaço (ex: 45% vs 55% para o formulário) */
+    position: relative;
+    overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #f0f8ff; /* Fundo suave para a imagem */
+    min-height: 100%;
+    background-color: var(--dark-blue); /* Fundo de fallback */
 }
 
-/* Estilos para a imagem com animação */
+/* Estilos para a imagem com overlay de gradiente e animações */
 .criar-evento-image {
-    max-width: 100%;
-    max-height: 100%; /* Garante que não exceda a altura do container */
-    object-fit: contain; /* Garante que a imagem se ajuste sem cortar */
-    border-radius: 12px; /* Cantos arredondados para a imagem */
-    animation: fadeInSlideUp 1s ease-out forwards; /* Aplica a animação */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5); /* Mais escuro para forte contraste do texto */
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transição suave e longa */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-/* Container para o formulário - AGORA COM SCROLL */
-.criar-evento-form-container {
-    flex: 1; /* Ocupa a outra metade do espaço */
-    padding: 30px;
-    overflow-y: auto; /* Adiciona barra de rolagem vertical */
-    max-height: 100%; /* Garante que o scroll funcione dentro da altura do pai */
-    display: flex;
-    flex-direction: column; /* Organiza o conteúdo do form-container */
+.criar-evento-image-container:hover .criar-evento-image {
+    transform: scale(1.1); /* Efeito de zoom mais pronunciado e suave no hover */
 }
+
+/* Overlay de gradiente sobre a imagem */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, var(--image-overlay-gradient-start) 0%, var(--image-overlay-gradient-end) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 30px; /* AJUSTADO: Menos padding para texto, mais compacto */
+    box-sizing: border-box;
+    z-index: 2;
+    animation: fadeInOverlay 1.8s ease-out; /* Animação de entrada mais suave e longa */
+}
+
+.image-overlay h2 {
+    font-size: 3em; /* AJUSTADO: Título da overlay um pouco menor */
+    margin-bottom: 15px; /* AJUSTADO: Menos margem */
+    font-weight: 800;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    animation: fadeInSlideUp 1s forwards 0.8s;
+    opacity: 0;
+}
+
+.image-overlay p {
+    font-size: 1.3em; /* AJUSTADO: Descrição da overlay um pouco menor */
+    max-width: 85%;
+    line-height: 1.6;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    animation: fadeInSlideUp 1s forwards 1.1s;
+    opacity: 0;
+}
+
+
+/* --- Container para o Formulário (Lado Direito - REVOLUCIONADO e MAIS COMPACTO) --- */
+.criar-evento-form-container {
+    flex: 1.2; /* AJUSTADO: Formulário ocupa mais espaço (55% vs 45% da imagem) */
+    background-color: var(--form-background-soft); /* Fundo suavemente colorido para o formulário */
+    padding: 35px 40px; /* AJUSTADO: Padding reduzido para mais compacto */
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    box-shadow: -15px 0 60px var(--form-section-shadow);
+    animation: fadeInRightForm 1.2s ease-out forwards;
+    opacity: 0;
+    position: relative;
+
+    /* Scrollbar customizada (WebKit) - Refinada */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-blue) var(--form-background-soft);
+}
+
+.criar-evento-form-container::-webkit-scrollbar {
+    width: 8px; /* AJUSTADO: Largura um pouco menor */
+}
+
+.criar-evento-form-container::-webkit-scrollbar-track {
+    background: var(--form-background-soft);
+    border-radius: 10px;
+}
+
+.criar-evento-form-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-blue);
+    border-radius: 10px;
+    border: 2px solid var(--form-background-soft); /* AJUSTADO: Borda um pouco mais fina */
+}
+
 
 /* Título e descrição do formulário */
 .criar-evento-form-container h2 {
-    font-size: 2.2em;
-    color: #2c3e50;
-    margin-bottom: 10px;
-    text-align: left;
-    font-weight: 600;
+    font-size: 2.2em; /* AJUSTADO: Título do formulário um pouco menor */
+    color: var(--dark-blue);
+    margin-bottom: 15px; /* AJUSTADO: Menos margem */
+    text-align: center;
+    font-weight: 800;
+    position: sticky;
+    top: 0;
+    background-color: var(--form-background-soft);
+    z-index: 10;
+    padding-top: 15px; /* AJUSTADO: Menos padding */
+    padding-bottom: 15px; /* AJUSTADO: Menos padding para a borda */
+    border-bottom: 4px solid var(--form-title-border); /* AJUSTADO: Borda um pouco mais fina */
+    box-sizing: border-box;
+    animation: fadeInGroup 1s forwards 0.4s;
+    opacity: 0;
 }
 
-.criar-evento-form-container p {
-    font-size: 1.1em;
-    color: #7f8c8d;
-    text-align: left;
-    margin-bottom: 30px;
+.criar-evento-form-container p.form-description {
+    font-size: 1em; /* AJUSTADO: Descrição do formulário um pouco menor */
+    color: var(--medium-gray);
+    text-align: center;
+    margin-bottom: 30px; /* AJUSTADO: Menos espaçamento */
+    animation: fadeInGroup 1s forwards 0.6s;
+    opacity: 0;
 }
 
 /* Formulário em si */
 .criar-evento-form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Reduzi o gap para deixar mais compacto */
-    flex-grow: 1; /* Permite que o formulário cresça e ocupe o espaço disponível antes do scroll */
+    gap: 18px; /* AJUSTADO: Menos espaçamento entre grupos para mais compacto */
+    flex-grow: 1;
+    padding-bottom: 30px; /* AJUSTADO: Menos espaço para o botão no final do scroll */
 }
 
 /* Grupo de campos (label + input/textarea) */
 .form-group {
-    margin-bottom: 10px; /* Reduzi o margin-bottom */
+    margin-bottom: 0;
+    animation: fadeInGroup 0.8s ease-out forwards;
+    opacity: 0;
 }
+
+/* Delays para cada grupo de formulário (AJUSTADOS para se adequar à nova animação) */
+.form-group:nth-child(1) { animation-delay: 0.7s; }
+.form-group:nth-child(2) { animation-delay: 0.8s; }
+.form-group:nth-child(3) { animation-delay: 0.9s; }
+.form-group.full-width:nth-child(4) { animation-delay: 1.0s; }
+.form-group.full-width:nth-child(5) { animation-delay: 1.1s; } /* File input group */
+.form-group-dates:nth-of-type(1) { animation-delay: 1.2s; } /* Primeiro grupo de datas */
+.form-group-dates:nth-of-type(2) { animation-delay: 1.3s; } /* Segundo grupo de datas */
+
 
 .form-group label {
     display: block;
-    margin-bottom: 5px; /* Reduzi o margin-bottom */
-    font-weight: bold;
-    color: #34495e;
-    font-size: 0.95em; /* Levemente menor */
+    margin-bottom: 6px; /* AJUSTADO: Menos espaçamento */
+    font-weight: 700;
+    color: var(--dark-blue);
+    font-size: 1em; /* AJUSTADO: Ligeiramente menor */
 }
 
 .form-group input[type="text"],
 .form-group input[type="date"],
 .form-group textarea,
-.form-group input[type="file"] { /* Inclui input file no estilo */
-    width: calc(100% - 20px); /* Ajuste o width para acomodar o padding */
-    padding: 10px; /* Reduzi um pouco o padding */
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
-    font-size: 1em;
-    color: #555;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.form-group select {
+    width: 100%;
+    padding: 10px 14px; /* AJUSTADO: Menos padding */
+    border: 1px solid var(--form-border-subtle);
+    border-radius: 10px; /* AJUSTADO: Ligeiramente menos arredondado */
+    font-size: 0.95em; /* AJUSTADO: Ligeiramente menor */
+    color: var(--dark-text);
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    background-color: var(--input-bg-subtle);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04); /* AJUSTADO: Sombra interna mais suave */
 }
 
-.form-group input[type="file"] {
-    padding: 8px; /* Padding específico para file input */
+/* Placeholder Styling */
+.form-group input::placeholder,
+.form-group textarea::placeholder,
+.form-group select:invalid {
+    color: var(--placeholder-color);
+    opacity: 0.8;
+}
+
+/* Efeito no hover dos inputs */
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: var(--primary-blue);
+    transform: translateY(-2px) scale(1.005); /* AJUSTADO: Elevação e escala um pouco menos pronunciadas */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* AJUSTADO: Sombra um pouco menos definida */
 }
 
 .form-group input:focus,
+.form-group select:focus,
 .form-group textarea:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    border-color: var(--input-border-focus);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25); /* AJUSTADO: Sombra de foco um pouco menor */
     outline: none;
+    transform: translateY(-1px);
 }
 
 .form-group textarea {
     resize: vertical;
-    min-height: 70px; /* Altura mínima ajustada */
+    min-height: 80px; /* AJUSTADO: Altura mínima um pouco menor */
 }
 
-.file-name {
-    font-size: 0.85em; /* Levemente menor */
-    color: #666;
-    margin-top: 3px;
-    font-style: italic;
+/* File Input Wrapper (Para estilo personalizado - Refinado) */
+.file-upload-group {
+    position: relative;
 }
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--form-border-subtle);
+    border-radius: 10px; /* AJUSTADO: Ligeiramente menos arredondado */
+    background-color: var(--input-bg-subtle);
+    padding: 10px 14px; /* AJUSTADO: Menos padding */
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.file-input-label {
+    flex-grow: 1;
+    color: var(--dark-text);
+    font-size: 0.95em; /* AJUSTADO: Ligeiramente menor */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px; /* AJUSTADO: Menos espaço para o ícone */
+}
+
+.file-input-wrapper::after {
+    content: '📁';
+    font-size: 1.2em; /* AJUSTADO: Ícone um pouco menor */
+    color: var(--primary-blue);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* AJUSTADO: Sombra um pouco menos definida */
+}
+
+.file-name-display {
+    font-size: 0.8em; /* AJUSTADO: Texto menor */
+    color: var(--medium-gray);
+    margin-top: 5px; /* AJUSTADO: Menos margem */
+    padding-left: 5px;
+}
+
 
 .form-group-dates {
-    margin-top: 15px; /* Reduzi o margin-top */
-    padding: 15px; /* Reduzi o padding */
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background-color: #f8f8f8;
+    margin-top: 15px; /* AJUSTADO: Menos espaço */
+    padding: 18px; /* AJUSTADO: Menos padding */
+    border: 1px solid var(--form-border-subtle);
+    border-radius: 10px; /* AJUSTADO: Ligeiramente menos arredondado */
+    background-color: var(--form-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* AJUSTADO: Sombra mais suave */
+    animation: fadeInGroup 0.8s ease-out forwards;
+    opacity: 0;
 }
 
 .form-group-dates h3 {
-    font-size: 1.2em; /* Levemente menor */
-    color: #2c3e50;
-    margin-bottom: 10px; /* Reduzi o margin-bottom */
+    font-size: 1.2em; /* AJUSTADO: Título um pouco menor */
+    color: var(--dark-blue);
+    margin-bottom: 10px; /* AJUSTADO: Menos espaçamento */
     text-align: left;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 8px; /* AJUSTADO: Menos padding */
+}
+.form-group-dates h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px; /* AJUSTADO: Linha de destaque menor */
+    height: 2px; /* AJUSTADO: Linha de destaque mais fina */
+    background-color: var(--primary-blue);
+    border-radius: 1px;
 }
 
 .date-inputs {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* Reduzi o gap */
+    gap: 15px; /* AJUSTADO: Menos espaçamento */
 }
 
 .date-input-group {
     flex: 1;
-    min-width: 200px; /* Reduzi a largura mínima */
+    min-width: 200px; /* AJUSTADO: Largura mínima menor */
 }
 
-.btn-confirmar {
-    background-color: #28a745;
+/* Botão de Confirmação (Redesenhado - MANTIDO COM CLASSE ORIGINAL) */
+.btn-confirmar.submit-event-btn {
+    background: linear-gradient(45deg, var(--accent-color), #27ae60);
     color: white;
-    padding: 12px 20px; /* Reduzi o padding */
+    padding: 14px 28px; /* AJUSTADO: Menos padding e menor */
     border: none;
-    border-radius: 6px;
+    border-radius: 10px; /* AJUSTADO: Ligeiramente menos arredondado */
+    font-size: 1.2em; /* AJUSTADO: Fonte menor */
+    font-weight: 700;
     cursor: pointer;
-    font-size: 1em; /* Levemente menor */
-    font-weight: bold;
-    align-self: flex-end;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: auto; /* Empurra o botão para o final do container rolável */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 30px; /* AJUSTADO: Menos margem superior */
+    box-shadow: var(--button-shadow);
+    letter-spacing: 0.8px; /* AJUSTADO: Menos espaçamento entre letras */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* AJUSTADO: Menos espaçamento para ícone */
+    align-self: center;
+    animation: fadeInGroup 0.8s ease-out forwards 1.4s;
+    opacity: 0;
 }
 
-.btn-confirmar:hover {
+.btn-confirmar.submit-event-btn:hover {
+    background: linear-gradient(45deg, #27ae60, var(--accent-color));
+    transform: translateY(-5px) scale(1.01); /* AJUSTADO: Elevação e escala um pouco menos pronunciadas */
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4); /* AJUSTADO: Sombra um pouco menor */
+}
+
+.btn-confirmar.submit-event-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
     background-color: #218838;
-    transform: translateY(-2px);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
+/* Ícone de envio (emoji) */
+.icon-send-event {
+    font-size: 1em;
+    vertical-align: middle;
+}
+
+
+/* Responsividade (Aprimorada para Design Compacto) */
+@media (max-width: 1200px) {
+    .criar-evento-container {
+        max-width: 900px; /* AJUSTADO: Mais compacto */
+        margin: 30px auto;
+        border-radius: 15px;
+    }
+    .criar-evento-form-container {
+        padding: 35px 40px; /* AJUSTADO: Mais compacto */
+    }
+    .image-overlay h2 {
+        font-size: 2.8em;
+    }
+    .image-overlay p {
+        font-size: 1.1em;
+    }
+    .criar-evento-form-container h2 {
+        font-size: 2.2em;
+    }
+    .criar-evento-form-container p.form-description {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 992px) {
     .criar-evento-container {
         flex-direction: column;
-        height: auto; /* Remove altura fixa em telas pequenas */
+        height: auto;
+        min-height: auto;
         margin: 20px;
-        padding: 0; /* Remove padding do container principal */
-        box-shadow: none; /* Remove sombra em telas pequenas para um visual mais limpo */
+        padding: 0;
+        box-shadow: none;
         border-radius: 0;
+        animation: none;
     }
 
     .criar-evento-image-container {
-        display: none; /* Oculta a imagem em telas menores */
+        width: 100%;
+        height: 250px; /* AJUSTADO: Altura fixa menor em tablets */
+        min-height: 250px;
+        flex: none;
+        border-radius: 0;
+    }
+
+    .image-overlay {
+        padding: 25px; /* AJUSTADO: Menos padding */
+    }
+
+    .image-overlay h2 {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+    }
+
+    .image-overlay p {
+        font-size: 1em;
+        max-width: 90%;
     }
 
     .criar-evento-form-container {
-        padding: 20px; /* Adiciona padding aqui quando a imagem estiver oculta */
-        max-height: none; /* Remove altura máxima em telas pequenas */
-        overflow-y: visible; /* Remove scroll em telas pequenas */
+        width: 100%;
+        padding: 30px 25px; /* AJUSTADO: Mais compacto */
+        box-shadow: 0 -10px 40px var(--form-section-shadow);
+        min-height: auto;
+        max-height: none;
+        animation: fadeInGroup 1s ease-out forwards 0.2s;
+        opacity: 0;
+        border-radius: 0;
+
+        scrollbar-width: none;
+    }
+    .criar-evento-form-container::-webkit-scrollbar {
+        display: none;
     }
 
-    .btn-confirmar {
+    .criar-evento-form-container h2,
+    .criar-evento-form-container p.form-description,
+    .form-group,
+    .form-group-dates,
+    .btn-confirmar.submit-event-btn {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .criar-evento-form-container h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        position: static;
+        padding-top: 0;
+        padding-bottom: 8px; /* AJUSTADO: Menos padding */
+        border-bottom: 2px solid var(--form-title-border); /* AJUSTADO: Borda mais fina */
+    }
+
+    .criar-evento-form-container p.form-description {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+
+    .criar-evento-form {
+        gap: 15px; /* AJUSTADO: Mais compacto */
+        padding-bottom: 0;
+    }
+
+    .form-group label {
+        font-size: 0.95em;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 8px 12px; /* AJUSTADO: Mais compacto */
+        font-size: 0.9em;
+        border-radius: 8px; /* AJUSTADO: Mais compacto */
+    }
+
+    .form-group textarea {
+        min-height: 70px; /* AJUSTADO: Mais compacto */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .form-group-dates {
+        padding: 15px; /* AJUSTADO: Mais compacto */
+    }
+
+    .date-inputs {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-confirmar.submit-event-btn {
         align-self: stretch;
+        font-size: 1.1em;
+        padding: 12px 20px; /* AJUSTADO: Mais compacto */
+        margin-top: 20px; /* AJUSTADO: Mais compacto */
+    }
+}
+
+@media (max-width: 768px) {
+    .criar-evento-image-container {
+        height: 200px; /* AJUSTADO: Altura menor */
+        min-height: 200px;
+    }
+    .image-overlay h2 {
+        font-size: 2em;
+    }
+    .image-overlay p {
+        font-size: 0.9em;
+    }
+    .criar-evento-form-container {
+        padding: 25px 15px; /* AJUSTADO: Menos padding */
+    }
+    .criar-evento-form-container h2 {
+        font-size: 1.6em;
+    }
+    .criar-evento-form-container p.form-description {
+        font-size: 0.85em;
+    }
+    .form-group label {
+        font-size: 0.85em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 0.8em;
+        padding: 7px 10px; /* AJUSTADO: Menos padding */
+    }
+    .form-group textarea {
+        min-height: 60px; /* AJUSTADO: Menor altura */
+    }
+    .file-input-wrapper {
+        padding: 7px 10px; /* AJUSTADO: Menos padding */
+    }
+    .file-input-label {
+        font-size: 0.85em;
+    }
+    .file-input-wrapper::after {
+        font-size: 1em;
+    }
+    .form-group-dates h3 {
+        font-size: 1em;
+    }
+    .btn-confirmar.submit-event-btn {
+        font-size: 0.9em;
+        padding: 10px 15px; /* AJUSTADO: Menos padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .criar-evento-image-container {
+        height: 180px; /* AJUSTADO: Altura ainda menor */
+        min-height: 180px;
+    }
+    .image-overlay h2 {
+        font-size: 1.8em;
+        margin-bottom: 8px;
+    }
+    .image-overlay p {
+        font-size: 0.8em;
+    }
+    .criar-evento-form-container {
+        padding: 20px 10px; /* AJUSTADO: Menos padding */
+    }
+    .criar-evento-form-container h2 {
+        font-size: 1.4em;
+        margin-bottom: 12px;
+    }
+    .criar-evento-form-container p.form-description {
+        font-size: 0.75em;
+        margin-bottom: 15px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 6px 8px; /* AJUSTADO: Menos padding */
+        font-size: 0.75em;
+        border-radius: 6px; /* AJUSTADO: Menos arredondado */
+    }
+    .btn-confirmar.submit-event-btn {
+        font-size: 0.8em;
+        padding: 8px 12px; /* AJUSTADO: Menos padding */
+        margin-top: 20px; /* AJUSTADO: Menos margem */
     }
 }
