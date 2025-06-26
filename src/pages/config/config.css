@@ -1,0 +1,409 @@
+/* src/pages/configuracoes/configuracoes.css */
+
+/* --- Variáveis de Cores (Consistentes com o tema geral) --- */
+:root {
+    --primary-blue: #3498db; /* Azul principal */
+    --dark-blue: #2c3e50;    /* Azul escuro para textos e títulos */
+    --light-gray-bg: #ecf0f1; /* Fundo geral claro e suave */
+    --medium-gray-text: #7f8c8d; /* Cinza para textos secundários */
+    --dark-text-color: #2c3e50; /* Texto escuro para maior legibilidade */
+    --card-background: #ffffff; /* Fundo de seções/cartões */
+    --border-color-subtle: #e0e6ed; /* Borda suave */
+
+    --accent-color-green: #2ecc71; /* Verde para ações de sucesso/destaque */
+    --warning-color-red: #e74c3c; /* Vermelho para ações de alerta/redefinir */
+
+    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1); /* Sombra para seções */
+    --input-shadow-focus: 0 0 0 4px rgba(52, 152, 219, 0.25); /* Sombra no foco do input */
+    --button-shadow-base: 0 4px 10px rgba(0, 0, 0, 0.1);
+    --button-shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+    /* Cores para o switch toggle */
+    --switch-bg-off: #ccc;
+    --switch-bg-on: var(--accent-color-green);
+    --switch-slider-color: white;
+}
+
+/* Base Body Styles (garante a fonte e o overflow) */
+body {
+    font-family: 'Inter', sans-serif, 'Arial', sans-serif; /* Prioriza Inter */
+    background-color: var(--light-gray-bg);
+    color: var(--dark-text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* --- Container Principal da Página de Configurações --- */
+.configuracoes-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinha ao topo */
+    padding: 40px 20px;
+    /* O background virá do layout.css */
+    min-height: calc(100vh - 120px); /* Altura mínima para preencher o espaço */
+    box-sizing: border-box;
+    animation: fadeInPage 0.8s ease-out forwards; /* Animação de entrada suave */
+    opacity: 0; /* Começa invisível */
+}
+
+@keyframes fadeInPage {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Secção do Cabeçalho da Página (Título e Descrição) --- */
+.configuracoes-header-section {
+    text-align: center;
+    margin-bottom: 50px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.configuracoes-title {
+    font-size: 3.2em;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+    font-weight: 800;
+    position: relative;
+    padding-bottom: 10px;
+    animation: fadeInSlideDown 0.8s ease-out forwards 0.2s; /* Animação */
+    opacity: 0;
+}
+
+.configuracoes-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-blue);
+    border-radius: 2px;
+}
+
+.configuracoes-description {
+    font-size: 1.2em;
+    color: var(--medium-gray-text);
+    line-height: 1.6;
+    animation: fadeInSlideDown 0.8s ease-out forwards 0.4s; /* Animação com delay */
+    opacity: 0;
+}
+
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Secção do Formulário Principal --- */
+.configuracoes-form-section {
+    background-color: var(--card-background);
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
+    padding: 40px;
+    max-width: 900px; /* Largura máxima para o formulário */
+    width: 100%;
+    box-sizing: border-box;
+    animation: fadeInFormContainer 1s ease-out forwards 0.6s; /* Animação */
+    opacity: 0;
+}
+
+@keyframes fadeInFormContainer {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.configuracoes-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Espaçamento entre grupos de secções */
+}
+
+/* --- Grupos de Secção (Ex: Informações do Perfil, Notificações) --- */
+.form-section-group {
+    border: 1px solid var(--border-color-subtle);
+    border-radius: 12px;
+    padding: 25px;
+    background-color: var(--light-gray-bg); /* Fundo suave para o grupo */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra interna */
+    animation: fadeInGroup 0.8s ease-out forwards; /* Animação */
+    opacity: 0;
+}
+
+/* Delays para cada grupo de seção */
+.form-section-group:nth-child(1) { animation-delay: 0.8s; }
+.form-section-group:nth-child(2) { animation-delay: 1.0s; }
+.form-section-group:nth-child(3) { animation-delay: 1.2s; }
+
+
+@keyframes fadeInGroup {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-group-title {
+    font-size: 1.8em;
+    color: var(--primary-blue);
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 2px solid var(--border-color-subtle);
+    padding-bottom: 10px;
+}
+
+/* --- Grupos de Formulário Individual (Label + Input/Select/Checkbox) --- */
+.form-group-config {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group-config:last-of-type {
+    margin-bottom: 0; /* Remove margem do último item do grupo */
+}
+
+.form-group-config label {
+    font-size: 1em;
+    color: var(--dark-text-color);
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.form-group-config input[type="text"],
+.form-group-config input[type="email"],
+.form-group-config select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color-subtle);
+    border-radius: 8px;
+    font-size: 0.95em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: var(--card-background);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group-config input[type="text"]:focus,
+.form-group-config input[type="email"]:focus,
+.form-group-config select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: var(--input-shadow-focus);
+    outline: none;
+}
+
+.form-group-config .disabled-input {
+    background-color: #f0f0f0;
+    color: var(--medium-gray-text);
+    cursor: not-allowed;
+}
+
+/* --- Switch Toggle (para checkboxes - Receber Newsletters) --- */
+.switch-group {
+    flex-direction: row; /* Label e switch lado a lado */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Largura do switch */
+    height: 28px; /* Altura do switch */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--switch-bg-off);
+    transition: .4s;
+    border-radius: 28px; /* Arredondado */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; /* Tamanho do "círculo" */
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--switch-slider-color);
+    transition: .4s;
+    border-radius: 50%; /* Círculo */
+}
+
+input:checked + .slider {
+    background-color: var(--switch-bg-on);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--switch-bg-on);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px); /* Move o círculo */
+}
+
+
+/* --- Botões de Ação --- */
+.configuracoes-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    animation: fadeInGroup 0.8s ease-out forwards 1.4s; /* Animação */
+    opacity: 0;
+}
+
+.btn-save-settings,
+.btn-reset-settings {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--button-shadow-base);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-save-settings {
+    background-color: var(--accent-color-green);
+    color: white;
+}
+
+.btn-save-settings:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+    box-shadow: var(--button-shadow-hover);
+}
+
+.btn-reset-settings {
+    background-color: var(--warning-color-red);
+    color: white;
+}
+
+.btn-reset-settings:hover {
+    background-color: #c0392b;
+    transform: translateY(-3px);
+    box-shadow: var(--button-shadow-hover);
+}
+
+/* Ícones nos botões */
+.icon-save,
+.icon-reset {
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .configuracoes-page-container {
+        padding: 20px 15px;
+        margin: 20px auto;
+    }
+
+    .configuracoes-title {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .configuracoes-description {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+
+    .configuracoes-form-section {
+        padding: 30px 25px;
+    }
+
+    .section-group-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .form-group-config label {
+        font-size: 0.95em;
+    }
+
+    .form-group-config input,
+    .form-group-config select {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .configuracoes-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-save-settings,
+    .btn-reset-settings {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .configuracoes-page-container {
+        padding: 15px 10px;
+        margin: 15px auto;
+    }
+
+    .configuracoes-title {
+        font-size: 2em;
+    }
+
+    .configuracoes-description {
+        font-size: 0.9em;
+    }
+
+    .configuracoes-form-section {
+        padding: 25px 20px;
+    }
+
+    .section-group-title {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .form-group-config input,
+    .form-group-config select {
+        font-size: 0.85em;
+        padding: 8px 10px;
+    }
+
+    .switch {
+        width: 45px;
+        height: 25px;
+    }
+    .slider:before {
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+    }
+    input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+}

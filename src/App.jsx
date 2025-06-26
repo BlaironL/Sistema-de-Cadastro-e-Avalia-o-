@@ -17,6 +17,8 @@ import VerProjetos from './pages/ver-projetos/ver-projetos';
 import AvaliarProjeto from './pages/avaliar-projeto/avaliar-projeto'; 
 import SolicitarAvaliacao from './pages/solicitar-ava/solicitar-avaliacao'; 
 import SolicitarOrg from './pages/solicitar-org/solicitar-org'; 
+import MeuPerfil from './pages/meu-perfil/meu-perfil'; 
+import Config from './pages/config/config'; 
 
 // Importe seus Provedores de Contexto
 import { NotificationProvider } from './pages/contexts/NotificationContext'; 
@@ -97,6 +99,8 @@ export default function App() {
               <Route path="/avaliar-projeto" element={<AvaliarProjeto />} />
               <Route path="/solicitar-avaliacao" element={<SolicitarAvaliacao />} />
               <Route path="/solicitar-org" element={<SolicitarOrg />} />
+              <Route path="/meu-perfil" element={<MeuPerfil />} />
+              <Route path="/config" element={<Config />} />
             </Route>
           </Routes>
 

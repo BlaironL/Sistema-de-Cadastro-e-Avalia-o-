@@ -12,10 +12,10 @@ import { EventProjectProvider } from "../contexts/EventProjectContext.jsx";
 export default function Layout({ userEmail, userProfile, handleLogout }) {
     console.log("Layout.jsx: Componente Layout a ser renderizado...");
     const location = useLocation();
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook useNavigate
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const menuRef = useRef(null);
+    const menuRef = useRef(null); // Ref para o menu dropdown do cabeçalho
 
     // Função para lidar com o logout, incluindo uma confirmação
     const handleLogoutWithConfirmation = () => {
@@ -27,29 +27,57 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
         }
     };
 
-    // Efeito para fechar o menu dropdown ao clicar fora dele
+    // Efeito para fechar o MENU DROPDOWN do cabeçalho ao clicar fora dele
     useEffect(() => {
         function handleClickOutside(event) {
+            // Verifica se o clique foi fora do menu dropdown principal
             if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setIsMenuOpen(false);
+                setIsMenuOpen(false); // Fecha o menu do cabeçalho
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, []); // Dependência vazia, executa apenas na montagem e desmontagem
 
-    // Alterna o estado de abertura/fechamento do menu dropdown
+    // Alterna o estado de abertura/fechamento do menu dropdown do cabeçalho
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
+    };
+
+    // Função para navegar e fechar o menu do cabeçalho
+    const handleMenuItemClick = (path) => {
+        navigate(path);
+        setIsMenuOpen(false); // Fecha o menu após a navegação
     };
 
     // Verifica se o utilizador está autenticado. userEmail será nulo ou vazio antes do login.
     const isAuthenticated = !!userEmail; // Converte para booleano: true se userEmail não for nulo/vazio
 
-    // REMOVIDO: O useEffect para carregar e inicializar o VLibras. Ele deve estar APENAS no index.html.
-    // REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS) NO RETURN. Ele deve estar APENAS no index.html.
+    // Efeito para carregar e inicializar o VLibras (este bloco está correto e permanece)
+    useEffect(() => {
+        // Verifica se o script já foi carregado
+        if (!document.getElementById('vlibras-script')) {
+            const script = document.createElement('script');
+            script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+            script.id = 'vlibras-script'; // Adiciona um ID para evitar carregamento duplicado
+            script.onload = () => {
+                // Tenta inicializar o widget após o script carregar
+                if (window.VLibras) {
+                    new window.VLibras.Widget('https://vlibras.gov.br/app');
+                } else {
+                    console.error("VLibras object not found after script load.");
+                }
+            };
+            script.onerror = (error) => {
+                console.error("Failed to load VLibras script:", error);
+            };
+            document.body.appendChild(script);
+        }
+
+        return () => {}; // Sem limpeza específica necessária aqui para o VLibras
+    }, []); // Array de dependências vazio para executar apenas uma vez na montagem
 
     return (
         // Os provedores de contexto envolvem toda a aplicação para que os dados fiquem disponíveis
@@ -72,8 +100,9 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                                     <ul>
                                         {/* Exibe o e-mail do utilizador autenticado no menu */}
                                         <li><span>Olá, {userEmail || 'Utilizador'}</span></li>
-                                        <li><a href="#">O Meu Perfil</a></li>
-                                        <li><a href="#">Configurações</a></li>
+                                        {/* LINKS AGORA USAM handleMenuItemClick */}
+                                        <li><button onClick={() => handleMenuItemClick('/meu-perfil')}>O Meu Perfil</button></li>
+                                        <li><button onClick={() => handleMenuItemClick('/config')}>Configurações</button></li>
                                         <li><button onClick={handleLogoutWithConfirmation} className="menu-logout-btn">Sair</button></li>
                                     </ul>
                                 </div>
@@ -95,11 +124,8 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                         <Outlet /> {/* Aqui é onde o conteúdo da rota atual é renderizado */}
                     </main>
 
-                    {/* REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS). Ele deve estar APENAS no index.html. */}
-                    {/* <div vw className="enabled">
-                        <div vw-access-button className="active"></div>
-                        <div vw-plugin-wrapper></div>
-                    </div> */}
+                    {/* ELEMENTOS VLIBRAS: REMOVIDOS DESTE FICHEIRO. DEVE ESTAR APENAS NO index.html PARA PROJETOS VITE */}
+                    {/* (Bloco comentado ou removido para evitar avisos e erros) */}
 
                     {/* O seu rodapé existente */}
                     <footer className="main-footer">

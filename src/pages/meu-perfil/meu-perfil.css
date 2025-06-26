@@ -1,0 +1,209 @@
+/* src/pages/MeuPerfil/meu-perfil.css */
+
+/* --- Variáveis de Cores (Consistência com o tema geral) --- */
+:root {
+    --primary-blue: #3498db; /* Azul principal */
+    --dark-blue: #2c3e50;    /* Azul escuro para títulos e texto */
+    --light-gray: #ecf0f1;   /* Fundo suave da página */
+    --medium-gray: #bdc3c7;  /* Texto secundário/bordas */
+    --dark-text: #2c3e50;
+    --form-bg: #ffffff;      /* Fundo de caixas/cartões */
+    --accent-color: #2ecc71; /* Verde de destaque */
+
+    /* Sombras */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra para o card principal */
+    --button-shadow: 0 4px 10px rgba(46, 204, 113, 0.3); /* Sombra para botões */
+
+    /* Gradientes (se a página principal tiver gradiente, para consistência) */
+    --page-background-gradient-start: #e0f2f7;
+    --page-background-gradient-end: #c1e4f4;
+}
+
+/* Base Body Styles (para garantir consistência, se não já em global.css) */
+body {
+    font-family: 'Inter', sans-serif, Arial, sans-serif;
+    color: var(--dark-text);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    /* Assume que o background da página é definido globalmente (por exemplo, no Layout.jsx) */
+    /* background: linear-gradient(135deg, var(--page-background-gradient-start), var(--page-background-gradient-end)); */
+}
+
+/* --- Page Container Geral (Pode ser usado em várias páginas simples) --- */
+.page-container {
+    padding: 40px 20px;
+    max-width: 900px; /* Largura máxima para centralizar o conteúdo */
+    margin: 40px auto; /* Centraliza na página */
+    background-color: var(--form-bg); /* Fundo branco para o card da página */
+    border-radius: 12px;
+    box-shadow: var(--shadow-card); /* Sombra para o card principal */
+    text-align: center; /* Centraliza o texto principal */
+    animation: fadeInScale 0.8s ease-out forwards; /* Animação de entrada suave */
+    opacity: 0;
+    transform: scale(0.98);
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.98) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* --- Estilos Específicos da Página Meu Perfil --- */
+.meu-perfil-page h1 {
+    font-size: 2.8em;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.meu-perfil-page h1::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-blue);
+    border-radius: 2px;
+}
+
+.meu-perfil-page p {
+    font-size: 1.1em;
+    color: var(--medium-gray);
+    margin-bottom: 25px;
+}
+
+.profile-details-mock {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 25px;
+    margin: 30px auto;
+    max-width: 500px; /* Limita a largura dos detalhes */
+    text-align: left; /* Alinha o texto dos detalhes à esquerda */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    animation: fadeInGroup 0.8s ease-out forwards 0.3s; /* Animação com delay */
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.profile-details-mock p {
+    font-size: 1em;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.profile-details-mock p strong {
+    color: var(--dark-blue);
+    font-weight: 600;
+}
+
+/* Botão de Editar Perfil */
+.btn-edit-profile {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    box-shadow: var(--button-shadow);
+    animation: fadeInGroup 0.8s ease-out forwards 0.6s; /* Animação com delay */
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.btn-edit-profile:hover {
+    background-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(46, 204, 113, 0.4);
+}
+
+/* Animação genérica para grupos de elementos */
+@keyframes fadeInGroup {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 25px 15px;
+        margin: 20px auto;
+        border-radius: 10px;
+    }
+
+    .meu-perfil-page h1 {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+    }
+
+    .meu-perfil-page p {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+
+    .profile-details-mock {
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 100%;
+    }
+
+    .profile-details-mock p {
+        font-size: 0.95em;
+    }
+
+    .btn-edit-profile {
+        padding: 10px 20px;
+        font-size: 1em;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-container {
+        padding: 20px 10px;
+        margin: 15px auto;
+        border-radius: 8px;
+        box-shadow: none; /* Remove sombra em telas muito pequenas para ocupar a tela */
+    }
+
+    .meu-perfil-page h1 {
+        font-size: 1.8em;
+    }
+
+    .meu-perfil-page h1::after {
+        width: 60px;
+        height: 3px;
+    }
+
+    .meu-perfil-page p {
+        font-size: 0.9em;
+        margin-bottom: 15px;
+    }
+
+    .profile-details-mock {
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .profile-details-mock p {
+        font-size: 0.85em;
+    }
+
+    .btn-edit-profile {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+}

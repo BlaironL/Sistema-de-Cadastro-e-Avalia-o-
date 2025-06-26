@@ -49,6 +49,7 @@ body {
     display: flex;
     min-height: 100vh;
     width: 100%;
+    /* MANTIDO: O BACKGROUND ORIGINAL DA PÁGINA */
     background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
     overflow: hidden;
     position: relative;
@@ -146,14 +147,14 @@ body {
 }
 
 
-/* --- Seção do Formulário (Direita - Redesenhada com mais vida) --- */
+/* --- Seção do Formulário (Direita - REORGANIZADO E COM VIDA) --- */
 .projeto-form-section {
     flex: 1;
-    /* NOVO: Fundo suavemente colorido e mais dinâmico */
+    /* NOVO: Fundo sutilmente colorido para a SEÇÃO do formulário */
     background: linear-gradient(180deg, var(--form-background-soft) 0%, var(--form-bg) 100%);
     padding: 40px 50px;
     /* Sombra mais destacada e suave para dar profundidade */
-    box-shadow: -10px 0 40px var(--form-section-shadow); /* Sombra mais proeminente */
+    box-shadow: -10px 0 40px var(--form-section-shadow);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -206,9 +207,9 @@ body {
     padding-right: 15px;
     box-sizing: border-box;
     padding-bottom: 30px;
-    /* NOVO: Estilo da scrollbar customizado (WebKit) */
+    /* Estilo da scrollbar customizado (WebKit) */
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) var(--form-background-soft);
+    scrollbar-color: var(--primary-blue) var(--form-background-soft); /* Cores da scrollbar */
 }
 
 .projeto-form::-webkit-scrollbar {
@@ -216,12 +217,12 @@ body {
 }
 
 .projeto-form::-webkit-scrollbar-track {
-    background: var(--form-background-soft);
+    background: var(--form-background-soft); /* Fundo da trilha da scrollbar */
     border-radius: 10px;
 }
 
 .projeto-form::-webkit-scrollbar-thumb {
-    background-color: var(--primary-blue);
+    background-color: var(--primary-blue); /* Cor do "polegar" da scrollbar */
     border-radius: 10px;
     border: 2px solid var(--form-background-soft);
 }
@@ -241,9 +242,9 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    /* NOVO: Animação de entrada individual para os grupos de formulário */
+    /* Animação de entrada individual para os grupos de formulário */
     animation: fadeInGroup 0.8s ease-out forwards;
-    opacity: 0; /* Começa invisível */
+    opacity: 0;
 }
 
 /* Delay para cada grupo de formulário (exemplo, você pode ajustar) */
@@ -263,8 +264,8 @@ body {
         transform: translateY(10px);
     }
     to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
     }
 }
 
@@ -288,7 +289,7 @@ body {
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
     background-color: var(--input-bg-subtle); /* Fundo do input */
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Sombra interna sutil */
 }
 
 /* Efeito sutil no hover dos inputs */
