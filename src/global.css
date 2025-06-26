@@ -18,7 +18,7 @@
 html,
 body {
     height: 100%;
-    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen como fonte padrão */
+    font-family: '', sans-serif; /* MANTIDO Koulen como fonte padrão */
     background-color: white; /* MANTIDO fundo branco */
     color: #333; /* MANTIDO cor de texto padrão */
     display: flex;
