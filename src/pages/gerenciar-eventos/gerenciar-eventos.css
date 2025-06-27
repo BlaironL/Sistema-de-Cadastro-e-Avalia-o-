@@ -44,7 +44,7 @@ body {
 }
 
 .gerenciar-eventos-container {
-    max-width: 1280px; /* Largura máxima do container principal */
+    max-width: 2000px; /* Largura máxima do container principal */
     margin: 50px auto;
     padding: 40px;
     background-color: var(--color-card-bg);
