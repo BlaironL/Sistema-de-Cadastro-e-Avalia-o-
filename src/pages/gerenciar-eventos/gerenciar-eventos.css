@@ -736,7 +736,7 @@ body {
 
 
 /* --- Responsividade Aprimorada --- */
-@media (max-width: 1500px) {
+@media (max-width: 2500px) {
     .gerenciar-eventos-container {
         padding: 30px;
         margin: 30px 80px;
