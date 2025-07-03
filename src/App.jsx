@@ -48,6 +48,7 @@ export default function App() {
     }
   }, []);
 
+  // handleGlobalLogout agora recebe 'navigateFunc' do Layout
   const handleGlobalLogout = (navigateFunc) => { 
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userEmail');
@@ -66,7 +67,9 @@ export default function App() {
   };
 
   return (
-    // CORRIGIDO: Removido o 'basename' do HashRouter
+    // CORRIGIDO: Removido o 'basename' do HashRouter.
+    // O HashRouter lida com o roteamento em subdiretórios usando a hash (#) automaticamente.
+    // O 'base' no vite.config.js já lida com o prefixo dos assets.
     <Router> 
       {console.log("App.jsx: Rotas configuradas")}
 
@@ -87,7 +90,7 @@ export default function App() {
                 handleLogout={handleGlobalLogout} 
               />
             }>
-              {/* A rota raiz '/' agora corresponderá a '#/' */}
+              {/* A rota raiz '/' agora corresponderá à URL base do seu repositório com a hash '#/' */}
               <Route path="/" element={<Home />} /> 
 
               <Route path="/sobre" element={<Sobre />} />
