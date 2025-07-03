@@ -66,7 +66,8 @@ export default function App() {
   };
 
   return (
-    <Router basename="/Sistema-de-Cadastro-e-Avalia-o-"> 
+    // CORRIGIDO: Removido o 'basename' do HashRouter
+    <Router> 
       {console.log("App.jsx: Rotas configuradas")}
 
       <NotificationProvider>
@@ -86,12 +87,8 @@ export default function App() {
                 handleLogout={handleGlobalLogout} 
               />
             }>
-              {/* CORRIGIDO: A rota raiz agora aponta para /home diretamente */}
-              {/* O HashRouter com basename já lida com a URL completa */}
-              <Route path="/" element={<Home />} /> {/* A sua página inicial real */}
-
-              {/* Se você tiver links em outros lugares que apontam para "/home", mantenha-os */}
-              {/* Se o seu link de "Início" no Layout aponta para "/", ele agora renderizará Home */}
+              {/* A rota raiz '/' agora corresponderá a '#/' */}
+              <Route path="/" element={<Home />} /> 
 
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
