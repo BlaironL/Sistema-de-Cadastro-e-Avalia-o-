@@ -1,33 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import '../../global.css'; // O seu CSS global
-import './layout.css'; // Estilos específicos do Layout
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom'; // Importe Link
+import '../../global.css';
+import './layout.css';
 
-// Importe os provedores de contexto
-import { NotificationProvider, NotificationWidget } from "../contexts/NotificationContext.jsx";
-import { EventProjectProvider } from "../contexts/EventProjectContext.jsx";
+import { NotificationProvider, NotificationWidget } from "../../contexts/NotificationContext.jsx";
+import { EventProjectProvider } from "../../contexts/EventProjectContext.jsx";
 
-// O componente Layout recebe userEmail e userProfile como props,
-// que indicam o estado de autenticação do utilizador.
-export default function Layout({ userEmail, userProfile, handleLogout }) { // handleLogout é a função do App.jsx
-    console.log("Layout.jsx: Componente Layout a ser renderizado...");
+export default function Layout({ userEmail, userProfile, handleLogout }) {
     const location = useLocation();
-    const navigate = useNavigate(); // <-- useNavigate está disponível aqui
+    const navigate = useNavigate();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
-    // Função para lidar com o logout, incluindo uma confirmação
     const handleLogoutWithConfirmation = () => {
         const confirmLogout = window.confirm("Tem certeza que deseja sair?");
         if (confirmLogout) {
-            // AGORA CHAMA handleLogout do App.jsx, passando o navigate deste componente
-            handleLogout(navigate); // <-- Passa o navigate para a função de logout do App.jsx
-            setIsMenuOpen(false); // Fecha o menu dropdown
+            handleLogout(navigate); // Passa navigate para a função de logout do App.jsx
+            setIsMenuOpen(false);
         }
     };
 
-    // Efeito para fechar o menu dropdown ao clicar fora dele
     useEffect(() => {
         function handleClickOutside(event) {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -40,22 +33,15 @@ export default function Layout({ userEmail, userProfile, handleLogout }) { // ha
         };
     }, []);
 
-    // Alterna o estado de abertura/fechamento do menu dropdown
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
     };
 
-    // Verifica se o utilizador está autenticado. userEmail será nulo ou vazio antes do login.
-    const isAuthenticated = !!userEmail; // Converte para booleano: true se userEmail não for nulo/vazio
-
-    // REMOVIDO: O useEffect para carregar e inicializar o VLibras. Ele deve estar APENAS no index.html.
-    // REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS) NO RETURN. Ele deve estar APENAS no index.html.
+    const isAuthenticated = !!userEmail;
 
     return (
-        // Os provedores de contexto envolvem toda a aplicação para que os dados fiquem disponíveis
         <NotificationProvider>
             <EventProjectProvider>
-                {console.log("Layout.jsx: NotificationProvider e EventProjectProvider a envolver conteúdo")}
                 <div className="app-main-container">
 
                     <header className="home-header">
@@ -64,16 +50,15 @@ export default function Layout({ userEmail, userProfile, handleLogout }) { // ha
                             <p className="subtitulo">Sistema de Cadastro e Avaliação de Projetos.</p>
                         </div>
 
-                        {/* Renderiza o menu dropdown e o botão de alternar APENAS se o utilizador estiver autenticado */}
                         {isAuthenticated && (
                             <div className="header-right-content" ref={menuRef}>
                                 <button onClick={toggleMenu} className="menu-toggle-btn">☰</button>
                                 <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
                                     <ul>
-                                        {/* Exibe o e-mail do utilizador autenticado no menu */}
                                         <li><span>Olá, {userEmail || 'Utilizador'}</span></li>
-                                        <li><a href="/meu-perfil">O Meu Perfil</a></li>
-                                        <li><a href="/config">Configurações</a></li>
+                                        {/* ATUALIZADO: Usando Link para navegação interna */}
+                                        <li><Link to="/meu-perfil" onClick={() => setIsMenuOpen(false)}>O Meu Perfil</Link></li>
+                                        <li><Link to="/config" onClick={() => setIsMenuOpen(false)}>Configurações</Link></li>
                                         <li><button onClick={handleLogoutWithConfirmation} className="menu-logout-btn">Sair</button></li>
                                     </ul>
                                 </div>
@@ -86,12 +71,9 @@ export default function Layout({ userEmail, userProfile, handleLogout }) { // ha
                     )}
 
                     <main className="global-main-content">
-                        {console.log("Layout.jsx: Outlet a ser renderizado")}
-                        <Outlet /> {/* Aqui é onde o conteúdo da rota atual é renderizado */}
+                        <Outlet />
                     </main>
 
-                    {/* REMOVIDO: O BLOCO DE CÓDIGO VLIBRAS (DIVS). Ele deve estar APENAS no index.html. */}
-                    {/* O seu rodapé existente */}
                     <footer className="main-footer">
                         <div className="footer-content">
                             <div className="footer-section about">
@@ -103,14 +85,16 @@ export default function Layout({ userEmail, userProfile, handleLogout }) { // ha
                             <div className="footer-section links">
                                 <h3>Links Rápidos</h3>
                                 <ul>
-                                    <li><a href="/">Início</a></li>
-                                    <li><a href="/sobre">Sobre Nós</a></li>
+                                    {/* ATUALIZADO: Usando Link para navegação interna */}
+                                    <li><Link to="/home">Início</Link></li> {/* Rota /home para a página inicial real */}
+                                    <li><Link to="/sobre">Sobre Nós</Link></li>
                                 </ul>
                             </div>
 
                             <div className="footer-section social">
                                 <h3>Conecte-se</h3>
                                 <div className="social-icons">
+                                    {/* Estes são links externos, podem permanecer como <a> */}
                                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                                         <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="[Imagem do ícone do Facebook]" />
                                     </a>
