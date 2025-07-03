@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 // Importe seus componentes de página e layout
 import Layout from './pages/layout/layout';
@@ -47,7 +48,7 @@ export default function App() {
     }
   }, []);
 
-  const handleGlobalLogout = () => {
+  const handleGlobalLogout = (navigateFunc) => { 
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('events');
@@ -56,7 +57,7 @@ export default function App() {
     localStorage.removeItem('hasAttemptedToAddTestEvents');
     setUserEmail('');
     setUserProfile('');
-    window.location.href = '/login'; 
+    navigateFunc('/login');
   };
 
   const handleLoginSuccess = (email, profile) => {
@@ -65,7 +66,9 @@ export default function App() {
   };
 
   return (
-    <Router>
+    // O basename deve ser o caminho do repositório, sem a barra inicial para o Router
+    // O React Router lida com isso internamente.
+    <Router basename="/Sistema-de-Cadastro-e-Avalia-o-"> 
       {console.log("App.jsx: Rotas configuradas")}
 
       <NotificationProvider>
@@ -85,7 +88,9 @@ export default function App() {
                 handleLogout={handleGlobalLogout} 
               />
             }>
-              <Route path="/" element={<Home />} />
+              {/* Rota inicial para o diretório raiz do basename */}
+              <Route path="/" element={<Home />} /> 
+              {/* Outras rotas permanecem como estão */}
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
               <Route path="/dashboard" element={<Dashboard />} />
