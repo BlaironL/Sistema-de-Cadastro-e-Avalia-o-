@@ -24,7 +24,7 @@ import Config from './pages/config/config';
 
 // Importe seus Provedores de Contexto
 import { NotificationProvider } from './pages/contexts/NotificationContext'; 
-import { EventProjectProvider } from './pages/contexts/EventProjectContext'; // <--- CORREÇÃO AQUI: de '=>' para 'from'
+import { EventProjectProvider } from './pages/contexts/EventProjectContext'; 
 
 // Importe o componente de debug (REMOVER EM PRODUÇÃO)
 import DebugClearData from './DebugClearData'; 
@@ -67,6 +67,8 @@ export default function App() {
   };
 
   return (
+    // O basename deve ser o caminho do repositório, sem a barra inicial para o Router
+    // O React Router lida com isso internamente.
     <Router basename="/Sistema-de-Cadastro-e-Avalia-o-"> 
       {console.log("App.jsx: Rotas configuradas")}
 
@@ -87,8 +89,14 @@ export default function App() {
                 handleLogout={handleGlobalLogout} 
               />
             }>
+
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/home" element={<Home />} />
+
+
+              {/* Rota inicial para o diretório raiz do basename */}
+              <Route path="/" element={<Home />} /> 
+              {/* Outras rotas permanecem como estão */}
 
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />

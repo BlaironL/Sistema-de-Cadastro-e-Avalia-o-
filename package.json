@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/Sistema-de-Cadastro-e-Avalia-o-/", 
+    "build": "vite build --base=/Sistema-de-Cadastro-e-Avalia-o-/",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist --message 'Deploy SCAP [skip ci]' --dotfiles"
   },
   "dependencies": {
     "react": "^19.1.0",
