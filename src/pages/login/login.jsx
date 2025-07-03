@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Importe useNavigate
 import '../../global.css'; 
 import './login.css';
-// REMOVIDO: import ilustracao from '../../components/ImagemLogin.png'; // Esta imagem será substituída por um design CSS
 
 export default function Login({ onLoginSuccess }) {
     const [email, setEmail] = useState('');
@@ -13,15 +12,11 @@ export default function Login({ onLoginSuccess }) {
         e.preventDefault();
 
         if (!email.includes('@')) {
-            // alert('Por favor, insira um e-mail válido.'); // Substituir alert por uma notificação mais amigável
-            console.warn('Por favor, insira um e-mail válido.'); // Apenas para depuração, se não tiver sistema de notificação UI
+            console.warn('Por favor, insira um e-mail válido.');
             return;
         }
 
-        // >>> MUDANÇA CRÍTICA AQUI: FORÇA O PERFIL PARA 'ORGANIZADOR' PARA TESTE <<<
-        // Em um sistema real, este perfil viria do backend após a autenticação.
-        const userProfile = 'organizador'; // Agora SEMPRE será organizador para teste
-
+        const userProfile = 'organizador'; 
         localStorage.setItem('userProfile', userProfile);
         localStorage.setItem('userEmail', email.toLowerCase());
 
@@ -29,13 +24,16 @@ export default function Login({ onLoginSuccess }) {
             onLoginSuccess(email.toLowerCase(), userProfile);
         }
 
-        navigate('/dashboard');
+        navigate('/dashboard'); // Usa navigate para o dashboard
+    };
+
+    const handleRegisterClick = () => { // Nova função para o link de cadastro
+        navigate('/cadastro'); // Usa navigate para o cadastro
     };
 
     return (
         <div className="login-page">
             <main className="login-main">
-                {/* Lado Esquerdo - Mensagem e Design Visual */}
                 <div className="login-left">
                     <p className="login-msg welcome-text">
                         Bem-vindo ao SCAP.
@@ -45,14 +43,12 @@ export default function Login({ onLoginSuccess }) {
                         De Maneira Rápida e Fácil.<br />
                         ✨
                     </p>
-                    {/* A imagem ilustrativa foi removida do JSX e será tratada via CSS para um design mais integrado */}
                 </div>
 
-                {/* Lado Direito - Formulário de Login */}
                 <div className="login-right">
                     <h2 className="bem-vindo form-title-login">Seja Bem–Vindo!</h2>
                     <form onSubmit={handleSubmit} className="login-form">
-                        <div className="form-group-login"> {/* Novo wrapper para label+input */}
+                        <div className="form-group-login">
                             <label htmlFor="email">E-mail:</label>
                             <input
                                 type="email" 
@@ -64,7 +60,7 @@ export default function Login({ onLoginSuccess }) {
                             />
                         </div>
 
-                        <div className="form-group-login"> {/* Novo wrapper para label+input */}
+                        <div className="form-group-login">
                             <label htmlFor="senha">Senha:</label>
                             <input
                                 type="password"
@@ -80,7 +76,8 @@ export default function Login({ onLoginSuccess }) {
                             Entrar <span className="icon-arrow-right">→</span>
                         </button>
                     </form>
-                    <p className="register-link">Ainda não tem conta? <a href="/cadastro">Cadastre-se aqui</a></p>
+                    {/* ATUALIZADO: Usando onClick com navigate para o link de cadastro */}
+                    <p className="register-link">Ainda não tem conta? <a onClick={handleRegisterClick}>Cadastre-se aqui</a></p>
                 </div>
             </main>
         </div>
