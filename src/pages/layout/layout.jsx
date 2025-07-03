@@ -3,8 +3,8 @@ import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom'; // Im
 import '../../global.css';
 import './layout.css';
 
-import { NotificationProvider, NotificationWidget } from "../../contexts/NotificationContext.jsx";
-import { EventProjectProvider } from "../../contexts/EventProjectContext.jsx";
+import { NotificationProvider, NotificationWidget } from "../contexts/NotificationContext.jsx";
+import { EventProjectProvider } from "../contexts/EventProjectContext.jsx";
 
 export default function Layout({ userEmail, userProfile, handleLogout }) {
     const location = useLocation();
