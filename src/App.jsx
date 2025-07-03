@@ -1,6 +1,5 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Importe Navigate
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 
 // Importe seus componentes de página e layout
@@ -67,8 +66,6 @@ export default function App() {
   };
 
   return (
-    // O basename deve ser o caminho do repositório, sem a barra inicial para o Router
-    // O React Router lida com isso internamente.
     <Router basename="/Sistema-de-Cadastro-e-Avalia-o-"> 
       {console.log("App.jsx: Rotas configuradas")}
 
@@ -89,14 +86,12 @@ export default function App() {
                 handleLogout={handleGlobalLogout} 
               />
             }>
+              {/* CORRIGIDO: A rota raiz agora aponta para /home diretamente */}
+              {/* O HashRouter com basename já lida com a URL completa */}
+              <Route path="/" element={<Home />} /> {/* A sua página inicial real */}
 
-              <Route path="/" element={<Navigate to="/home" replace />} />
-              <Route path="/home" element={<Home />} />
-
-
-              {/* Rota inicial para o diretório raiz do basename */}
-              <Route path="/" element={<Home />} /> 
-              {/* Outras rotas permanecem como estão */}
+              {/* Se você tiver links em outros lugares que apontam para "/home", mantenha-os */}
+              {/* Se o seu link de "Início" no Layout aponta para "/", ele agora renderizará Home */}
 
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
@@ -121,4 +116,3 @@ export default function App() {
     </Router>
   );
 }
-

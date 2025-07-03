@@ -5,7 +5,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/Sistema-de-Cadastro-e-Avalia-o-/', // ✅ Confirmado: Nome exato do seu repositório
+  base: '/Sistema-de-Cadastro-e-Avalia-o-/',
   plugins: [react()],
   resolve: {
     alias: {
