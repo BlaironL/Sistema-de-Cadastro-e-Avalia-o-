@@ -1,14 +1,13 @@
-/* ======================== */
-/* GLOBAL.CSS               */
-/* ======================== */
+/* src/global.css */
 
-/* Manter import da fonte Koulen (e outras se já estiverem em seu projeto) */
-@import url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
-/* Manter import da Montserrat se estiver usando em algum lugar (ex: para textos não Koulen) */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif; /* Define Inter como a fonte padrão para todo o site */
+    line-height: 1.6; /* Altura da linha para melhor leitura */
+    color: #333; /* Cor de texto padrão */
+    /* Outros estilos globais */
+}
 
-
-/* Reset básico */
+/* Reset básico (mantido) */
 * {
     margin: 0;
     padding: 0;
@@ -18,89 +17,48 @@
 html,
 body {
     height: 100%;
-    font-family: '', sans-serif; /* MANTIDO Koulen como fonte padrão */
-    background-color: white; /* MANTIDO fundo branco */
-    color: #333; /* MANTIDO cor de texto padrão */
-    display: flex;
-    flex-direction: column; /* CRUCIAL: Empurra o footer para baixo */
-    min-height: 100vh; /* Garante que o body ocupe a altura total da viewport */
-    /* REMOVIDO: padding-bottom, pois o footer não é mais fixo */
+    /* background-color: white; (Removido se o layout já define o fundo) */
+    /* display: flex; flex-direction: column; min-height: 100vh; (Mantido se necessário para layout global) */
 }
 
-/* O elemento <main> global do Layout.jsx */
+/* Estilos para o <main> global (mantido) */
 main {
-    flex: 1; /* Faz com que o <main> ocupe todo o espaço disponível entre o header e o footer */
-    display: flex; /* Permite que o conteúdo interno do main (suas páginas) use flexbox */
-    flex-direction: column; /* Empilha o conteúdo das páginas verticalmente */
-    padding: 0; /* REMOVIDO padding padrão, as páginas definirão seus próprios paddings */
-    min-height: 0; /* CRUCIAL para evitar overflow em itens flex */
-    width: 100%; /* Garante que ocupe a largura total */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    min-height: 0;
+    width: 100%;
 }
 
-/* Cabeçalhos (Estilos base, devem ser mantidos como estavam, sem mudar cores) */
+/* Cabeçalhos (Estilos base, ajustado para herdar ou usar Inter) */
 h1, h2, h3 {
     font-weight: bold;
-    color: white; /* MANTIDO cor branca para cabeçalhos base, se essa era a cor original */
+    /* color: white; (Removido, a cor deve ser definida nos componentes específicos) */
     margin-bottom: 1rem;
-    font-family: 'Koulen', sans-serif; /* MANTIDO Koulen para títulos */
+    font-family: 'Inter', sans-serif; /* AJUSTADO: Usa Inter para cabeçalhos gerais */
 }
 
 h2 {
     font-size: 28px;
-    /* text-align: center; REMOVIDO: alinhamento deve ser definido por classes específicas ou no componente */
 }
 
 h3 {
     font-size: 22px;
 }
 
-/* Botões (Estilos genéricos para todos os botões, mantidos como estavam) */
+/* Botões (Estilos genéricos, ajustado para herdar ou usar Inter) */
 button,
 .btn,
 .btn-primary {
-    padding: 10px 20px;
-    background-color: #005b8f; /* MANTIDO cor original do botão */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-block;
+    /* ... seus estilos existentes ... */
+    font-family: 'Inter', sans-serif; /* AJUSTADO: Usa Inter para botões */
 }
 
-button:hover,
-.btn:hover,
-.btn-primary:hover {
-    background-color: #003f66;
-    transform: scale(1.05);
-}
-
-.btn-secondary {
-    background-color: #eeeeee;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 14px;
-}
-
-.btn-secondary:hover {
-    background-color: #ddd;
-}
-
-/* Formulários (Estilos genéricos para inputs e labels, mantidos como estavam) */
-form {
-    margin-top: 25px;
-}
-
+/* Formulários (Estilos genéricos, ajustado para herdar ou usar Inter) */
 form label {
-    display: block;
-    margin-bottom: 2px;
-    font-weight: bold;
-    color: #444;
+    /* ... seus estilos existentes ... */
+    font-family: 'Inter', sans-serif; /* AJUSTADO: Usa Inter para labels de formulário */
 }
 
 input[type="text"],
@@ -109,41 +67,12 @@ input[type="email"],
 input[type="file"],
 textarea,
 select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-    font-size: 15px;
-    box-sizing: border-box;
+    /* ... seus estilos existentes ... */
+    font-family: 'Inter', sans-serif; /* AJUSTADO: Usa Inter para inputs de formulário */
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
-input[type="file"]:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: #007bff; /* MANTIDO cor original do foco */
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-/* Listas */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-/* Links */
+/* Links (Estilos genéricos, ajustado para herdar ou usar Inter) */
 a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-a:hover {
-    text-decoration: underline;
+    /* ... seus estilos existentes ... */
+    font-family: 'Inter', sans-serif; /* AJUSTADO: Usa Inter para links */
 }

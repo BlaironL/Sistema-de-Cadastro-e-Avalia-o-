@@ -1,22 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom'; // Importe Link
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import '../../global.css';
 import './layout.css';
 
-import { NotificationProvider, NotificationWidget } from "../contexts/NotificationContext.jsx";
+import { NotificationProvider, useNotifications } from "../contexts/NotificationContext.jsx";
 import { EventProjectProvider } from "../contexts/EventProjectContext.jsx";
+import NotificationModal from '../contexts/NotificationModal.jsx';
+
+import VLibras from '../../VLibras.jsx'; // VLibras importado
 
 export default function Layout({ userEmail, userProfile, handleLogout }) {
+    console.log("Layout.jsx: Componente Layout a ser renderizado...");
     const location = useLocation();
     const navigate = useNavigate();
+    const { notifications } = useNotifications();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const [showNotificationModal, setShowNotificationModal] = useState(false);
 
     const handleLogoutWithConfirmation = () => {
         const confirmLogout = window.confirm("Tem certeza que deseja sair?");
         if (confirmLogout) {
-            handleLogout(navigate); // Passa navigate para a função de logout do App.jsx
+            handleLogout(navigate);
             setIsMenuOpen(false);
         }
     };
@@ -38,12 +44,13 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
     };
 
     const isAuthenticated = !!userEmail;
+    const unreadCount = notifications.filter(n => !n.read).length;
 
     return (
         <NotificationProvider>
             <EventProjectProvider>
+                {console.log("Layout.jsx: NotificationProvider e EventProjectProvider a envolver conteúdo")}
                 <div className="app-main-container">
-
                     <header className="home-header">
                         <div className="header-left-content">
                             <h1 className="logo-text">SCAP</h1>
@@ -56,9 +63,14 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                                 <div className={`dropdown-menu ${isMenuOpen ? 'active' : ''}`}>
                                     <ul>
                                         <li><span>Olá, {userEmail || 'Utilizador'}</span></li>
-                                        {/* ATUALIZADO: Usando Link para navegação interna */}
                                         <li><Link to="/meu-perfil" onClick={() => setIsMenuOpen(false)}>O Meu Perfil</Link></li>
                                         <li><Link to="/config" onClick={() => setIsMenuOpen(false)}>Configurações</Link></li>
+                                        <li className="notification-menu-item">
+                                            <button className="notification-button-in-menu" onClick={() => { setShowNotificationModal(true); setIsMenuOpen(false); }}>
+                                                <span className="material-icons">🔔</span>
+                                                {unreadCount > 0 && <span className="notification-badge-in-menu">{unreadCount}</span>}
+                                            </button>
+                                        </li>
                                         <li><button onClick={handleLogoutWithConfirmation} className="menu-logout-btn">Sair</button></li>
                                     </ul>
                                 </div>
@@ -66,13 +78,16 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                         )}
                     </header>
 
-                    {isAuthenticated && (
-                        <NotificationWidget />
-                    )}
-
                     <main className="global-main-content">
                         <Outlet />
                     </main>
+
+                    {isAuthenticated && showNotificationModal && (
+                        <NotificationModal
+                            isOpen={showNotificationModal}
+                            onClose={() => setShowNotificationModal(false)}
+                        />
+                    )}
 
                     <footer className="main-footer">
                         <div className="footer-content">
@@ -85,8 +100,7 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                             <div className="footer-section links">
                                 <h3>Links Rápidos</h3>
                                 <ul>
-                                    {/* ATUALIZADO: Usando Link para navegação interna */}
-                                    <li><Link to="/home">Início</Link></li> {/* Rota /home para a página inicial real */}
+                                    <li><Link to="/">Início</Link></li>
                                     <li><Link to="/sobre">Sobre Nós</Link></li>
                                 </ul>
                             </div>
@@ -94,7 +108,6 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                             <div className="footer-section social">
                                 <h3>Conecte-se</h3>
                                 <div className="social-icons">
-                                    {/* Estes são links externos, podem permanecer como <a> */}
                                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                                         <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="[Imagem do ícone do Facebook]" />
                                     </a>
@@ -111,7 +124,7 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                             </div>
 
                             <div className="footer-section contact">
-                                <h3>Contacto</h3>
+                                <h3>Contato</h3>
                                 <p>E-mail: <a href="mailto:contato@scap.com">blaironapple@gmail.com</a></p>
                                 <p>Telefone: (99) 99919-7301</p>
                                 <p>Floriano, PI, Brasil</p>
@@ -122,6 +135,8 @@ export default function Layout({ userEmail, userProfile, handleLogout }) {
                             <p>&copy; {new Date().getFullYear()} <strong>SCAP</strong> – Todos os direitos reservados.</p>
                         </div>
                     </footer>
+
+                    <VLibras /> {/* Componente VLibras adicionado aqui */}
                 </div>
             </EventProjectProvider>
         </NotificationProvider>

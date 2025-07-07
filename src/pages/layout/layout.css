@@ -101,7 +101,7 @@
     color: #333;
     display: block;
     width: 100%;
-    text-align: left;
+    text-align: center;
     background: none;
     border: none;
     cursor: pointer;
@@ -153,7 +153,7 @@
 .footer-content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -181,6 +181,7 @@
 
 .footer-section ul {
     list-style: none;
+    padding: 0;
 }
 
 .footer-section ul li {
@@ -189,6 +190,7 @@
 
 .footer-section ul li a {
     color: #ecf0f1;
+    text-decoration: none;
     transition: color 0.3s ease;
 }
 
@@ -274,14 +276,15 @@
 @media (max-width: 992px) {
     .home-header {
         padding: 15px 20px;
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .header-left-content {
-        flex-direction: column;
-        gap: 5px;
-        text-align: center;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
     }
 
     .logo-text {
@@ -289,17 +292,165 @@
     }
 
     .subtitulo {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 
     .header-right-content {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        margin-right: 0; /* Remove a margem direita em telas menores */
+        width: auto;
+        margin-right: 0;
+    }
+
+    .menu-toggle-btn {
+        font-size: 1.3em;
     }
 
     .dropdown-menu {
         min-width: 150px;
+    }
+
+    .dropdown-menu ul li {
+        padding: 8px 12px;
+    }
+
+    .dropdown-menu ul li a, .dropdown-menu ul li span {
+        padding: 3px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-header {
+        padding: 10px 15px;
+        height: 60px;
+    }
+    .logo-text {
+        font-size: 1.8em;
+    }
+    .subtitulo {
+        font-size: 0.7em;
+        display: none;
+    }
+}
+
+/* --- ESTILOS DO BOTÃO DE NOTIFICAÇÕES NO MENU (AJUSTADO) --- */
+
+/* Variáveis para o Botão de Notificação (APENAS NOTIFICAÇÕES) */
+:root {
+    /* Estas variáveis já estão no seu :root principal, não as duplique */
+    /* Garanta que --primary-accent, --badge-bg, --badge-text-color, etc.
+       estão definidos no seu :root principal no início do ficheiro. */
+
+    /* NOVAS VARIÁVEIS ESPECÍFICAS PARA ESTE BOTÃO (APENAS SE NÃO EXISTIREM) */
+    --notification-button-text-color: #333; /* Cor do texto padrão do item de menu */
+    --notification-button-hover-bg: #f5f5f5; /* Fundo no hover, igual aos outros itens */
+    --notification-button-hover-color: #3498db; /* Cor do texto no hover, igual aos outros itens */
+    --notification-icon-color: #3498db; /* Cor do ícone (azul) */ /* Usa primary-accent se já definida */
+    
+    --badge-size-in-menu: 20px; /* Tamanho menor para a bolinha do badge */
+    --badge-font-size-in-menu: 0.65em; /* Fonte menor para o número */
+    --badge-bg-in-menu: #e74c3c; /* Cor de fundo do badge (vermelho) */
+    --badge-text-color-in-menu: white;
+    --badge-border-color-in-menu: #ffffff; /* Borda do badge (fundo do menu) */
+}
+
+/* O li pai do botão de notificação */
+.dropdown-menu ul li.notification-menu-item {
+    padding: 0; /* Remove o padding padrão do li */
+    border-bottom: 1px solid #eee; /* Mantém a borda inferior como outros itens */
+    /* Garante que o item de lista não tenha borda inferior extra se for o último */
+    /* Se for o último item, a borda deve ser removida manualmente ou por :last-child */
+}
+
+/* Estilo para o botão de Notificações dentro do menu dropdown */
+.notification-button-in-menu {
+    background-color: transparent; /* EXPLICITAMENTE TRANSPARENTE */
+    border: none;
+    color: var(--notification-button-text-color); /* Cor do texto padrão */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha o conteúdo à esquerda */
+    width: 100%;
+    padding: 12px 20px; /* Padding igual aos outros itens de menu */
+    font-size: 1em; /* Tamanho da fonte normal */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    gap: 10px; /* Espaço entre o ícone e o texto */
+    text-align: left; /* Garante alinhamento do texto */
+    box-sizing: border-box; /* Inclui padding no width */
+    position: relative; /* Para posicionar o badge absolutamente dentro dele */
+}
+
+/* Efeito hover para o item de menu de notificação */
+/* Aplicado ao li pai para consistência com outros itens de menu */
+.dropdown-menu ul li.notification-menu-item:hover {
+    background-color: var(--notification-button-hover-bg); /* Fundo suave no hover */
+}
+.dropdown-menu ul li.notification-menu-item:hover .notification-button-in-menu {
+    color: var(--notification-button-hover-color); /* Cor de texto no hover */
+}
+.dropdown-menu ul li.notification-menu-item:hover .notification-button-in-menu .material-icons {
+    color: var(--notification-button-hover-color); /* Cor do ícone no hover */
+}
+
+
+/* Ícone de Notificações dentro do botão */
+.notification-button-in-menu .material-icons {
+    font-size: 30px;
+    color: var(--notification-icon-color); /* Cor do ícone */
+    vertical-align: middle;
+}
+
+/* Badge de Notificações (Contador) - Adaptado para o novo botão de menu */
+.notification-badge-in-menu {
+    background-color: var(--badge-bg-in-menu); /* Cor de fundo do badge (vermelho) */
+    color: var(--badge-text-color-in-menu); /* Cor do texto do badge (branco) */
+    font-family: 'Inter', sans-serif; /* Usa Inter para o número */
+    font-size: var(--badge-font-size-in-menu); /* Fonte menor */
+    font-weight: bold;
+    padding: 2px 5px; /* AJUSTADO: Padding menor para um visual mais compacto */
+    border-radius: 50%; /* Bolinha */
+    border: 1px solid var(--badge-border-color-in-menu); /* Borda do badge (fundo do menu) */
+    min-width: var(--badge-size-in-menu); /* Tamanho fixo para a bolinha */
+    height: var(--badge-size-in-menu); /* Tamanho fixo para a bolinha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1;
+    margin-left: auto; /* Empurra o badge para a direita do botão */
+    /* Removidas animações de entrada/pop do badge para um comportamento mais discreto */
+    animation: none;
+    position: absolute; /* Posiciona absolutamente dentro do botão */
+    right: 10px; /* Distância da borda direita do botão */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste fino para centralização vertical */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Sombra sutil para o badge */
+}
+
+/* Responsividade para o botão de notificação no menu */
+@media (max-width: 992px) {
+    /* Oculta o container FAB original em mobile (se ainda existir) */
+    .notification-widget-container {
+        display: none;
+    }
+    /* Estilos para o botão de notificação no menu em mobile */
+    .notification-button-in-menu {
+        font-size: 0.9em; /* Ajuste o tamanho da fonte */
+        padding: 8px 12px; /* Ajuste o padding */
+        gap: 8px;
+    }
+    .notification-button-in-menu .material-icons {
+        font-size: 1em;
+    }
+    .notification-badge-in-menu {
+        font-size: 0.6em;
+        min-width: 18px;
+        height: 18px;
+    }
+}
+@media (max-width: 768px) {
+    /* Ajustes menores para telas muito pequenas */
+    .notification-button-in-menu {
+        font-size: 0.85em;
+        padding: 6px 10px;
     }
 }

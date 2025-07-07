@@ -474,11 +474,11 @@ body {
 .dashboard-card {
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* Sombra suave e moderna */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); /* Sombra suave e moderna */
     padding: 30px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Espaçamento entre icon, título e descrição */
