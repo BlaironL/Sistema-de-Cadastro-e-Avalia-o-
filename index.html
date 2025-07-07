@@ -1,17 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Sistema-de-Cadastro-e-Avalia-o-/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-    <!-- Google Fonts: Inter (para texto geral) e Koulen (para títulos específicos como o logo) -->
+    <title>SCAP</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Koulen&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-CtQL6Out.js"></script>
+    <script type="module" crossorigin src="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-C4rf9Oyx.js"></script>
     <link rel="stylesheet" crossorigin href="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-B4D5JZDu.css">
   </head>
   <body>
@@ -24,21 +25,17 @@
     </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-        // Função para inicializar o widget VLibras de forma robusta
-        function initVLibrasWidget() {
-            if (window.VLibras) {
-                // Se window.VLibras estiver disponível, inicializa
-                new window.VLibras.Widget('https://vlibras.gov.br/app');
-                console.log("VLibras: Widget inicializado com sucesso.");
-            } else {
-                // Se window.VLibras ainda não estiver disponível, tenta novamente após um pequeno atraso
-                console.log("VLibras: Objeto window.VLibras ainda não definido, tentando novamente...");
-                setTimeout(initVLibrasWidget, 100); // Tenta novamente em 100ms
-            }
+      function initVLibrasWidget() {
+        if (window.VLibras && typeof window.VLibras.Widget === 'function') {
+          new window.VLibras.Widget('https://vlibras.gov.br/app');
+          console.log("VLibras: Widget inicializado com sucesso.");
+        } else {
+          console.log("VLibras: Objeto ainda não definido, tentando novamente...");
+          setTimeout(initVLibrasWidget, 100);
         }
+      }
 
-        // Chama a função de inicialização após a página e o script principal terem carregado
-        window.addEventListener('load', initVLibrasWidget);
+      window.addEventListener('load', initVLibrasWidget);
     </script>
     <!-- FIM DO CÓDIGO VLIBRAS -->
 
