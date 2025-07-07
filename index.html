@@ -5,30 +5,42 @@
     <link rel="icon" type="image/svg+xml" href="/Sistema-de-Cadastro-e-Avalia-o-/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
-    <script type="module" crossorigin src="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-Ctems0nz.js"></script>
-    <link rel="stylesheet" crossorigin href="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-CnRC2qw8.css">
+    <!-- Google Fonts: Inter (para texto geral) e Koulen (para títulos específicos como o logo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Koulen&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-CtQL6Out.js"></script>
+    <link rel="stylesheet" crossorigin href="/Sistema-de-Cadastro-e-Avalia-o-/assets/index-B4D5JZDu.css">
   </head>
   <body>
     <div id="root"></div>
 
-    <!-- INÍCIO DO CÓDIGO VLIBRAS (ELEMENTOS DIVS E SCRIPTS) - POSICIONAMENTO CRÍTICO! -->
+    <!-- INÍCIO DO CÓDIGO VLIBRAS -->
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
       <div vw-plugin-wrapper></div>
     </div>
     <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
-        // Esta função garante que o widget só é inicializado depois que o DOM está pronto.
-        // É uma medida extra de segurança para compatibilidade.
-        window.addEventListener('load', function() {
-            if (window.VLibras) { // Verifica se o objeto VLibras existe
+        // Função para inicializar o widget VLibras de forma robusta
+        function initVLibrasWidget() {
+            if (window.VLibras) {
+                // Se window.VLibras estiver disponível, inicializa
                 new window.VLibras.Widget('https://vlibras.gov.br/app');
+                console.log("VLibras: Widget inicializado com sucesso.");
             } else {
-                console.error("Erro VLibras: window.VLibras não está definido após o carregamento do script.");
+                // Se window.VLibras ainda não estiver disponível, tenta novamente após um pequeno atraso
+                console.log("VLibras: Objeto window.VLibras ainda não definido, tentando novamente...");
+                setTimeout(initVLibrasWidget, 100); // Tenta novamente em 100ms
             }
-        });
+        }
+
+        // Chama a função de inicialização após a página e o script principal terem carregado
+        window.addEventListener('load', initVLibrasWidget);
     </script>
     <!-- FIM DO CÓDIGO VLIBRAS -->
 
   </body>
-</html>``
+</html>
